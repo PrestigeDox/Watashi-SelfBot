@@ -17,17 +17,16 @@ class Watashi(commands.Bot):
         
         self.default_cogs = ('cogs.base')
         
-        super().__init__(command_prefix=configs['prefix'], self_bot=True) 
+        super().__init__(command_prefix=self.configs['prefix'], self_bot=True) 
 
         self.aiohttp_session = aiohttp.ClientSession(loop=self.loop)
 
-    async def run(self):
-        super().run(configs['bot_token'], bot=False)
+    def run(self):
+        super().run(self.configs['token'], bot=False)
 
     async def on_ready(self):
-            print("Bot Online!")
-            print("Name: {}".format(bot.user.name))
-            print("ID: {}".format(bot.user.id))
-            print(discord.__version__)
+            print("Welcome to Watashi SelfBot!")
+            print("Using this bot is against the Discord TOS.")
+            print("Use at your own risk")
             for cog in self.default_cogs:
-                bot.load_extension(cog)
+                self.load_extension(cog)
