@@ -25,10 +25,9 @@ class Watashi(commands.Bot):
         super().run(configs['bot_token'], bot=False)
 
     async def on_ready(self):
-    	print('Bot Online!')
-    	print(f'Name: {bot.user.name}')
-    	print(f'ID: {bot.user.id}')
-    	print(f'Discord.py Version: {discord.__version__}')
-
-    	for cog in self.default_cogs:
-    		bot.load_extension(cog)
+            print("Bot Online!")
+            print("Name: {}".format(bot.user.name))
+            print("ID: {}".format(bot.user.id))
+            print(discord.__version__)
+            for cog in self.default_cogs:
+                bot.load_extension(cog)
