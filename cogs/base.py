@@ -11,9 +11,17 @@ class Base:
 		pingtime = self.bot.latency * 1000
 		pingtimerounded = int(pingtime)
 		totalstring = str(pingtimerounded) + 'ms'
-		emb = discord.Embed(title='Pong ' + totalstring, colour=0xC500FF)
+		emb = discord.Embed(title='Pong ' + totalstring, colour=self.bot.embed_colour)
 		await ctx.send(embed=emb)
-		
+	
+	@commands.command(hidden=True, aliases=['emb'])
+	async def embed(self, ctx, *, message: str = None):
+		if message == None:
+			await ctx.message.delete()
+			await ctx.send(":x: You need a message to embed")
+		else:
+			emb = discord.Embed(title=message, colour=self.bot.embed_colour)
+			await ctx.send(embed=emb)
 
 def setup(bot):
 	bot.add_cog(Base(bot))
