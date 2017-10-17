@@ -15,7 +15,7 @@ class Watashi(commands.Bot):
         with open(self.config_path) as f:
             self.configs = json.load(f)
         
-        self.default_cogs = ('cogs.base')
+        self.default_cogs = ('cogs.base', 'ignore')
         
         super().__init__(command_prefix=self.configs['prefix'], self_bot=True) 
 
