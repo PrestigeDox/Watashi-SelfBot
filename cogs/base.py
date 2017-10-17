@@ -26,17 +26,49 @@ class Base:
 
 	@commands.command(hidden=True, aliases=['status'])
 	async def presense(self, ctx, mode, *, message: str = None):
-		if mode.lower() == "stream" or mode.lower() == "twitch":
-			await self.bot.change_presence(status=discord.Status.online, game=discord.Game(name=message,type=1,url="https://www.twitch.tv/{}".format(message)), afk=True)
-		elif mode.lower() == "online" or mode.lower() == "on":
-			await self.bot.change_presence(status=discord.Status.online, game=discord.Game(name=message), afk=True)
-		elif mode.lower() == "idle":
-			await self.bot.change_presence(status=discord.Status.idle, game=discord.Game(name=message), afk=True)
-		elif mode.lower() == "dnd" or mode.lower() == "disturb" or mode.lower() == "donotdisturb":
-			await self.bot.change_presence(status=discord.Status.dnd, game=discord.Game(name=message), afk=True)
-		elif mode.lower() == "invisible" or mode.lower() == "invis":
-			await self.bot.change_presence(status=discord.Status.invisible, game=discord.Game(name=message), afk=True)
-		elif mode.lower() == "none" or mode.lower() == "clear":
+
+		change = 1
+
+		if message == None:
+			change = 0
+			emb = discord.Embed(colour=self.bot.embed_colour)
+			emb.add_field(name='Options', value='Stream, Online, Idle, DND or Invis')
+			await ctx.send(embed=emb)
+
+		else:
+			if mode.lower() == "stream" or mode.lower() == "twitch":
+				await self.bot.change_presence(status=discord.Status.online, game=discord.Game(name=message,type=1,url="https://www.twitch.tv/{}".format(message)), afk=True)
+				colour = int(0x800080, 16)
+				status = "Stream"
+			elif mode.lower() == "online" or mode.lower() == "on":
+				await self.bot.change_presence(status=discord.Status.online, game=discord.Game(name=message), afk=True)
+				colour = int(0x08ff00, 16)
+				status = "Online"
+			elif mode.lower() == "idle":
+				await self.bot.change_presence(status=discord.Status.idle, game=discord.Game(name=message), afk=True)
+				colour = int(0xFFA500, 16)
+				status = "Idle"
+			elif mode.lower() == "dnd" or mode.lower() == "disturb" or mode.lower() == "donotdisturb":
+				await self.bot.change_presence(status=discord.Status.dnd, game=discord.Game(name=message), afk=True)
+				colour = int(0xff0000, 16)
+				status = "Do Not Disturb"
+			elif mode.lower() == "invisible" or mode.lower() == "invis":
+				await self.bot.change_presence(status=discord.Status.invisible, game=discord.Game(name=message), afk=True)
+				colour = int(0x808080, 16)
+				status = "Invisible"
+			else:
+				change = 0
+				emb = discord.Embed(colour=self.bot.embed_colour)
+				emb.add_field(name='Options', value='Stream, Online, Idle, DND or Invis')
+				await ctx.send(embed=emb)
+
+		if change == 1:
+			emb = discord.Embed(colour=colour)
+			emb.add_field(name='Status', value=status)
+			emb.add_field(name='Message', value=message)
+			await ctx.send(embed=emb)
+		else:
+			pass
 
 def setup(bot):
 	bot.add_cog(Base(bot))
