@@ -1,7 +1,6 @@
 import sys
 from watashi import Watashi
 
-
 if __name__ == "__main__":
     try:
         config_path = sys.argv[1]
@@ -10,4 +9,3 @@ if __name__ == "__main__":
 
     bot = Watashi(config_path)
     bot.run()
-    
