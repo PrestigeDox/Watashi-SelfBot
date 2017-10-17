@@ -14,12 +14,12 @@ class Watashi(commands.Bot):
         self.config_path = config_path
         with open(self.config_path) as f:
             self.configs = json.load(f)
+        
+        self.default_cogs = ('cogs.base')
+        
+        super().__init__(command_prefix=configs['prefix'], self_bot=True) 
 
         self.aiohttp_session = aiohttp.ClientSession(loop=self.loop)
-
-        self.default_cogs = ('cogs.base')
-
-        super().__init__(command_prefix=configs['prefix'], self_bot=True) 
 
     async def run(self):
         super().run(configs['bot_token'], bot=False)
