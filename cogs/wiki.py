@@ -1,6 +1,7 @@
 import discord
 import wikipedia
 from discord.ext import commands
+
 class Wiki:
 	def __init__(self, bot):
 		self.bot = bot
@@ -9,24 +10,29 @@ class Wiki:
 	async def wiki(self, ctx, *, query: str):
 		await ctx.message.delete()
 		try:
-			resultlst = wikipedia.search(query)
+			resultlst = await self.bot.loop.run_in_executor(None, wikipedia.search, query)
 			item = resultlst[0]
-			pg = wikipedia.page(item)
+			pg = await self.bot.loop.run_in_executor(None, wikipedia.page, item)
 		except wikipedia.exceptions.DisambiguationError as e:
-			pg = wikipedia.page(e.options[0])
+			pg = await self.bot.loop.run_in_executor(None, wikipedia.page, e.options[0])
 		await ctx.send(pg.url)
-	@wiki.command(pass_context=True)
+
+	@wiki.command(pass_context=True,aliases=['-s'])
 	async def search(self, ctx, *, query: str):
 		await ctx.message.delete()
-		resultlst = wikipedia.search(query)
-		msg = "```py\n"
+		resultlst = await self.bot.loop.run_in_executor(None, wikipedia.search, query)
+
+		msg = str()
 		for number, option in enumerate(resultlst[:4]):
 			msg += "{0***REMOVED***. {1***REMOVED***\n".format(number+1, option)
-		msg += "\n\nType 'exit' to leave the menu\n```"
-		menumsg = await ctx.send(msg)
+		em = discord.Embed(title="Results",description=msg,color=self.bot.embed_colour)
+		em.set_footer(text="Type 'exit' to leave the menu")
+		menumsg = await ctx.send(embed=em)
+
 		def check(m):
 			return m.author == ctx.message.author and m.channel == ctx.message.channel and m.content.isdigit()
 		response = await self.bot.wait_for('message',check=check)
+
 		try:
 			if response.content.lower() == 'exit':
 				await response.delete()
@@ -38,6 +44,7 @@ class Wiki:
 				item = resultlst[int(response.content)-1]
 		except IndexError:
 			return
-		await ctx.send(wikipedia.page(item).url)
+		pg = await self.bot.loop.run_in_executor(None, wikipedia.page, item)
+		await ctx.send(pg.url)
 def setup(bot):
 	bot.add_cog(Wiki(bot))
