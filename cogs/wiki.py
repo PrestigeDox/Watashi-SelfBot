@@ -1,50 +1,57 @@
+#!/bin/env python
+
 import discord
-import wikipedia
 from discord.ext import commands
 
+
 class Wiki:
-	def __init__(self, bot):
-		self.bot = bot
+    def __init__(self, bot):
+        self.bot = bot
+        self.search_uri = 'http://en.wikipedia.org/w/api.php?action=opensearch&format=json&search={***REMOVED***'
+        self.random_uri = 'https://en.wikipedia.org/w/api.php?action=query&list=random&format=json&rnnamespace=0&rnlimit=1'
+        self.headers = {'user-agent': 'Watashi-Bot/0.1a - A fantastic selfbot (https://github.com/PrestigeDox/Watashi-SelfBot)'***REMOVED***
+        self.aiohttp_session = bot.aiohttp_session
 
-	@commands.group(invoke_without_command=True,pass_context=True)
-	async def wiki(self, ctx, *, query: str):
-		await ctx.message.delete()
-		try:
-			resultlst = await self.bot.loop.run_in_executor(None, wikipedia.search, query)
-			item = resultlst[0]
-			pg = await self.bot.loop.run_in_executor(None, wikipedia.page, item)
-		except wikipedia.exceptions.DisambiguationError as e:
-			pg = await self.bot.loop.run_in_executor(None, wikipedia.page, e.options[0])
-		await ctx.send(pg.url)
+    @commands.command(name='wiki', aliases=['wi'])
+    async def wiki_search(self, ctx, *, query=None):
+        """ Get the closest matching Wikipedia article for a given query """
 
-	@wiki.command(pass_context=True,aliases=['-s'])
-	async def search(self, ctx, *, query: str):
-		await ctx.message.delete()
-		resultlst = await self.bot.loop.run_in_executor(None, wikipedia.search, query)
+        # Determine whether we want a random article
+        if not query:
+            async with self.aiohttp_session.get(self.aiohttp_session,
+                                                self.random_uri,
+                                                headers=self.headers) as r:
+                rand_resp = await r.json()
 
-		msg = str()
-		for number, option in enumerate(resultlst[:4]):
-			msg += "{0***REMOVED***. {1***REMOVED***\n".format(number+1, option)
-		em = discord.Embed(title="Results",description=msg,color=self.bot.embed_colour)
-		em.set_footer(text="Type 'exit' to leave the menu")
-		menumsg = await ctx.send(embed=em)
+            query = rand_resp['query']['random'][0]['title']
 
-		def check(m):
-			return m.author == ctx.message.author and m.channel == ctx.message.channel and m.content.isdigit()
-		response = await self.bot.wait_for('message',check=check)
+        # Spaces -> +
+        formatted_query = query.replace(' ', '+')
 
-		try:
-			if response.content.lower() == 'exit':
-				await response.delete()
-				await menumsg.delete()
-				return
-			else:
-				await response.delete()
-				await menumsg.delete()
-				item = resultlst[int(response.content)-1]
-		except IndexError:
-			return
-		pg = await self.bot.loop.run_in_executor(None, wikipedia.page, item)
-		await ctx.send(pg.url)
+        # Get wiki page
+        async with self.aiohttp_session.get(self.aiohttp_session,
+                                            self.search_uri.format(formatted_query),
+                                            headers=self.headers) as r:
+            wiki_info = await r.json()
+
+        # No result found
+        if not wiki_info[1]:
+            return await ctx.send(f"Sorry, I couldn't find anything for `{query***REMOVED***`.")
+
+        # Create embed
+        em = discord.Embed(title=wiki_info[1][0], color=discord.Color.blue())
+
+        if wiki_info[2][0] == '':
+            em.description = 'Disambiguation / Redirect Page'
+        else:
+            em.description = wiki_info[2][0]
+
+        em.url = wiki_info[3][0]
+
+        em.set_thumbnail(url='https://lh5.ggpht.com/1Erjb8gyF0RCc9uhnlfUdbU603IgMm-G-Y3aJuFcfQpno0N4HQIVkTZERCTo65Iz2II=w300')
+
+        await ctx.send(embed=em)
+
+
 def setup(bot):
-	bot.add_cog(Wiki(bot))
+    bot.add_cog(Wiki(bot))
