@@ -11,7 +11,7 @@ class UrbanDictionary:
 	async def urban(self, ctx, *, query: str):
 		await ctx.message.delete()
 		try:
-			resultlst = ud.define(query)
+			resultlst = await self.bot.loop.run_in_executor(None, ud.define, query)
 			item = resultlst[0]
 		except:
 			return
@@ -20,8 +20,8 @@ class UrbanDictionary:
 	@urban.command(aliases=['-s'])
 	async def search(self, ctx, *, query: str):
 		await ctx.message.delete()
-		resultlst = ud.define(query)
-		
+		resultlst = await self.bot.loop.run_in_executor(None, ud.define, query)
+
 		msg = "```py\n"
 		for number, option in enumerate(resultlst[:4]):
 			msg += "{0***REMOVED***. {1***REMOVED***\n".format(number+1, option.word)
@@ -49,9 +49,10 @@ class UrbanDictionary:
 	@urban.command(aliases=['-r'])
 	async def random(self, ctx):
 		await ctx.message.delete()
-		item = ud.random()[0]
-		await ctx.send('**{0***REMOVED*****:\n\n{1***REMOVED***\n\n**Examples**:\n\n{2***REMOVED***'.format(item.word, item.definition, item.example))
+		item = await self.bot.loop.run_in_executor(None, ud.random)
+
+		await ctx.send('**{0***REMOVED*****:\n\n{1***REMOVED***\n\n**Examples**:\n\n{2***REMOVED***'.format(item[0].word, item[0].definition, item[0].example))
 		
 		
 def setup(bot):
-	bot.add_cog(UrbanD(bot))
+	bot.add_cog(UrbanDictionary(bot))
