@@ -15,11 +15,22 @@ class Watashi(commands.Bot):
         with open(self.config_path) as f:
             self.configs = json.load(f)
         
-        self.default_cogs = ('cogs.base', 'cogs.coding')
+        self.default_cogs = ('cogs.base', 'cogs.coding', 'cogs.emoji')
         
         self.embed_colour = int(self.configs['embed_colour'], 16)
 
-        super().__init__(command_prefix=self.configs['prefix'], self_bot=True) 
+        super().__init__(command_prefix=self.configs['prefix'], self_bot=True)
+
+        #Colours
+        self.gold = 16766720 
+        self.red = 16711680
+        self.orange = 16753920
+        self.yellow = 16776960
+        self.darkgreen = 25600
+        self.lightgreen = 589568
+        self.lightblue = 58879
+        self.darkblue = 255
+        self.blurple = 7506394
 
         self.aiohttp_session = aiohttp.ClientSession(loop=self.loop)
 
