@@ -22,11 +22,12 @@ class UrbanDictionary:
 		await ctx.message.delete()
 		resultlst = await self.bot.loop.run_in_executor(None, ud.define, query)
 
-		msg = "```py\n"
+		msg = str()
 		for number, option in enumerate(resultlst[:4]):
 			msg += "{0}. {1}\n".format(number+1, option.word)
-		msg += "\n\nType 'exit' to leave the menu\n```"
-		menumsg = await ctx.send(msg)
+		em = discord.Embed(title="Results",description=msg,color=self.bot.embed_colour)
+		em.set_footer(text="Type 'exit' to leave the menu.")
+		menumsg = await ctx.send(embed=em)
 		
 		def check(m):
 			return m.author == ctx.message.author and m.channel == ctx.message.channel and m.content.isdigit()
