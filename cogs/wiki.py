@@ -1,7 +1,6 @@
 import discord
 import wikipedia
 from discord.ext import commands
-import asyncio
 class Wiki:
 	def __init__(self, bot):
 		self.bot = bot
@@ -15,10 +14,6 @@ class Wiki:
 			pg = wikipedia.page(item)
 		except wikipedia.exceptions.DisambiguationError as e:
 			pg = wikipedia.page(e.options[0])
-			#wmsg = await ctx.send("Please be more specific")
-			#await asyncio.sleep(2)
-			#await wmsg.delete()
-			#return
 		await ctx.send(pg.url)
 	@wiki.command(pass_context=True)
 	async def search(self, ctx, *, query=None):
