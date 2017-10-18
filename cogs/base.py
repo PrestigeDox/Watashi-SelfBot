@@ -11,7 +11,7 @@ class Base:
 		pingtime = self.bot.latency * 1000
 		pingtimerounded = int(pingtime)
 		totalstring = str(pingtimerounded) + 'ms'
-		emb = discord.Embed(title='Pong ' + totalstring, colour=self.bot.embed_colour)
+		emb = discord.Embed(title='\U0001f3d3 Pong ' + totalstring, colour=self.bot.embed_colour)
 		await ctx.send(embed=emb)
 	
 	@commands.command(aliases=['emb'])
