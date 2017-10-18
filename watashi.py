@@ -31,6 +31,8 @@ class Watashi(commands.Bot):
         self.lightblue = 58879
         self.darkblue = 255
         self.blurple = 7506394
+        self.purple = 8388736
+        self.grey = 8421504
 
         self.aiohttp_session = aiohttp.ClientSession(loop=self.loop)
 
