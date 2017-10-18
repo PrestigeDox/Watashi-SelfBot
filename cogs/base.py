@@ -64,8 +64,8 @@ class Base:
 
 		if change == 1:
 			emb = discord.Embed(colour=colour)
-			emb.add_field(name='Status', value=status)
-			emb.add_field(name='Message', value=message)
+			emb.add_field(name='Status', value=status, inline=False)
+			emb.add_field(name='Message', value=message, inline=False)
 			await ctx.send(embed=emb)
 		else:
 			pass
