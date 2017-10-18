@@ -11,10 +11,10 @@ class UrbanD:
 		try:
 			resultlst = ud.define(query)
 			item = resultlst[0]
-		except wikipedia.exceptions.DisambiguationError as e:
-			pg = wikipedia.page(e.options[0])
-		await ctx.send('**{0}**\n{1}\n**Examples:\n{2}'.format(item.word,item.definition,item.examples))
-	@urban.command(pass_context=True,aliases=['search','-s'])
+		except:
+			return
+		await ctx.send('**{0}**:\n\n{1}\n\n**Examples**:\n\n{2}'.format(item.word,item.definition,item.example))
+	@urban.command(pass_context=True,aliases=['-s'])
 	async def search(self, ctx, *, query: str):
 		await ctx.message.delete()
 		resultlst = ud.define(query)
@@ -37,11 +37,11 @@ class UrbanD:
 				item = resultlst[int(response.content)-1]
 		except IndexError:
 			return
-		await ctx.send('**{0}**\n{1}\n**Examples:\n{2}'.format(item.word,item.definition,item.examples))
-	@urban.command(pass_context=True,aliases=['random','-r'])
-	async def random(self, ctx, *, query: str):
+		await ctx.send('**{0}**:\n\n{1}\n\n**Examples**:\n\n{2}'.format(item.word,item.definition,item.example))
+	@urban.command(pass_context=True,aliases=['-r'])
+	async def random(self, ctx):
 		await ctx.message.delete()
-		item = ud.random()
-		await ctx.send('**{0}**\n{1}\n**Examples:\n{2}'.format(item.word,item.definition,item.examples))
+		item = ud.random()[0]
+		await ctx.send('**{0}**:\n\n{1}\n\n**Examples**:\n\n{2}'.format(item.word,item.definition,item.example))
 def setup(bot):
-	bot.add_cog(Wiki(bot))
+	bot.add_cog(UrbanD(bot))
