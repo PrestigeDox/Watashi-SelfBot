@@ -1,2 +1,3 @@
 wikipedia
 urbandictionary
+pyfiglet
