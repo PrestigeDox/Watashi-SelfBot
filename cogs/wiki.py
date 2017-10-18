@@ -20,7 +20,7 @@ class Wiki:
 		await ctx.message.delete()
 		resultlst = wikipedia.search(query)
 		msg = "```py\n"
-		for number, option in enumerate(resultlst[4:]):
+		for number, option in enumerate(resultlst[:4]):
 			msg += "{0***REMOVED***. {1***REMOVED***\n".format(number+1, option)
 		msg += "\n\nType 'exit' to leave the menu\n```"
 		menumsg = await ctx.send(msg)
