@@ -15,20 +15,32 @@ class Watashi(commands.Bot):
         with open(self.config_path) as f:
             self.configs = json.load(f)
         
-        self.default_cogs = ('cogs.base')
+        self.default_cogs = ('cogs.base', 'cogs.coding', 'cogs.emoji', 'cogs.wiki', 'cogs.grief', 'cogs.aesthetic','cogs.urband')
         
-        super().__init__(command_prefix=configs['prefix'], self_bot=True) 
+        self.embed_colour = int(self.configs['embed_colour'], 16)
+
+        super().__init__(command_prefix=self.configs['prefix'], self_bot=True)
+
+        #Colours
+        self.gold = 16766720 
+        self.red = 16711680
+        self.orange = 16753920
+        self.yellow = 16776960
+        self.darkgreen = 25600
+        self.lightgreen = 589568
+        self.lightblue = 58879
+        self.darkblue = 255
+        self.blurple = 7506394
+        self.purple = 8388736
+        self.grey = 8421504
 
         self.aiohttp_session = aiohttp.ClientSession(loop=self.loop)
 
-    async def run(self):
-        super().run(configs['bot_token'], bot=False)
+    def run(self):
+        super().run(self.configs['token'], bot=False)
 
     async def on_ready(self):
-    	print('Bot Online!')
-    	print(f'Name: {bot.user.name}')
-    	print(f'ID: {bot.user.id}')
-    	print(f'Discord.py Version: {discord.__version__}')
-
-    	for cog in self.default_cogs:
-    		bot.load_extension(cog)
+            print('\n'*100)
+            print("<----------------->\nWatashi SelfBot\n<----------------->\nCoded by:\nPrestige#9162\nDemo#9465\nnaught0#4417\n<----------------->\nWarning:\nUnder the MIT\nlicense we are\nnot liable for any\ndamage caused/\naction taken\nagainst you for\nusing a selfbot\nwhich is in violation\nof Discord's TOS")
+            for cog in self.default_cogs:
+                self.load_extension(cog)
