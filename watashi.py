@@ -14,15 +14,16 @@ class Watashi(commands.Bot):
         self.config_path = config_path
         with open(self.config_path) as f:
             self.configs = json.load(f)
-        
-        self.default_cogs = ('cogs.base', 'cogs.coding', 'cogs.emoji', 'cogs.wiki', 'cogs.grief', 'cogs.aesthetic', 'cogs.urband', 'cogs.info')
-        
+
+        self.default_cogs = ('cogs.base', 'cogs.coding', 'cogs.emoji', 'cogs.wiki',
+                             'cogs.grief', 'cogs.aesthetic', 'cogs.urband', 'cogs.info')
+
         self.embed_colour = int(self.configs['embed_colour'], 16)
 
         super().__init__(command_prefix=self.configs['prefix'], self_bot=True)
 
-        #Colours
-        self.gold = 16766720 
+        # Colours
+        self.gold = 16766720
         self.red = 16711680
         self.orange = 16753920
         self.yellow = 16776960
@@ -40,7 +41,7 @@ class Watashi(commands.Bot):
         super().run(self.configs['token'], bot=False)
 
     async def on_ready(self):
-            print('\n'*100)
-            print("<----------------->\nWatashi SelfBot\n<----------------->\nCoded by:\nPrestige#9162\nDemo#9465\nnaught0#4417\n<----------------->\nWarning:\nUnder the MIT\nlicense we are\nnot liable for any\ndamage caused/\naction taken\nagainst you for\nusing a selfbot\nwhich is in violation\nof Discord's TOS")
-            for cog in self.default_cogs:
-                self.load_extension(cog)
+        print('\n' * 100)
+        print("<----------------->\nWatashi SelfBot\n<----------------->\nCoded by:\nPrestige#9162\nDemo#9465\nnaught0#4417\n<----------------->\nWarning:\nUnder the MIT\nlicense we are\nnot liable for any\ndamage caused/\naction taken\nagainst you for\nusing a selfbot\nwhich is in violation\nof Discord's TOS")
+        for cog in self.default_cogs:
+            self.load_extension(cog)
