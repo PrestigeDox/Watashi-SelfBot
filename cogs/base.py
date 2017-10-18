@@ -5,7 +5,7 @@ class Base:
 	def __init__(self, bot):
 		self.bot = bot
 
-	@commands.command(hidden=True, aliases=['pingpong'])
+	@commands.command(aliases=['pingpong'])
 	async def ping(self, ctx):
 		await ctx.message.delete()
 		pingtime = self.bot.latency * 1000
@@ -14,7 +14,7 @@ class Base:
 		emb = discord.Embed(title='Pong ' + totalstring, colour=self.bot.embed_colour)
 		await ctx.send(embed=emb)
 	
-	@commands.command(hidden=True, aliases=['emb'])
+	@commands.command(aliases=['emb'])
 	async def embed(self, ctx, *, message: str = None):
 		if message == None:
 			await ctx.message.delete()
@@ -24,7 +24,7 @@ class Base:
 			emb = discord.Embed(title=message, colour=self.bot.embed_colour)
 			await ctx.send(embed=emb)
 
-	@commands.command(hidden=True, aliases=['status'])
+	@commands.command(aliases=['status'])
 	async def presense(self, ctx, mode, *, message: str = None):
 
 		change = 1
