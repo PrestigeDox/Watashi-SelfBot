@@ -24,7 +24,7 @@ class Info:
 				await ctx.send(embed=emb)
 			except:
 				await ctx.send("Too much info...")
-		else:S
+		else:
 			emb = discord.Embed(colour=self.bot.embed_colour)
 			emb.set_author(name="Whois for {}".format(member.display_name),
 							icon_url=member.avatar_url)
