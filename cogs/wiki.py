@@ -6,7 +6,7 @@ class Wiki:
 		self.bot = bot
 
 	@commands.group(invoke_without_command=True,pass_context=True)
-	async def wiki(self, ctx, *, query=None):
+	async def wiki(self, ctx, *, query: str):
 		await ctx.message.delete()
 		try:
 			resultlst = wikipedia.search(query)
@@ -16,7 +16,7 @@ class Wiki:
 			pg = wikipedia.page(e.options[0])
 		await ctx.send(pg.url)
 	@wiki.command(pass_context=True)
-	async def search(self, ctx, *, query=None):
+	async def search(self, ctx, *, query: str):
 		await ctx.message.delete()
 		resultlst = wikipedia.search(query)
 		msg = "```py\n"
