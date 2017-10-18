@@ -25,7 +25,7 @@ class Base:
 			await ctx.send(embed=emb)
 
 	@commands.command(aliases=['status'])
-	async def presense(self, ctx, mode, *, message: str = None):
+	async def presence(self, ctx, mode, *, message: str = None):
 
 		change = 1
 
