@@ -20,19 +20,19 @@ class Wiki:
 		msg += "\n\nType 'exit' to leave the menu\n```"
 		menumsg = await ctx.send(msg)
 		def check(m):
-		    return m.author == ctx.message.author and m.channel == ctx.message.channel and m.content.isdigit()
-        response = await self.bot.wait_for('message',check=check)
-        try:
-        	if response.content.lower() == 'exit':
-        		await response.delete()
-        		await menumsg.delete()
-        		return
-        	else:
-        		await response.delete()
-        		await menumsg.delete()
-        		item = resultlst[int(response.content)-1]
-        except IndexError:
-        	return
-        await ctx.send(wikipedia.page(item).url)
+			return m.author == ctx.message.author and m.channel == ctx.message.channel and m.content.isdigit()
+		response = await self.bot.wait_for('message',check=check)
+		try:
+			if response.content.lower() == 'exit':
+				await response.delete()
+				await menumsg.delete()
+				return
+			else:
+				await response.delete()
+				await menumsg.delete()
+				item = resultlst[int(response.content)-1]
+		except IndexError:
+			return
+		await ctx.send(wikipedia.page(item).url)
 def setup(bot):
-	bot.add_cog(Coding(bot))
+	bot.add_cog(Wiki(bot))
