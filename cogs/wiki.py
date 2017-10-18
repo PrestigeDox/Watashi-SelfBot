@@ -1,17 +1,27 @@
 import discord
 import wikipedia
 from discord.ext import commands
-
+import asyncio
 class Wiki:
 	def __init__(self, bot):
 		self.bot = bot
 
-	@commands.group(invoke_without_command=True)
-	async def wiki(self, ctx, *, query: str):
+	@commands.group(invoke_without_command=True,pass_context=True)
+	async def wiki(self, ctx, *, query=None):
 		await ctx.message.delete()
-		await ctx.send(wikipedia.page(wikipedia.search(query)[0]).url)
-	@wiki.command()
-	async def search(self, ctx, *, query: str):
+		try:
+			resultlst = wikipedia.search(query)
+			item = resultlst[0]
+			pg = wikipedia.page(item)
+		except wikipedia.exceptions.DisambiguationError as e:
+			pg = wikipedia.page(e.options[0])
+			#wmsg = await ctx.send("Please be more specific")
+			#await asyncio.sleep(2)
+			#await wmsg.delete()
+			#return
+		await ctx.send(pg.url)
+	@wiki.command(pass_context=True)
+	async def search(self, ctx, *, query=None):
 		await ctx.message.delete()
 		resultlst = wikipedia.search(query)
 		msg = "```py\n"
