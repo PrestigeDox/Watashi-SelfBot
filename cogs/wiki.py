@@ -19,8 +19,8 @@ class Wiki:
 			msg += "{0***REMOVED***. {1***REMOVED***\n".format(number+1, option)
 		msg += "\n\nType 'exit' to leave the menu\n```"
 		menumsg = await ctx.send(msg)
-		def check(m)
-		 return m.author == ctx.message.author and m.channel == ctx.message.channel and m.content.isdigit()
+		def check(m):
+		    return m.author == ctx.message.author and m.channel == ctx.message.channel and m.content.isdigit()
         response = await self.bot.wait_for('message',check=check)
         try:
         	if response.content.lower() == 'exit':
