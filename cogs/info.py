@@ -10,7 +10,7 @@ class Info:
 		if member == None:
 			memberholder = ctx.message.author.id
 			member = ctx.guild.get_member(memberholder)
-			emb = discord.Embed(colour=0xC500FF)
+			emb = discord.Embed(colour=self.bot.embed_colour)
 			emb.set_author(name="Whois for {}".format(member.display_name),
 							icon_url=member.avatar_url)
 			emb.set_thumbnail(url=member.avatar_url)
@@ -25,7 +25,7 @@ class Info:
 			except:
 				await ctx.send("Too much info...")
 		else:
-			emb = discord.Embed(colour=0xC500FF)
+			emb = discord.Embed(colour=self.bot.embed_colour)
 			emb.set_author(name="Whois for {}".format(member.display_name),
 							icon_url=member.avatar_url)
 			emb.set_thumbnail(url=member.avatar_url)
