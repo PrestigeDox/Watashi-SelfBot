@@ -15,7 +15,13 @@ class UrbanDictionary:
             item = resultlst[0]
         except:
             return
-        await ctx.send('**{0}**:\n\n{1}\n\n**Examples**:\n\n{2}'.format(item.word, item.definition, item.example))
+
+        em = discord.Embed(color=sel.bot.embed_colour)
+        em.set_author(name="Urban Dictionary",icon_url="https://www.userlogos.org/files/logos/Ixodides/ud.png")
+        em.add_field(name="Word",value=item.word)
+        em.add_field(name="Definition",value=item.definition)
+        em.add_field(name="Example(s)",value=item.example)
+        await ctx.send(embed=em)
 
     @urban.command(aliases=['-s'])
     async def search(self, ctx, *, query: str):
@@ -46,14 +52,24 @@ class UrbanDictionary:
         except IndexError:
             return
 
-        await ctx.send('**{0}**:\n\n{1}\n\n**Examples**:\n\n{2}'.format(item.word, item.definition, item.example))
+        em = discord.Embed(color=sel.bot.embed_colour)
+        em.set_author(name="Urban Dictionary",icon_url="https://www.userlogos.org/files/logos/Ixodides/ud.png")
+        em.add_field(name="Word",value=item.word)
+        em.add_field(name="Definition",value=item.definition)
+        em.add_field(name="Example(s)",value=item.example)
+        await ctx.send(embed=em)
 
     @urban.command(aliases=['-r'])
     async def random(self, ctx):
         await ctx.message.delete()
         item = await self.bot.loop.run_in_executor(None, ud.random)
 
-        await ctx.send('**{0}**:\n\n{1}\n\n**Examples**:\n\n{2}'.format(item[0].word, item[0].definition, item[0].example))
+        em = discord.Embed(color=sel.bot.embed_colour)
+        em.set_author(name="Urban Dictionary",icon_url="https://www.userlogos.org/files/logos/Ixodides/ud.png")
+        em.add_field(name="Word",value=item[0].word)
+        em.add_field(name="Definition",value=item[0].definition)
+        em.add_field(name="Example(s)",value=item[0].example)
+        await ctx.send(embed=em)
 
 
 def setup(bot):
