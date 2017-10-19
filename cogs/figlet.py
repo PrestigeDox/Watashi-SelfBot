@@ -12,9 +12,7 @@ class Figlet:
         try:
             await ctx.send(f'```http\n{pyfiglet.figlet_format(message)}```')
         except discord.HTTPException:
-            emb = discord.Embed(colour=self.bot.red)
-            emb.add_field(name=":x: Error", value="Message is too large")
-            await ctx.send(embed=emb)
+            ctx.send("Hai")
 
 def setup(bot):
     bot.add_cog(Figlet(bot))
