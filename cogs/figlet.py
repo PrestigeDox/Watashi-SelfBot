@@ -12,7 +12,7 @@ class Figlet:
         try:
             await ctx.send(f'```http\n{pyfiglet.figlet_format(message)***REMOVED***```')
         except discord.HTTPException:
-            emb = discord.Embed(colour=self.bot.red)
+            emb = discord.Embed(colour=self.bot.colors.red)
             emb.add_field(name=":x: Error", value="Message is too large!")
             await ctx.send(embed=emb)
 
@@ -23,7 +23,7 @@ class Figlet:
         try:
             await ctx.send(f'```http\n{f.renderText(message)***REMOVED***```')
         except discord.HTTPException:
-            emb = discord.Embed(colour=self.bot.red)
+            emb = discord.Embed(colour=self.bot.colors.red)
             emb.add_field(name=":x: Error", value="Message is too large!")
             await ctx.send(embed=emb)
 
@@ -34,7 +34,7 @@ class Figlet:
         try:
             await ctx.send(f'```http\n{f.renderText(message)***REMOVED***```')
         except discord.HTTPException:
-            emb = discord.Embed(colour=self.bot.red)
+            emb = discord.Embed(colour=self.bot.colors.red)
             emb.add_field(name=":x: Error", value="Message is too large!")
             await ctx.send(embed=emb)
 
@@ -45,7 +45,7 @@ class Figlet:
         try:
             await ctx.send(f'```http\n{f.renderText(message)***REMOVED***```')
         except discord.HTTPException:
-            emb = discord.Embed(colour=self.bot.red)
+            emb = discord.Embed(colour=self.bot.colors.red)
             emb.add_field(name=":x: Error", value="Message is too large!")
             await ctx.send(embed=emb)
 
@@ -56,7 +56,7 @@ class Figlet:
         try:
             await ctx.send(f'```http\n{f.renderText(message)***REMOVED***```')
         except discord.HTTPException:
-            emb = discord.Embed(colour=self.bot.red)
+            emb = discord.Embed(colour=self.bot.colors.red)
             emb.add_field(name=":x: Error", value="Message is too large!")
             await ctx.send(embed=emb)
 
@@ -67,7 +67,7 @@ class Figlet:
         try:
             await ctx.send(f'```http\n{f.renderText(message)***REMOVED***```')
         except discord.HTTPException:
-            emb = discord.Embed(colour=self.bot.red)
+            emb = discord.Embed(colour=self.bot.colors.red)
             emb.add_field(name=":x: Error", value="Message is too large!")
             await ctx.send(embed=emb)
 
