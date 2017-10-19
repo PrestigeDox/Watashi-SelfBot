@@ -26,7 +26,6 @@ class Eval:
         return f'```py\n{e.text}{"^":>{e.offset}}\n{e.__class__.__name__}: {e}```'
 
     @commands.command(hidden=True, name='pyval')
-    @commands.is_owner()
     async def _eval(self, ctx, *, body: str):
         """ Evaluate some python code """
 
@@ -66,7 +65,6 @@ class Eval:
                 await ctx.send(f'```py\n{value}{ret}\n```')
 
     @commands.command(name='eval', hidden=True)
-    @commands.is_owner()
     async def shell_access(self, ctx, *, cmd):
         """ Access the commandline from the bot """
 

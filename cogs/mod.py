@@ -26,7 +26,6 @@ class Mod:
         self.bot = bot
 
     @commands.command(aliases=['k'])
-    @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, member: discord.Member, *, reason=None):
         """ Kick a member from the server """
         await ctx.guild.kick(member, reason=reason)
@@ -34,7 +33,6 @@ class Mod:
                        f'Reason: `{reason}`.')
 
     @commands.command(aliases=['kb'])
-    @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member: discord.Member, *, reason=None):
         """ Ban a member from the server """
         await ctx.guild.ban(member, reason=reason, delete_message_days=0)
@@ -42,7 +40,6 @@ class Mod:
                        f'Reason: `{reason}`.')
 
     @commands.command(aliases=['ub'])
-    @commands.has_permissions(ban_members=True)
     async def unban(self, ctx, member: BannedMember, *, reason=None):
         """ Unban a member from the server
         Since you can't highlight them anymore use their name#discrim or ID """
