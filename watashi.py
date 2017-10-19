@@ -23,8 +23,8 @@ class Watashi(commands.Bot):
         self.embed_colour = int(self.configs['embed_colour'], 16)
 
         super().__init__(command_prefix=self.configs['prefix'], self_bot=True)
-        self.color_tuple = namedtuple('Colors', 'red orange yellow darkgreen lightgreen lightblue darkblue blurple pruple grey')
-        self.colors = Colors(0xff0000,
+        self.color_tuple = namedtuple('Colors', 'red orange yellow darkgreen lightgreen lightblue darkblue blurple purple grey')
+        self.colors = self.color_tuple(0xff0000,
                            0xffa500,
                            0xffff00,
                            0x6400,
