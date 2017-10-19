@@ -23,18 +23,16 @@ class Watashi(commands.Bot):
 
         super().__init__(command_prefix=self.configs['prefix'], self_bot=True)
 
-        # Colours
-        self.gold = 16766720
-        self.red = 16711680
-        self.orange = 16753920
-        self.yellow = 16776960
-        self.darkgreen = 25600
-        self.lightgreen = 589568
-        self.lightblue = 58879
-        self.darkblue = 255
-        self.blurple = 7506394
-        self.purple = 8388736
-        self.grey = 8421504
+        self.color_dict = {'red': 0xff0000,
+                           'orange': 0xffa500,
+                           'yellow': 0xffff00,
+                           'darkgreen': 0x6400,
+                           'lightgreen': 0x8ff00,
+                           'lightblue': 0xe5ff,
+                           'darkblue': 0xff,
+                           'blurple': 0x7289da,
+                           'purple': 0x800080,
+                           'grey': 0x808080***REMOVED***
 
         self.aiohttp_session = aiohttp.ClientSession(loop=self.loop)
 
@@ -42,7 +40,6 @@ class Watashi(commands.Bot):
         super().run(self.configs['token'], bot=False)
 
     async def on_ready(self):
-        print('\n' * 100)
         print("<----------------->\nWatashi SelfBot\n<----------------->\nCoded by:\nPrestige#9162\nDemo#9465\nnaught0#4417\n<----------------->\nWarning:\nUnder the MIT\nlicense we are\nnot liable for any\ndamage caused/\naction taken\nagainst you for\nusing a selfbot\nwhich is in violation\nof Discord's TOS")
         for cog in self.default_cogs:
             self.load_extension(cog)
