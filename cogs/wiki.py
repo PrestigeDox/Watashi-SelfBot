@@ -38,7 +38,7 @@ class Wiki:
             return await ctx.send(f"Sorry, I couldn't find anything for `{query}`.")
 
         # Create embed
-        em = discord.Embed(title=wiki_info[1][0], color=discord.Color.blue())
+        em = discord.Embed(title=wiki_info[1][0], color=self.bot.colors.blue)
 
         if wiki_info[2][0] == '':
             em.description = 'Disambiguation / Redirect Page'
