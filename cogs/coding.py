@@ -22,6 +22,12 @@ class Coding:
         await ctx.send("```html\n{***REMOVED***```".format(code))
 
     @commands.command()
+    async def ini(self, ctx, *, code: str):
+        await ctx.message.delete()
+        await ctx.send("```ini\n{***REMOVED***```".format(code))
+
+
+    @commands.command()
     async def c(self, ctx, *, code: str):
         await ctx.message.delete()
         await ctx.send("```c\n{***REMOVED***```".format(code))
