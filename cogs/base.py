@@ -41,23 +41,23 @@ class Base:
         else:
             if mode.lower() == "stream" or mode.lower() == "twitch":
                 await self.bot.change_presence(status=discord.Status.online, game=discord.Game(name=message, type=1, url="https://www.twitch.tv/{***REMOVED***".format(message)), afk=True)
-                colour = self.bot.purple
+                colour = self.bot.colors.purple
                 status = "Stream"
             elif mode.lower() == "online" or mode.lower() == "on":
                 await self.bot.change_presence(status=discord.Status.online, game=discord.Game(name=message), afk=True)
-                colour = self.bot.lightgreen
+                colour = self.bot.colors.lightgreen
                 status = "Online"
             elif mode.lower() == "idle":
                 await self.bot.change_presence(status=discord.Status.idle, game=discord.Game(name=message), afk=True)
-                colour = self.bot.orange
+                colour = self.bot.colors.orange
                 status = "Idle"
             elif mode.lower() == "dnd" or mode.lower() == "disturb" or mode.lower() == "donotdisturb":
                 await self.bot.change_presence(status=discord.Status.dnd, game=discord.Game(name=message), afk=True)
-                colour = self.bot.red
+                colour = self.bot.colors.red
                 status = "Do Not Disturb"
             elif mode.lower() == "invisible" or mode.lower() == "invis":
                 await self.bot.change_presence(status=discord.Status.invisible, game=discord.Game(name=message), afk=True)
-                colour = self.bot.grey
+                colour = self.bot.colors.grey
                 status = "Invisible"
             else:
                 change = 0
