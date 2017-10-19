@@ -17,7 +17,7 @@ class Watashi(commands.Bot):
 
         self.default_cogs = ('cogs.base', 'cogs.coding', 'cogs.emoji', 'cogs.wiki',
                              'cogs.aesthetic', 'cogs.urband', 'cogs.info',
-                             'cogs.figlet')
+                             'cogs.figlet', 'cogs.eval')
 
         self.embed_colour = int(self.configs['embed_colour'], 16)
 
