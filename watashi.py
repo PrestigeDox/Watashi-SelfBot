@@ -7,6 +7,7 @@ import json
 # import time
 # import random
 import aiohttp
+from collections import namedtuple
 
 
 class Watashi(commands.Bot):
@@ -22,17 +23,17 @@ class Watashi(commands.Bot):
         self.embed_colour = int(self.configs['embed_colour'], 16)
 
         super().__init__(command_prefix=self.configs['prefix'], self_bot=True)
-
-        self.color_dict = {'red': 0xff0000,
-                           'orange': 0xffa500,
-                           'yellow': 0xffff00,
-                           'darkgreen': 0x6400,
-                           'lightgreen': 0x8ff00,
-                           'lightblue': 0xe5ff,
-                           'darkblue': 0xff,
-                           'blurple': 0x7289da,
-                           'purple': 0x800080,
-                           'grey': 0x808080}
+        self.color_tuple = namedtuple('Colors', 'red orange yellow darkgreen lightgreen lightblue darkblue blurple pruple grey')
+        self.colors = Colors(0xff0000,
+                           0xffa500,
+                           0xffff00,
+                           0x6400,
+                           0x8ff00,
+                           0xe5ff,
+                           0xff,
+                           0x7289da,
+                           0x800080,
+                           0x808080)
 
         self.aiohttp_session = aiohttp.ClientSession(loop=self.loop)
 
