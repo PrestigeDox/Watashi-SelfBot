@@ -49,5 +49,27 @@ class Figlet:
             emb.add_field(name=":x: Error", value="Message is too large!")
             await ctx.send(embed=emb)
 
+    @commands.command(aliases=['asciirectangle', 'figrectangle', 'ascrectangle'])
+    async def figletrectangle(self, ctx, *, message: str):
+        await ctx.message.delete()
+        f = pyfiglet.Figlet(font='rectangles')
+        try:
+            await ctx.send(f'```http\n{f.renderText(message)}```')
+        except discord.HTTPException:
+            emb = discord.Embed(colour=self.bot.red)
+            emb.add_field(name=":x: Error", value="Message is too large!")
+            await ctx.send(embed=emb)
+
+    @commands.command(aliases=['asciiscript', 'figscript', 'ascscript'])
+    async def figletscript(self, ctx, *, message: str):
+        await ctx.message.delete()
+        f = pyfiglet.Figlet(font='slscript')
+        try:
+            await ctx.send(f'```http\n{f.renderText(message)}```')
+        except discord.HTTPException:
+            emb = discord.Embed(colour=self.bot.red)
+            emb.add_field(name=":x: Error", value="Message is too large!")
+            await ctx.send(embed=emb)
+
 def setup(bot):
     bot.add_cog(Figlet(bot))
