@@ -28,7 +28,7 @@ class Eval:
     @commands.command(hidden=True, name='pyval')
     @commands.is_owner()
     async def _eval(self, ctx, *, body: str):
-        """Evaluates a code"""
+        """ Evaluate some python code """
 
         env = {
             'bot': self.bot,
