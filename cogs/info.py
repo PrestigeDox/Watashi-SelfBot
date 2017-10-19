@@ -24,10 +24,6 @@ class Info:
             emb.add_field(name="**Joined on**", value=member.joined_at.date())
             emb.add_field(name="**Avatar url**",
                           value="[Here]({})".format(member.avatar_url))
-            try:
-                await ctx.send(embed=emb)
-            except:
-                await ctx.send("Too much info...")
         else:
             emb = discord.Embed(colour=self.bot.embed_colour)
             emb.set_author(name="Whois for {}".format(member.display_name),
@@ -42,10 +38,10 @@ class Info:
             emb.add_field(name="**Joined on**", value=member.joined_at.date())
             emb.add_field(name="**Avatar url**",
                           value="[Here]({})".format(member.avatar_url))
-            try:
-                await ctx.send(embed=emb)
-            except:
-                await ctx.send("Too much info...")
+        try:
+            await ctx.send(embed=emb)
+        except:
+            await ctx.send("Too much info...")
 
 
 def setup(bot):
