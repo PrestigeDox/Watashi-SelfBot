@@ -31,7 +31,7 @@ class Tag:
                 self.tag_dict = json.load(f)
         else:
             self.tag_dict = {}
-            raise Exception(IOError, 'Tag file does not exist or does not contain valid JSON.')
+            print('Tag file not found. One will be created upon use')
 
     def _write_tag_file(self):
         """ Writes the content of the tag_dict to the file """
