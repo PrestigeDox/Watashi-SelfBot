@@ -25,15 +25,15 @@ class Watashi(commands.Bot):
         super().__init__(command_prefix=self.configs['prefix'], self_bot=True)
         self.color_tuple = namedtuple('Colors', 'red orange yellow darkgreen lightgreen lightblue darkblue blurple purple grey')
         self.colors = self.color_tuple(0xff0000,
-                           0xffa500,
-                           0xffff00,
-                           0x6400,
-                           0x8ff00,
-                           0xe5ff,
-                           0xff,
-                           0x7289da,
-                           0x800080,
-                           0x808080)
+                                       0xffa500,
+                                       0xffff00,
+                                       0x6400,
+                                       0x8ff00,
+                                       0xe5ff,
+                                       0xff,
+                                       0x7289da,
+                                       0x800080,
+                                       0x808080)
 
         self.aiohttp_session = aiohttp.ClientSession(loop=self.loop)
 
