@@ -170,6 +170,13 @@ class Base:
         else:
             pass
 
+    @commands.command(aliases=['logout', 'quit', 'exit'])
+    async def exitbot(self, ctx):
+        await ctx.message.delete()
+        emb = discord.Embed(title="Watashi Logging Out!", colour=self.bot.embed_colour)
+        await ctx.send(embed=emb)
+        await self.bot.logout()
+
 
 def setup(bot):
     bot.add_cog(Base(bot))
