@@ -47,44 +47,44 @@ class Tag:
         if tag_name in self.tag_dict:
             return await ctx.send(self.tag_dict[tag_name])
 
-        await ctx.send(f'Tag `{tag_name***REMOVED***` does not exist.', delete_after=10.0)
+        await ctx.send(f'Tag `{tag_name***REMOVED***` does not exist.')
 
     @tag.command()
     async def create(self, ctx, tag_name: str, *, tag_contents: str):
         """ Create a new tag """
         if tag_name in self.tag_dict:
-            return await ctx.send(f'Tag `{tag_name***REMOVED*** already exists. Use `tag edit` to change it.', delete_after=10.0)
+            return await ctx.send(f'Tag `{tag_name***REMOVED*** already exists. Use `tag edit` to change it.')
 
         self.tag_dict[tag_name] = tag_contents
         # Not sure if this is necessary but it feels right, man
         self._write_tag_file()
         self._load_tag_file()
 
-        await ctx.send(f'Tag `{tag_name***REMOVED***` successfully created.', delete_after=10.0)
+        await ctx.send(f'Tag `{tag_name***REMOVED***` successfully created.')
 
     @tag.command(name='delete', aliases=['del'])
     async def _delete(self, ctx, *, tag_name: str):
         """ Delete a tag you've previously created """
         if tag_name not in self.tag_dict:
-            return await ctx.send(f'Tag `{tag_name***REMOVED***` does not exist.', delete_after=10.0)
+            return await ctx.send(f'Tag `{tag_name***REMOVED***` does not exist.')
 
         del self.tag_dict[tag_name]
         self._write_tag_file()
         self._load_tag_file()
 
-        await ctx.send(f'Tag `{tag_name***REMOVED***` deleted.', delete_after=10.0)
+        await ctx.send(f'Tag `{tag_name***REMOVED***` deleted.')
 
     @tag.command()
     async def edit(self, ctx, tag_name: str, *, tag_contents: str):
         """ Edit a tag which you've previously created """
         if tag_name not in self.tag_dict:
-            return await ctx.send(f'Tag `{tag_name***REMOVED***` does not exist.', delete_after=10.0)
+            return await ctx.send(f'Tag `{tag_name***REMOVED***` does not exist.')
 
         self.tag_dict[tag_name] = tag_contents
         self._write_tag_file()
         self._load_tag_file()
 
-        await ctx.send(f'Tag `{tag_name***REMOVED***` succesfully edited.', delete_after=10.0)
+        await ctx.send(f'Tag `{tag_name***REMOVED***` succesfully edited.')
 
     @tag.command()
     async def search(self, ctx, *, tag_name: str):
@@ -92,7 +92,7 @@ class Tag:
         # Lifted this tidbit from:
         # https://mail.python.org/pipermail/python-list/2010-August/586307.html
         closest_match = min(self.tag_dict, key=lambda v: len(set(tag_name) ^ set(v)))
-        await ctx.send(f'Closest matching tag: `{closest_match***REMOVED***`.', delete_after=10.0)
+        await ctx.send(f'Closest matching tag: `{closest_match***REMOVED***`.')
 
 
 def setup(bot):
