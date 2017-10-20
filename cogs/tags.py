@@ -45,7 +45,13 @@ class Tag:
     async def tag(self, ctx, *, tag_name: str):
         """ Retrieve a previously stored tag """
         if tag_name in self.tag_dict:
-            return await ctx.send(self.tag_dict[tag_name])
+            # Increment uses
+            self.tag_dict[tag_name]['uses'] += 1
+
+            self._write_tag_file()
+            self._load_tag_file()
+
+            return await ctx.send(self.tag_dict[tag_name]['contents'])
 
         await ctx.send(f'Tag `{tag_name}` does not exist.')
 
@@ -55,7 +61,7 @@ class Tag:
         if tag_name in self.tag_dict:
             return await ctx.send(f'Tag `{tag_name} already exists. Use `tag edit` to change it.')
 
-        self.tag_dict[tag_name] = tag_contents
+        self.tag_dict[tag_name] = {'contents': tag_contents, 'uses': 0}
         # Not sure if this is necessary but it feels right, man
         self._write_tag_file()
         self._load_tag_file()
@@ -80,7 +86,7 @@ class Tag:
         if tag_name not in self.tag_dict:
             return await ctx.send(f'Tag `{tag_name}` does not exist.')
 
-        self.tag_dict[tag_name] = tag_contents
+        self.tag_dict[tag_name]['contents'] = tag_contents
         self._write_tag_file()
         self._load_tag_file()
 
@@ -93,6 +99,11 @@ class Tag:
         # https://mail.python.org/pipermail/python-list/2010-August/586307.html
         closest_match = min(self.tag_dict, key=lambda v: len(set(tag_name) ^ set(v)))
         await ctx.send(f'Closest matching tag: `{closest_match}`.')
+
+    @tag.command()
+    async def list(self, ctx, *, tag_name: str):
+        """ List your most used tags (up to 5) """
+        pass
 
 
 def setup(bot):
