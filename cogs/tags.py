@@ -49,7 +49,7 @@ class Tag:
 
         await ctx.send(f'Tag `{tag_name}` does not exist.', delete_after=10.0)
 
-    @commands.tag()
+    @tag.command()
     async def create(self, ctx, tag_name: str, *, tag_contents: str):
         """ Create a new tag """
         if tag_name in self.tag_dict:
@@ -62,7 +62,7 @@ class Tag:
 
         await ctx.send(f'Tag `{tag_name}` successfully created.', delete_after=10.0)
 
-    @commands.tag(name='delete', aliases='del')
+    @tag.command(name='delete', aliases='del')
     async def _delete(self, ctx, *, tag_name: str):
         """ Delete a tag you've previously created """
         if tag_name not in self.tag_dict:
@@ -74,7 +74,7 @@ class Tag:
 
         await ctx.send(f'Tag `{tag_name}` deleted.', delete_after=10.0)
 
-    @commands.tag()
+    @tag.command()
     async def edit(self, ctx, tag_name: str, *, tag_contents: str):
         """ Edit a tag which you've previously created """
         if tag_name not in self.tag_dict:
