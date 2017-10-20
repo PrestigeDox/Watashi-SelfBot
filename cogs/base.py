@@ -170,13 +170,20 @@ class Base:
         else:
             pass
 
+    @commands.command()
+    async def emojis(self, ctx):
+        await ctx.message.delete()
+        try:
+            await ctx.send('\n'.join(['{1***REMOVED*** `:{0***REMOVED***:`'.format(e.name, str(e)) for e in ctx.message.guild.emojis]))
+        except:
+            await ctx.send("Too many emojis!")
+
     @commands.command(aliases=['logout', 'quit', 'exit'])
     async def exitbot(self, ctx):
         await ctx.message.delete()
         emb = discord.Embed(title="Watashi Logging Out!", colour=self.bot.embed_colour)
         await ctx.send(embed=emb)
         await self.bot.logout()
-
 
 def setup(bot):
     bot.add_cog(Base(bot))
