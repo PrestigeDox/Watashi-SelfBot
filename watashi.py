@@ -41,7 +41,11 @@ class Watashi(commands.Bot):
         super().run(self.configs['token'], bot=False)
 
     async def on_ready(self):
-        print("<----------------->\nWatashi SelfBot\n<----------------->\nCoded by:\nPrestige#9162\nDemo#9465\nnaught0#4417\n<----------------->\nWarning:\nUnder the MIT\nlicense we are\nnot liable for any\ndamage caused/\naction taken\nagainst you for\nusing a selfbot\nwhich is in violation\nof Discord's TOS")
+        print("<----------------->\nWatashi SelfBot\n"
+              "<----------------->\nCoded by:\nPrestige#9162\nDemo#9465\nnaught0#4417\n"
+              "<----------------->\nWarning:\nUnder the MIT license we are not liable for any\n"
+              "damage caused/action taken against you for using a selfbot,\n"
+              "which is in violation of Discord's TOS")
         for cog in self.default_cogs:
             self.load_extension(cog)
         self.starttime = datetime.datetime.now()
