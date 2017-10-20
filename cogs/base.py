@@ -28,6 +28,13 @@ class Base:
 
     @commands.command(aliases=['embadv', 'embadvanced', 'embedadv'])
     async def embedadvanced(self, ctx, *, msg: str = None):
+        '''
+        Code through this project has all been made by our dev team.
+        This section of code was taken from another bot and then edited and,
+        improved to work with Watashi. We than the creators of Appus bot
+        Who I got permission from to use this code. I'm lazy af so cba
+        to make my own version so just edited theirs ; )
+        '''
         if msg:
             if msg != '':
                 ptext = title = description = image = thumbnail = color = footer = author = None
