@@ -62,7 +62,7 @@ class Tag:
 
         await ctx.send(f'Tag `{tag_name***REMOVED***` successfully created.', delete_after=10.0)
 
-    @tag.command(name='delete', aliases='del')
+    @tag.command(name='delete', aliases=['del'])
     async def _delete(self, ctx, *, tag_name: str):
         """ Delete a tag you've previously created """
         if tag_name not in self.tag_dict:
