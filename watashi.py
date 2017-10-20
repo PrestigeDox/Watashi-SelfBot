@@ -43,7 +43,7 @@ class Watashi(commands.Bot):
     async def on_ready(self):
         print("<----------------->\nWatashi SelfBot\n"
               "<----------------->\nCoded by:\nPrestige#9162\nDemo#9465\nnaught0#4417\n"
-              "<----------------->\nWarning:\nUnder the MIT license we are not liable for any\n"
+              "<----------------->\nWarning:\nUnder the MIT license the makers of Watashi-SelfBot are not liable for any\n"
               "damage caused/action taken against you for using a selfbot,\n"
               "which is in violation of Discord's TOS")
         for cog in self.default_cogs:
