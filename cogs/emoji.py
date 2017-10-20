@@ -9,7 +9,7 @@ class Emoji:
     @commands.group(invoke_without_command=True)
     async def emoji(self, ctx):
         await ctx.message.delete()
-        emb = discord.Embed(colour=self.bot.gold)
+        emb = discord.Embed(colour=self.bot.colors.gold)
         emb.add_field(name='Usage', value='{}emoji <emojiname>'.format(
             self.bot.configs['prefix']))
         await ctx.send(embed=emb)
