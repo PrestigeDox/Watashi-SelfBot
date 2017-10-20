@@ -4,7 +4,7 @@ from discord.ext import commands
 import json
 # import io
 # import random
-# import time
+import datetime
 # import random
 import aiohttp
 from collections import namedtuple
@@ -18,7 +18,7 @@ class Watashi(commands.Bot):
 
         self.default_cogs = ('cogs.base', 'cogs.coding', 'cogs.emoji', 'cogs.wiki',
                              'cogs.aesthetic', 'cogs.urband', 'cogs.info',
-                             'cogs.figlet', 'cogs.eval')
+                             'cogs.figlet', 'cogs.eval', 'cogs.tinyurl')
 
         self.embed_colour = int(self.configs['embed_colour'], 16)
 
@@ -44,3 +44,4 @@ class Watashi(commands.Bot):
         print("<----------------->\nWatashi SelfBot\n<----------------->\nCoded by:\nPrestige#9162\nDemo#9465\nnaught0#4417\n<----------------->\nWarning:\nUnder the MIT\nlicense we are\nnot liable for any\ndamage caused/\naction taken\nagainst you for\nusing a selfbot\nwhich is in violation\nof Discord's TOS")
         for cog in self.default_cogs:
             self.load_extension(cog)
+        self.starttime = datetime.datetime.now()
