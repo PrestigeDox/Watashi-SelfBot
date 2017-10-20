@@ -16,7 +16,7 @@ class UrbanDictionary:
         except:
             return
 
-        em = discord.Embed(color=sel.bot.embed_colour)
+        em = discord.Embed(color=self.bot.embed_colour)
         em.set_author(name="Urban Dictionary",icon_url="https://www.userlogos.org/files/logos/Ixodides/ud.png")
         em.add_field(name="Word",value=item.word)
         em.add_field(name="Definition",value=item.definition)
