@@ -31,7 +31,7 @@ class Tag:
                 self.tag_dict = json.load(f)
         else:
             self.tag_dict = {***REMOVED***
-            print('Tag file not found. One will be created upon use')
+            print('Tag file not found. One will be created upon use.')
 
     def _write_tag_file(self):
         """ Writes the content of the tag_dict to the file """
@@ -85,6 +85,15 @@ class Tag:
         self._load_tag_file()
 
         await ctx.send(f'Tag `{tag_name***REMOVED***` succesfully edited.', delete_after=10.0)
+
+    @tag.command()
+    async def search(self, ctx, *, tag_name: str):
+        """ Search for the closest matching tag """
+        # Lifted this tidbit from:
+        # https://mail.python.org/pipermail/python-list/2010-August/586307.html
+        closest_match = min(self.tag_dict, key=lambda v: len(set(tag_name) ^ set(v)))
+        await ctx.send(f'Closest matching tag: `{closest_match***REMOVED***`.', delete_after=10.0)
+
 
 def setup(bot):
     bot.add_cog(Tag(bot))
