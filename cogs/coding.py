@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import unicodedata
 
 
 class Coding:
@@ -22,6 +23,12 @@ class Coding:
         await ctx.send("```html\n{***REMOVED***```".format(code))
 
     @commands.command()
+    async def ini(self, ctx, *, code: str):
+        await ctx.message.delete()
+        await ctx.send("```ini\n{***REMOVED***```".format(code))
+
+
+    @commands.command()
     async def c(self, ctx, *, code: str):
         await ctx.message.delete()
         await ctx.send("```c\n{***REMOVED***```".format(code))
@@ -36,6 +43,21 @@ class Coding:
         await ctx.message.delete()
         await ctx.send("``\n{***REMOVED***```".format(code))
 
+    @commands.command()
+    async def charinfo(self, ctx, *, characters: str):
+        await ctx.message.delete()
+        if len(characters) > 25:
+            return await ctx.send(f'Too many characters ({len(characters)***REMOVED***/25)')
+
+        digit = f'{ord(characters):x***REMOVED***'
+        name = unicodedata.name(characters, 'Name not found.')
+        
+        emb = discord.Embed(colour=self.bot.embed_colour)
+        emb.set_author(name="Charinfo For {***REMOVED***".format(characters))
+        emb.add_field(name="Name", value=name, inline=False)
+        emb.add_field(name="Char", value=f'\\U{digit:>08***REMOVED***', inline=False)
+        emb.add_field(name="Link", value=f'<http://www.fileformat.info/info/unicode/char/{digit***REMOVED***>')
+        await ctx.send(embed=emb)
 
 def setup(bot):
     bot.add_cog(Coding(bot))
