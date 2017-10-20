@@ -45,6 +45,7 @@ class Coding:
 
     @commands.command()
     async def charinfo(self, ctx, *, characters: str):
+        await ctx.message.delete()
         if len(characters) > 25:
             return await ctx.send(f'Too many characters ({len(characters)***REMOVED***/25)')
 
