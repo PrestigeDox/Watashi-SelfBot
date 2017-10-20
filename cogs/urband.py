@@ -32,7 +32,7 @@ class UrbanDictionary:
         for number, option in enumerate(resultlst[:4]):
             msg += "{0***REMOVED***. {1***REMOVED***\n".format(number + 1, option.word)
         em = discord.Embed(title="Results", description=msg,
-                           color=self.bot.embed_colour)
+                           color=0x00ffff)
         em.set_footer(text="Type 'exit' to leave the menu.")
         menumsg = await ctx.send(embed=em)
 
@@ -52,7 +52,7 @@ class UrbanDictionary:
         except IndexError:
             return
 
-        em = discord.Embed(color=sel.bot.embed_colour)
+        em = discord.Embed(color=0x00ffff)
         em.set_author(name="Urban Dictionary",icon_url="https://www.userlogos.org/files/logos/Ixodides/ud.png")
         em.add_field(name="Word",value=item.word)
         em.add_field(name="Definition",value=item.definition)
@@ -64,7 +64,7 @@ class UrbanDictionary:
         await ctx.message.delete()
         item = await self.bot.loop.run_in_executor(None, ud.random)
 
-        em = discord.Embed(color=sel.bot.embed_colour)
+        em = discord.Embed(color=0x00ffff)
         em.set_author(name="Urban Dictionary",icon_url="https://www.userlogos.org/files/logos/Ixodides/ud.png")
         em.add_field(name="Word",value=item[0].word)
         em.add_field(name="Definition",value=item[0].definition)
