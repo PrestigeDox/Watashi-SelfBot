@@ -53,7 +53,7 @@ class UrbanDictionary:
             return
 
         em = discord.Embed(color=0x00ffff)
-        em.set_author(name="Urban Dictionary",icon_url="https://www.userlogos.org/files/logos/Ixodides/ud.png")
+        em.set_author(name="\U0001f4d6 Urban Dictionary")
         em.add_field(name="Word",value=item.word)
         em.add_field(name="Definition",value=item.definition)
         em.add_field(name="Example(s)",value=item.example)
@@ -65,7 +65,7 @@ class UrbanDictionary:
         item = await self.bot.loop.run_in_executor(None, ud.random)
 
         em = discord.Embed(color=0x00ffff)
-        em.set_author(name="Urban Dictionary",icon_url="https://www.userlogos.org/files/logos/Ixodides/ud.png")
+        em.set_author(name="\U0001f4d6 Urban Dictionary")
         em.add_field(name="Word",value=item[0].word)
         em.add_field(name="Definition",value=item[0].definition)
         em.add_field(name="Example(s)",value=item[0].example)
