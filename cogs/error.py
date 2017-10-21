@@ -10,7 +10,7 @@ class ErrorFormatter:
         """ Send a nice embed error with a message
         Usage: In other cogs
         cmd = bot.get_command('error')
-        await ctx.invoke(cmd, 'error message here')
+        await ctx.invoke(cmd, err='error message here')
         """
         em = discord.Embed(title=':x: Error', color=discord.Color.dark_red(), description=err)
         await ctx.send(embed=em)
