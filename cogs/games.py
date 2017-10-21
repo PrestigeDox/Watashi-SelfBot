@@ -51,4 +51,3 @@ class Games:
 
 def setup(bot):
     bot.add_cog(Emoji(bot))
-        await ctx.send(embed=emb)
