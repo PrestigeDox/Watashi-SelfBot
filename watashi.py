@@ -17,23 +17,26 @@ class Watashi(commands.Bot):
             self.configs = json.load(f)
 
         self.default_cogs = ('cogs.base', 'cogs.coding', 'cogs.emoji', 'cogs.wiki',
-                             'cogs.aesthetic', 'cogs.urband', 'cogs.info',
-                             'cogs.figlet', 'cogs.eval', 'cogs.tinyurl', 'cogs.games')
+                             'cogs.aesthetic', 'cogs.urband', 'cogs.info', 'cogs.figlet', 
+                             'cogs.eval', 'cogs.tinyurl', 'cogs.tags', 'cogs.games')
 
         self.embed_colour = int(self.configs['embed_colour'], 16)
 
         super().__init__(command_prefix=self.configs['prefix'], self_bot=True)
+
+        # What even is this part?
         self.color_tuple = namedtuple('Colors', 'red orange yellow darkgreen lightgreen lightblue darkblue blurple purple grey')
+
         self.colors = self.color_tuple(0xff0000,
-                           0xffa500,
-                           0xffff00,
-                           0x6400,
-                           0x8ff00,
-                           0xe5ff,
-                           0xff,
-                           0x7289da,
-                           0x800080,
-                           0x808080)
+                                       0xffa500,
+                                       0xffff00,
+                                       0x6400,
+                                       0x8ff00,
+                                       0xe5ff,
+                                       0xff,
+                                       0x7289da,
+                                       0x800080,
+                                       0x808080)
 
         self.aiohttp_session = aiohttp.ClientSession(loop=self.loop)
 
@@ -41,7 +44,16 @@ class Watashi(commands.Bot):
         super().run(self.configs['token'], bot=False)
 
     async def on_ready(self):
-        print("<----------------->\nWatashi SelfBot\n<----------------->\nCoded by:\nPrestige#9162\nDemo#9465\nnaught0#4417\n<----------------->\nWarning:\nUnder the MIT\nlicense we are\nnot liable for any\ndamage caused/\naction taken\nagainst you for\nusing a selfbot\nwhich is in violation\nof Discord's TOS")
+        print("<----------------->\n"
+              "Watashi SelfBot\n"
+              "<----------------->\n"
+              "Coded by:\nPrestige#9162\nDemo#9465\nnaught0#4417\n"
+              "<----------------->\n"
+              "Warning:\n"
+              "Under the MIT license, the makers of Watashi-SelfBot are not liable for any\n"
+              "damage caused/action taken against you for using a selfbot, which is in violation of Discord's TOS")
+
         for cog in self.default_cogs:
             self.load_extension(cog)
+
         self.starttime = datetime.datetime.now()
