@@ -38,7 +38,7 @@ class Games:
         await ctx.message.delete()
         emb = discord.Embed(title=':8ball: Magic 8ball', colour = 0x00080A)
         emb.add_field(name="Question", value=query)
-        emb.add_field(name="Reply", value=random.choice(self.eight_responses))
+        emb.add_field(name="Reply", value=random.choice(self.eight_responses),inline=False)
         await ctx.send(embed=emb)
 
     @commands.command(name="flip",aliases=["coinflip"])
@@ -55,7 +55,7 @@ class Games:
         choice = random.choice(query.split('|'))
         emb = discord.Embed(title=":round_pushpin: Choices",colour = self.bot.embed_colour)
         emb.add_field(name="Choice between",value=query.replace('|',' or '))
-        emb.add_field(name="Result", value=choice)
+        emb.add_field(name="Result", value=choice,inline=False)
         await ctx.send(embed=emb)
 
 def setup(bot):
