@@ -38,16 +38,25 @@ class Games:
         await ctx.message.delete()
         emb = discord.Embed(title=':8ball: Magic 8ball', colour = 0x00080A)
         emb.add_field(name="Question", value=query)
-        emb.add_field(name="Reply", value=random.choice(self.eight_responses))
+        emb.add_field(name="Reply", value=random.choice(self.eight_responses),inline=False)
         await ctx.send(embed=emb)
 
     @commands.command(name="flip",aliases=["coinflip"])
-    async def coin_flip(self, ctx, *, query: str):
+    async def coin_flip(self, ctx):
         await ctx.message.delete()
         result = random.randint(0,1)
         emb = discord.Embed(title='Coin Flip', description = self.coins[result], colour = self.bot.embed_colour)
         emb.set_thumbnail(url = "http://researchmaniacs.com/Random/Images/Quarter-Tails.png" if result else "http://researchmaniacs.com/Random/Images/Quarter-Heads.png")
         await ctx.send(embed=emb)
 
+    @commands.command(aliases=["choice"])
+    async def choose(self, ctx, *, query: str):
+        await ctx.message.delete()
+        choice = random.choice(query.split('|'))
+        emb = discord.Embed(title=":round_pushpin: Choices",colour = self.bot.embed_colour)
+        emb.add_field(name="Choice between",value=query.replace('|',' or '))
+        emb.add_field(name="Result", value=choice,inline=False)
+        await ctx.send(embed=emb)
+
 def setup(bot):
-    bot.add_cog(Emoji(bot))
+    bot.add_cog(Games(bot))
