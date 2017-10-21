@@ -1,0 +1,25 @@
+1.8
+``Telnet 192.168.1.254``
+``Accessing.``
+``Accessing. .``
+``Accessing. . . ``
+``Accessing. . .``
+``Access Granted!``
+``root@botnet# ~``
+``root@botnet# ~ .status``
+``root@botnet# ~ .status``
+``Bot Count: 14,583``
+``Bot Count: 14,583``
+``root@botnet# ~ .udpattack``
+``root@botnet# ~ .udpattack 163.66.245.62``
+``root@botnet# ~ .udpattack 163.66.245.62 86400``
+``Sending attack.``
+``Sending attack. .``
+``Sending attack. . .``
+``Attack sent!``
+``root@botnet# ~ ping 163.66.245.62``
+``root@botnet# ~ ping 163.66.245.62``
+``163.66.245.62: No Response``
+``163.66.245.62: No Response``
+``163.66.245.62 is down``
+``h@x0red``
