@@ -16,8 +16,8 @@ class TinyURL:
             apitiny = 'http://tinyurl.com/api-create.php?url='
             shortenurl = urlopen(apitiny + link).read().decode("utf-8")
             emb = discord.Embed(colour=self.bot.embed_colour)
-            emb.add_field(name="Original Link", value=link, inline=False)
-            emb.add_field(name="Shortened Link", value=shortenurl, inline=False)
+            emb.add_field(name="\U0001f30d Original Link", value=link, inline=False)
+            emb.add_field(name="Shortened Link \U0001f517", value=shortenurl, inline=False)
             await ctx.send(embed=emb)
 
 def setup(bot):
