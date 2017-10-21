@@ -1,5 +1,6 @@
 # !/bin/env python3
 import json
+import asyncio
 import discord
 from pathlib import Path
 from discord.ext import commands
@@ -54,14 +55,18 @@ class Tag:
 
             return await ctx.send(self.tag_dict[tag_name]['contents'])
 
-        await ctx.send(f'Tag `{tag_name}` does not exist.')
+        await ctx.send(f'Tag `{tag_name}` does not exist.', delete_after=10.0)
+        asyncio.sleep(10)
+        await ctx.message.delete()
 
     @tag.command()
     async def create(self, ctx, tag_name: str, *, tag_contents: str):
         """ Create a new tag """
         tag_name = tag_name.lower()
         if tag_name in self.tag_dict:
-            return await ctx.send(f'Tag `{tag_name} already exists. Use `tag edit` to change it.')
+            await ctx.send(f'Tag `{tag_name} already exists. Use `tag edit` to change it.', delete_after=10.0)
+            asyncio.sleep(10)
+            await ctx.message.delete()
 
         self.tag_dict[tag_name] = {'contents': tag_contents, 'uses': 0}
 
@@ -73,7 +78,9 @@ class Tag:
     async def _delete(self, ctx, *, tag_name: str):
         """ Delete a tag you've previously created """
         if tag_name not in self.tag_dict:
-            return await ctx.send(f'Tag `{tag_name}` does not exist.')
+            await ctx.send(f'Tag `{tag_name}` does not exist.', delete_after=10.0)
+            asyncio.sleep(10)
+            return await ctx.message.delete()
 
         del self.tag_dict[tag_name]
         self._write_tag_file()
@@ -85,7 +92,9 @@ class Tag:
         """ Edit a tag which you've previously created """
         tag_name = tag_name.lower()
         if tag_name not in self.tag_dict:
-            return await ctx.send(f'Tag `{tag_name}` does not exist.')
+            await ctx.send(f'Tag `{tag_name}` does not exist.', delete_after=10.0)
+            asyncio.sleep(10)
+            return await ctx.message.delete()
 
         self.tag_dict[tag_name]['contents'] = tag_contents
         self._write_tag_file()
@@ -96,7 +105,10 @@ class Tag:
     async def search(self, ctx, *, tag_name: str):
         """ Search for the closest matching tag """
         if len(self.tag_dict) == 0:
-            return await ctx.send('No tags to search for.')
+            await ctx.send('No tags to search for.', delete_after=10.0)
+            asyncio.sleep(10)
+            return await ctx.message.delete()
+
         tag_name = tag_name.lower()
 
         # Lifted this tidbit from:
@@ -110,7 +122,9 @@ class Tag:
         tag_keys = list(self.tag_dict.keys())
 
         if len(tag_keys) == 0:
-            return await ctx.send('No tags to list.')
+            await ctx.send('No tags to list.', delete_after=10.0)
+            asyncio.sleep(10)
+            return await ctx.message.delete()
 
         tag_str = '\n'.join(tag_keys)
         await ctx.send(f'```{tag_str}```')
@@ -121,7 +135,9 @@ class Tag:
         total_tags = len(self.tag_dict)
 
         if total_tags == 0:
-            return await ctx.send('No tags to show stats for.', delete_after=10.0)
+            await ctx.send('No tags to show stats for.', delete_after=10.0)
+            asyncio.sleep(10)
+            return await ctx.message.delete()
 
         total_tag_uses = sum(x['uses'] for x in self.tag_dict.values())
         em = discord.Embed(title='Tag Statistics', description=f'Total tags: {total_tags}\n'
