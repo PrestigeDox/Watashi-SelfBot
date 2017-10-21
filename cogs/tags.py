@@ -1,5 +1,6 @@
 # !/bin/env python3
 import json
+import discord
 from pathlib import Path
 from discord.ext import commands
 
@@ -19,7 +20,7 @@ class Tag:
         try:
             with open('tag_file.json') as f:
                 json.load(f)
-        except:
+        except json.JSONDecodeError:
             return False
 
         return True
@@ -39,17 +40,17 @@ class Tag:
             with open('tag_file.json', 'w') as f:
                 json.dump(self.tag_dict, f)
         except Exception as e:
-            print(f'Problem writing to tag file\n{e***REMOVED***')
+            print(f'Problem writing to tag file:\n{e***REMOVED***')
 
     @commands.group(invoke_without_command=True)
     async def tag(self, ctx, *, tag_name: str):
         """ Retrieve a previously stored tag """
+        tag_name = tag_name.lower()
         if tag_name in self.tag_dict:
             # Increment uses
             self.tag_dict[tag_name]['uses'] += 1
 
             self._write_tag_file()
-            self._load_tag_file()
 
             return await ctx.send(self.tag_dict[tag_name]['contents'])
 
@@ -58,13 +59,13 @@ class Tag:
     @tag.command()
     async def create(self, ctx, tag_name: str, *, tag_contents: str):
         """ Create a new tag """
+        tag_name = tag_name.lower()
         if tag_name in self.tag_dict:
             return await ctx.send(f'Tag `{tag_name***REMOVED*** already exists. Use `tag edit` to change it.')
 
         self.tag_dict[tag_name] = {'contents': tag_contents, 'uses': 0***REMOVED***
-        # Not sure if this is necessary but it feels right, man
+
         self._write_tag_file()
-        self._load_tag_file()
 
         await ctx.send(f'Tag `{tag_name***REMOVED***` successfully created.')
 
@@ -76,19 +77,18 @@ class Tag:
 
         del self.tag_dict[tag_name]
         self._write_tag_file()
-        self._load_tag_file()
 
         await ctx.send(f'Tag `{tag_name***REMOVED***` deleted.')
 
     @tag.command()
     async def edit(self, ctx, tag_name: str, *, tag_contents: str):
         """ Edit a tag which you've previously created """
+        tag_name = tag_name.lower()
         if tag_name not in self.tag_dict:
             return await ctx.send(f'Tag `{tag_name***REMOVED***` does not exist.')
 
         self.tag_dict[tag_name]['contents'] = tag_contents
         self._write_tag_file()
-        self._load_tag_file()
 
         await ctx.send(f'Tag `{tag_name***REMOVED***` succesfully edited.')
 
@@ -97,14 +97,30 @@ class Tag:
         """ Search for the closest matching tag """
         # Lifted this tidbit from:
         # https://mail.python.org/pipermail/python-list/2010-August/586307.html
+        tag_name = tag_name.lower()
         closest_match = min(self.tag_dict, key=lambda v: len(set(tag_name) ^ set(v)))
         await ctx.send(f'Closest matching tag: `{closest_match***REMOVED***`.')
 
     @tag.command()
-    async def list(self, ctx, *, tag_name: str):
-        """ List your most used tags (up to 5) """
-        pass
+    async def list(self, ctx):
+        """ List all of your tags (warning, spammy) """
+        tag_keys = list(self.tag_dict.keys())
+        tag_str = '\n'.join(tag_keys)
+        await ctx.send(f'```{tag_str***REMOVED***```')
 
+    @tag.command()
+    async def stats(self, ctx):
+        """ Get some tag statistics """
+        total_tags = len(self.tag_dict)
+        total_tag_uses = sum(x['uses'] for x in self.tag_dict.values())
+        em = discord.Embed(title='Tag Statistics', description=f'Total tags: {total_tags***REMOVED***\n'
+                                                               f'Total tag uses: {total_tag_uses***REMOVED***')
+
+        ranked_tag_list = sorted(self.tag_dict, key=lambda x: self.tag_dict[x]['uses'], reverse=True)
+        ranked_tag_list_str = '\n'.join([f'{idx+1***REMOVED***\U000020e3 {x***REMOVED*** ({self.tag_dict[x]["uses"]***REMOVED*** uses)' for idx, x in enumerate(ranked_tag_list)])
+        em.add_field(name='Top tags', value=ranked_tag_list_str)
+
+        await ctx.send(embed=em)
 
 def setup(bot):
     bot.add_cog(Tag(bot))
