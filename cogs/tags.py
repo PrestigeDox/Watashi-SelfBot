@@ -1,6 +1,5 @@
 # !/bin/env python3
 import json
-import asyncio
 import discord
 from pathlib import Path
 from discord.ext import commands
@@ -56,7 +55,6 @@ class Tag:
             return await ctx.send(self.tag_dict[tag_name]['contents'])
 
         await ctx.send(f'Tag `{tag_name}` does not exist.', delete_after=10.0)
-        asyncio.sleep(10)
         await ctx.message.delete()
 
     @tag.command()
@@ -65,8 +63,7 @@ class Tag:
         tag_name = tag_name.lower()
         if tag_name in self.tag_dict:
             await ctx.send(f'Tag `{tag_name} already exists. Use `tag edit` to change it.', delete_after=10.0)
-            asyncio.sleep(10)
-            await ctx.message.delete()
+            return await ctx.message.delete()
 
         self.tag_dict[tag_name] = {'contents': tag_contents, 'uses': 0}
 
@@ -79,7 +76,6 @@ class Tag:
         """ Delete a tag you've previously created """
         if tag_name not in self.tag_dict:
             await ctx.send(f'Tag `{tag_name}` does not exist.', delete_after=10.0)
-            asyncio.sleep(10)
             return await ctx.message.delete()
 
         del self.tag_dict[tag_name]
@@ -93,7 +89,6 @@ class Tag:
         tag_name = tag_name.lower()
         if tag_name not in self.tag_dict:
             await ctx.send(f'Tag `{tag_name}` does not exist.', delete_after=10.0)
-            asyncio.sleep(10)
             return await ctx.message.delete()
 
         self.tag_dict[tag_name]['contents'] = tag_contents
@@ -106,7 +101,6 @@ class Tag:
         """ Search for the closest matching tag """
         if len(self.tag_dict) == 0:
             await ctx.send('No tags to search for.', delete_after=10.0)
-            asyncio.sleep(10)
             return await ctx.message.delete()
 
         tag_name = tag_name.lower()
@@ -123,7 +117,6 @@ class Tag:
 
         if len(tag_keys) == 0:
             await ctx.send('No tags to list.', delete_after=10.0)
-            asyncio.sleep(10)
             return await ctx.message.delete()
 
         tag_str = '\n'.join(tag_keys)
@@ -136,7 +129,6 @@ class Tag:
 
         if total_tags == 0:
             await ctx.send('No tags to show stats for.', delete_after=10.0)
-            asyncio.sleep(10)
             return await ctx.message.delete()
 
         total_tag_uses = sum(x['uses'] for x in self.tag_dict.values())
