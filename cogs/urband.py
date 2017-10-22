@@ -30,7 +30,7 @@ class UrbanDictionary:
 
         msg = str()
         for number, option in enumerate(resultlst[:4]):
-            msg += "{0}. {1}\n".format(number + 1, option.word)
+            msg += "{0***REMOVED***. {1***REMOVED***\n".format(number + 1, option.word)
         em = discord.Embed(title="Results", description=msg,
                            color=0x00ffff)
         em.set_footer(text="Type 'exit' to leave the menu.")
