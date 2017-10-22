@@ -13,7 +13,6 @@ class Define:
         self.parts_of_speech = {'noun': 'n.', 'verb': 'v.', 'adjective': 'adj.', 'adverb': 'adv.',
                                 'interjection': 'interj.', 'conjunction': 'conj.', 'preposition': 'prep.',
                                 'pronoun': 'pron.'}
-        self.error_cmd = bot.get_command('error')
 
     @commands.command(aliases=['def'])
     async def define(self, ctx, word: str):
@@ -30,7 +29,7 @@ class Define:
             pos = self.parts_of_speech[soup.find('div', attrs={'class': 'lr_dct_sf_h'}).span.text]
         except AttributeError:
             print('Unable to find definition. Ensure you do not have to do a Google captcha.')
-            return await ctx.invoke(self.error_cmd, err=f'Unable to find a definition for `{word}`.')
+            return await ctx.invoke(self.bot.get_command('error'), err=f'Unable to find a definition for `{word}`.')
 
         await ctx.send(f'{word} _{pos}_ {defn}')
 
