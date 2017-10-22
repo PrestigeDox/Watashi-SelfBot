@@ -10,7 +10,7 @@ class Figlet:
     async def figlet(self, ctx, *, message: str):
         await ctx.message.delete()
         try:
-            await ctx.send(f'```http\n{pyfiglet.figlet_format(message)***REMOVED***```')
+            await ctx.send(f'```http\n{pyfiglet.figlet_format(message)}```')
         except discord.HTTPException:
             emb = discord.Embed(colour=self.bot.colors.red)
             emb.add_field(name=":x: Error", value="Message is too large!")
@@ -21,7 +21,7 @@ class Figlet:
         await ctx.message.delete()
         f = pyfiglet.Figlet(font='slant')
         try:
-            await ctx.send(f'```http\n{f.renderText(message)***REMOVED***```')
+            await ctx.send(f'```http\n{f.renderText(message)}```')
         except discord.HTTPException:
             emb = discord.Embed(colour=self.bot.colors.red)
             emb.add_field(name=":x: Error", value="Message is too large!")
@@ -32,7 +32,7 @@ class Figlet:
         await ctx.message.delete()
         f = pyfiglet.Figlet(font='bulbhead')
         try:
-            await ctx.send(f'```http\n{f.renderText(message)***REMOVED***```')
+            await ctx.send(f'```http\n{f.renderText(message)}```')
         except discord.HTTPException:
             emb = discord.Embed(colour=self.bot.colors.red)
             emb.add_field(name=":x: Error", value="Message is too large!")
@@ -43,7 +43,7 @@ class Figlet:
         await ctx.message.delete()
         f = pyfiglet.Figlet(font='larry3d')
         try:
-            await ctx.send(f'```http\n{f.renderText(message)***REMOVED***```')
+            await ctx.send(f'```http\n{f.renderText(message)}```')
         except discord.HTTPException:
             emb = discord.Embed(colour=self.bot.colors.red)
             emb.add_field(name=":x: Error", value="Message is too large!")
@@ -54,7 +54,7 @@ class Figlet:
         await ctx.message.delete()
         f = pyfiglet.Figlet(font='rectangles')
         try:
-            await ctx.send(f'```http\n{f.renderText(message)***REMOVED***```')
+            await ctx.send(f'```http\n{f.renderText(message)}```')
         except discord.HTTPException:
             emb = discord.Embed(colour=self.bot.colors.red)
             emb.add_field(name=":x: Error", value="Message is too large!")
@@ -65,7 +65,7 @@ class Figlet:
         await ctx.message.delete()
         f = pyfiglet.Figlet(font='slscript')
         try:
-            await ctx.send(f'```http\n{f.renderText(message)***REMOVED***```')
+            await ctx.send(f'```http\n{f.renderText(message)}```')
         except discord.HTTPException:
             emb = discord.Embed(colour=self.bot.colors.red)
             emb.add_field(name=":x: Error", value="Message is too large!")
