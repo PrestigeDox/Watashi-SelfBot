@@ -7,7 +7,7 @@ class Purge:
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(aliases=['flush','p'])
+    @commands.command(aliases=['flush'])
     async def purge(self, ctx, num_msg: int):
         """ Remove a certain number of your messages """
         def check(message):
