@@ -193,7 +193,7 @@ class Base:
         for x in range(amount):
             await ctx.send(str(start))
             start = start + 1
-            time.sleep(1)
+            time.sleep(2)
 
 def setup(bot):
     bot.add_cog(Base(bot))
