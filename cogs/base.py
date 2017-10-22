@@ -137,7 +137,7 @@ class Base:
 
         else:
             if mode.lower() == "stream" or mode.lower() == "twitch":
-                await self.bot.change_presence(status=discord.Status.online, game=discord.Game(name=message, type=1, url="https://www.twitch.tv/{***REMOVED***".format(message)), afk=True)
+                await self.bot.change_presence(status=discord.Status.online, game=discord.Game(name=message, type=1, url="https://www.twitch.tv/{}".format(message)), afk=True)
                 colour = self.bot.colors.purple
                 status = "Stream"
             elif mode.lower() == "online" or mode.lower() == "on":
@@ -175,7 +175,7 @@ class Base:
     async def emojis(self, ctx):
         await ctx.message.delete()
         try:
-            await ctx.send('\n'.join(['{1***REMOVED*** `:{0***REMOVED***:`'.format(e.name, str(e)) for e in ctx.message.guild.emojis]))
+            await ctx.send('\n'.join(['{1} `:{0}:`'.format(e.name, str(e)) for e in ctx.message.guild.emojis]))
         except:
             await ctx.send("Too many emojis!")
 

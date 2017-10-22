@@ -22,8 +22,8 @@ class Eval:
 
     def get_syntax_error(self, e):
         if e.text is None:
-            return f'```py\n{e.__class__.__name__***REMOVED***: {e***REMOVED***\n```'
-        return f'```py\n{e.text***REMOVED***{"^":>{e.offset***REMOVED******REMOVED***\n{e.__class__.__name__***REMOVED***: {e***REMOVED***```'
+            return f'```py\n{e.__class__.__name__}: {e}\n```'
+        return f'```py\n{e.text}{"^":>{e.offset}}\n{e.__class__.__name__}: {e}```'
 
     @commands.command(hidden=True, name='pyval')
     async def _eval(self, ctx, *, body: str):
@@ -33,19 +33,19 @@ class Eval:
             'bot': self.bot,
             'ctx': ctx,
             '_': self._last_result
-        ***REMOVED***
+        }
 
         env.update(globals())
 
         body = self.cleanup_code(body)
         stdout = io.StringIO()
 
-        to_compile = f'async def func():\n{textwrap.indent(body, "  ")***REMOVED***'
+        to_compile = f'async def func():\n{textwrap.indent(body, "  ")}'
 
         try:
             exec(to_compile, env)
         except Exception as e:
-            return await ctx.send(f'```py\n{e.__class__.__name__***REMOVED***: {e***REMOVED***\n```')
+            return await ctx.send(f'```py\n{e.__class__.__name__}: {e}\n```')
 
         func = env['func']
         try:
@@ -53,16 +53,16 @@ class Eval:
                 ret = await func()
         except Exception as e:
             value = stdout.getvalue()
-            await ctx.send(f'```py\n{value***REMOVED***{traceback.format_exc()***REMOVED***\n```')
+            await ctx.send(f'```py\n{value}{traceback.format_exc()}\n```')
         else:
             value = stdout.getvalue()
 
             if ret is None:
                 if value:
-                    await ctx.send(f'```py\n{value***REMOVED***\n```')
+                    await ctx.send(f'```py\n{value}\n```')
             else:
                 self._last_result = ret
-                await ctx.send(f'```py\n{value***REMOVED***{ret***REMOVED***\n```')
+                await ctx.send(f'```py\n{value}{ret}\n```')
 
     @commands.command(name='eval', hidden=True)
     async def shell_access(self, ctx, *, cmd):
@@ -73,14 +73,14 @@ class Eval:
 
         try:
             if stdout:
-                await ctx.send(f'`{cmd***REMOVED***`\n```{stdout.decode().strip()***REMOVED***```')
+                await ctx.send(f'`{cmd}`\n```{stdout.decode().strip()}```')
             elif stderr:
-                await ctx.send(f'`{cmd***REMOVED***`\n```{stderr.decode().strip()***REMOVED***```')
+                await ctx.send(f'`{cmd}`\n```{stderr.decode().strip()}```')
             else:
-                await ctx.send(f'`{cmd***REMOVED***` produced no output')
+                await ctx.send(f'`{cmd}` produced no output')
 
         except Exception as e:
-            await ctx.send(f'Unable to send output\n```py\n{e***REMOVED***```')
+            await ctx.send(f'Unable to send output\n```py\n{e}```')
 
 
 def setup(bot):

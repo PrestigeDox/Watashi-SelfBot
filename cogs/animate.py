@@ -9,7 +9,7 @@ class Animate:
     @commands.group(invoke_without_command=True, aliases=['anim'])
     async def animate(self, ctx, *, file):
         try:
-            with open(f'animations/{file***REMOVED***.txt') as a:
+            with open(f'animations/{file}.txt') as a:
                 anim = a.read().splitlines()
         except:
             return await ctx.send('File not found.')
