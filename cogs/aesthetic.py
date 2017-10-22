@@ -12,6 +12,18 @@ class Aesthetic:
         ascii_to_wide.update({0x20: u'\u3000', 0x2D: u'\u2212'})
         await ctx.message.edit(content='{}'.format(a_text.translate(ascii_to_wide)))
 
+    @commands.command(aliases=['tinyfont', 'small', 'smallfont'])
+    async def tiny(self, ctx, *, text: str = None):
+    	await ctx.message.delete()
+        textlower = text.lower()
+        dvl = textlower.replace('a', 'ᵃ').replace('b', 'ᵇ').replace('c', 'ᶜ').replace('d', 'ᵈ')\
+                       .replace('e', 'ᵉ').replace('f', 'ᶠ').replace('g', 'ᵍ').replace('h', 'ʰ')\
+                       .replace('i', 'ⁱ').replace('j', 'ʲ').replace('k', 'ᵏ').replace('l', 'ˡ')\
+                       .replace('m', 'ᵐ').replace('n', 'ⁿ').replace('o', 'ᵒ').replace('p', 'ᵖ')\
+                       .replace('q', '٩').replace('r', 'ʳ').replace('s', 'ˢ').replace('t', 'ᵗ')\
+                       .replace('u', 'ᵘ').replace('v', 'ᵛ').replace('w', 'ʷ').replace('x', 'ˣ')\
+                       .replace('y', 'ʸ').replace('z', 'ᶻ')
+        await ctx.channel.send(dvl)
 
 def setup(bot):
     bot.add_cog(Aesthetic(bot))
