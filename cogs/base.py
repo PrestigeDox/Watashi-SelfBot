@@ -1,7 +1,10 @@
+import asyncio
 import discord
 from discord.ext import commands
 import time
-
+import inspect
+import aiohttp
+import string
 
 class Base:
     def __init__(self, bot):
@@ -16,6 +19,14 @@ class Base:
         emb = discord.Embed(title='\U0001f3d3 Pong ' +
                             totalstring, colour=self.bot.embed_colour)
         await ctx.send(embed=emb)
+
+    @commands.command(aliases=['type'])
+    async def typing(self, ctx, *, duration: float = None):
+        if not duration:
+            duration = 10
+        async with ctx.channel.typing():
+            await asyncio.sleep(duration)
+            return
 
     @commands.command(aliases=['emb'])
     async def embed(self, ctx, *, message: str = None):
@@ -193,7 +204,20 @@ class Base:
         for x in range(amount):
             await ctx.send(str(start))
             start = start + 1
-            time.sleep(1)
+            time.sleep(2)
+
+    @commands.command()
+    async def source(self, ctx, *, command):
+        await ctx.message.delete()
+        source = str(inspect.getsource(self.bot.get_command(command).callback))
+        async with aiohttp.ClientSession() as session:
+            async with session.post("https://hastebin.com/documents", data=source) as resp:
+                data = await resp.json()
+                key = data['key']
+            emb = discord.Embed(colour=self.bot.embed_colour)
+            emb.add_field(name="Command", value=string.capwords(command), inline=False)
+            emb.add_field(name="Source", value=f'<https://hastebin.com/{key}.py>', inline=False)
+            return await ctx.send(embed=emb)
 
 def setup(bot):
     bot.add_cog(Base(bot))
