@@ -1,6 +1,7 @@
 import asyncio
 import discord
 from discord.ext import commands
+import time
 
 
 class Base:
@@ -193,6 +194,15 @@ class Base:
         emb = discord.Embed(title="Watashi Logging Out!", colour=self.bot.embed_colour)
         await ctx.send(embed=emb)
         await self.bot.logout()
+
+    @commands.command()
+    async def count(self, ctx, startnumber: int, amount: int):
+        await ctx.message.delete()
+        start = startnumber
+        for x in range(amount):
+            await ctx.send(str(start))
+            start = start + 1
+            time.sleep(1)
 
 def setup(bot):
     bot.add_cog(Base(bot))
