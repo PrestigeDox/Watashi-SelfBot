@@ -21,7 +21,7 @@ class ErrorFormatter:
             await ctx.invoke(cmd, err='error message here')
         """
         em = discord.Embed(title=':x: Error', color=discord.Color.dark_red(), description=err)
-        await ctx.send(embed=em)
+        await ctx.send(embed=em, delete_after=10.0)
 
 
 def setup(bot):
