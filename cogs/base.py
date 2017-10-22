@@ -1,3 +1,4 @@
+import asyncio
 import discord
 from discord.ext import commands
 import time
@@ -16,6 +17,14 @@ class Base:
         emb = discord.Embed(title='\U0001f3d3 Pong ' +
                             totalstring, colour=self.bot.embed_colour)
         await ctx.send(embed=emb)
+
+    @commands.command(aliases=['type'])
+    async def typing(self, ctx, *, duration: float = None):
+        if not duration:
+            duration = 10
+        async with ctx.channel.typing():
+            await asyncio.sleep(duration)
+            return
 
     @commands.command(aliases=['emb'])
     async def embed(self, ctx, *, message: str = None):
