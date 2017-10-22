@@ -7,10 +7,10 @@ from discord.ext import commands
 class Wiki:
     def __init__(self, bot):
         self.bot = bot
-        self.search_uri = 'http://en.wikipedia.org/w/api.php?action=opensearch&format=json&search={***REMOVED***'
+        self.search_uri = 'http://en.wikipedia.org/w/api.php?action=opensearch&format=json&search={}'
         self.random_uri = 'https://en.wikipedia.org/w/api.php?action=query&list=random&format=json&rnnamespace=0&rnlimit=1'
         self.headers = {
-            'user-agent': 'Watashi-Bot/0.1a - A fantastic selfbot (https://github.com/PrestigeDox/Watashi-SelfBot)'***REMOVED***
+            'user-agent': 'Watashi-Bot/0.1a - A fantastic selfbot (https://github.com/PrestigeDox/Watashi-SelfBot)'}
         self.aiohttp_session = bot.aiohttp_session
 
     @commands.command(name='wiki', aliases=['wi'])
@@ -35,7 +35,7 @@ class Wiki:
 
         # No result found
         if not wiki_info[1]:
-            return await ctx.send(f"Sorry, I couldn't find anything for `{query***REMOVED***`.")
+            return await ctx.send(f"Sorry, I couldn't find anything for `{query}`.")
 
         # Create embed
         em = discord.Embed(title=wiki_info[1][0], color=discord.Color.blue())
