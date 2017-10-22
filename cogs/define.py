@@ -27,6 +27,7 @@ class Define:
         try:
             defn = soup.find('div', attrs={'data-dobid': 'dfn'***REMOVED***).span.text
             pos = self.parts_of_speech[soup.find('div', attrs={'class': 'lr_dct_sf_h'***REMOVED***).span.text]
+
         except AttributeError:
             print('Unable to find definition. Ensure you do not have to do a Google captcha.')
             return await ctx.invoke(self.bot.get_command('error'), err=f'Unable to find a definition for `{word***REMOVED***`.')
