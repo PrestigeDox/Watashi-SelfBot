@@ -8,7 +8,7 @@ class Geoip:
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(aliases=['geolocate', 'iptogeo', 'iptolocation', 'ip2geo', 'ip'])
     async def geoip(self, ctx, *, ipaddr: str = "1.3.3.7"):
         await ctx.message.delete()
         async with aiohttp.ClientSession() as session:
