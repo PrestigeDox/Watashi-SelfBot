@@ -34,7 +34,7 @@ class Define:
             return await ctx.invoke(self.bot.get_command('error'), err=f'Unable to find a definition for `{word}`.')
 
         # Create embed
-        em = discord.Embed(title=word, color=discord.Color.blurple())
+        em = discord.Embed(title=word.capitalize(), color=discord.Color.blurple())
         em.add_field(name='Definition', value=f'_{self.parts_of_speech[pos]}_, {defn}')
 
         if len(syn_list) != 0:
