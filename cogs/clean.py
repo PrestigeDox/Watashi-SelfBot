@@ -7,7 +7,7 @@ class Clean:
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(aliases=['clear'])
+    @commands.command(aliases=['clear','c'])
     async def clean(self, ctx, *, limit = None):
         await ctx.message.delete()
         if not limit:
