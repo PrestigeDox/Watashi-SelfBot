@@ -1,3 +1,5 @@
 wikipedia
 urbandictionary
 pyfiglet
+bs4
+lxml
