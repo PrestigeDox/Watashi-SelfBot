@@ -2,7 +2,7 @@ import asyncio
 import discord
 from discord.ext import commands
 import time
-
+import inspect
 
 class Base:
     def __init__(self, bot):
@@ -203,6 +203,23 @@ class Base:
             await ctx.send(str(start))
             start = start + 1
             time.sleep(2)
+
+    @commands.command()
+    async def source(self, ctx, *, command):
+        source = str(inspect.getsource(self.bot.get_command(command).callback))
+        fmt = '​`​`​`py\n'+source.replace('​`','\u200b​`')+'\n​`​`​`'
+        if len(fmt) > 2000:
+            async with ctx.session.post("https://hastebin.com/documents", data=source) as resp:
+                data = await resp.json()
+            key = data['key']
+            return await ctx.send(f'Command source: <https://hastebin.com/{key}.py>')
+        else:
+            return await ctx.send(fmt)
+
+        try:
+            await ctx.message.delete()
+        except discord.Forbidden:
+            pass
 
 def setup(bot):
     bot.add_cog(Base(bot))
