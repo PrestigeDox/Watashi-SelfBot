@@ -3,6 +3,8 @@ import discord
 from discord.ext import commands
 import time
 import inspect
+import aiohttp
+import string
 
 class Base:
     def __init__(self, bot):
@@ -206,20 +208,16 @@ class Base:
 
     @commands.command()
     async def source(self, ctx, *, command):
+        await ctx.message.delete()
         source = str(inspect.getsource(self.bot.get_command(command).callback))
-        fmt = '​`​`​`py\n'+source.replace('​`','\u200b​`')+'\n​`​`​`'
-        if len(fmt) > 2000:
-            async with ctx.session.post("https://hastebin.com/documents", data=source) as resp:
+        async with aiohttp.ClientSession() as session:
+            async with session.post("https://hastebin.com/documents", data=source) as resp:
                 data = await resp.json()
-            key = data['key']
-            return await ctx.send(f'Command source: <https://hastebin.com/{key}.py>')
-        else:
-            return await ctx.send(fmt)
-
-        try:
-            await ctx.message.delete()
-        except discord.Forbidden:
-            pass
+                key = data['key']
+            emb = discord.Embed(colour=self.bot.embed_colour)
+            emb.add_field(name="Command", value=string.capwords(command), inline=False)
+            emb.add_field(name="Source", value=f'<https://hastebin.com/{key}.py>', inline=False)
+            return await ctx.send(embed=emb)
 
 def setup(bot):
     bot.add_cog(Base(bot))
