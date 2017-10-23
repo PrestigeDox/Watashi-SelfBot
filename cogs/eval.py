@@ -27,7 +27,7 @@ class Eval:
 
     @commands.command(hidden=True, name='pyval')
     async def _eval(self, ctx, *, body: str):
-        """ Evaluate some python code """
+        """Evaluate some python code"""
 
         env = {
             'bot': self.bot,
@@ -66,7 +66,7 @@ class Eval:
 
     @commands.command(name='eval', hidden=True)
     async def shell_access(self, ctx, *, cmd):
-        """ Access the commandline from the bot """
+        """Access the commandline from the bot"""
 
         process = await asyncio.create_subprocess_shell(cmd, stdout=asyncio.subprocess.PIPE)
         stdout, stderr = await process.communicate()

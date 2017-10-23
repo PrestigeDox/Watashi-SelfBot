@@ -16,7 +16,7 @@ class Define:
 
     @commands.command(aliases=['def'])
     async def define(self, ctx, word: str):
-        """ Define a word """
+        """Define A Word Through The Oxord Dictionary"""
         params = {'q': f'define+{word}', 'source': 'hp'}
 
         async with self.aiohttp_session.get(self.url, params=params, headers=self.headers) as r:

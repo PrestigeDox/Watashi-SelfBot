@@ -9,6 +9,7 @@ class Clean:
 
     @commands.command(aliases=['clear'])
     async def clean(self, ctx, *, limit = None):
+        """Clense The Channel Of Your Messages"""
         await ctx.message.delete()
         if not limit:
             limit = 30

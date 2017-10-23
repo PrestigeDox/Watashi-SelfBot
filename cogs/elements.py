@@ -10,7 +10,7 @@ class Elements:
 
     @commands.command(name="periodic", aliases=['element'])
     async def elements(self, ctx, *,  query=None):
-        """Utilise a modified version of the periodic library to get elements by name or atomic number."""
+        """Get Info About The Elements"""
 
         await ctx.message.delete()
 

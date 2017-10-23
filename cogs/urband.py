@@ -9,6 +9,7 @@ class UrbanDictionary:
 
     @commands.group(invoke_without_command=True, aliases=['ud', 'urbandict'])
     async def urban(self, ctx, *, query: str):
+        """Chech The Urban Dict Meaning Of A Work"""
         await ctx.message.delete()
         try:
             resultlst = await self.bot.loop.run_in_executor(None, ud.define, query)
@@ -25,6 +26,7 @@ class UrbanDictionary:
 
     @urban.command(aliases=['-s'])
     async def search(self, ctx, *, query: str):
+        """Search A Specific Word In The Urban Dict"""
         await ctx.message.delete()
         resultlst = await self.bot.loop.run_in_executor(None, ud.define, query)
 
@@ -61,6 +63,7 @@ class UrbanDictionary:
 
     @urban.command(aliases=['-r'])
     async def random(self, ctx):
+        """Search A Random Word In The Urban Dict"""
         await ctx.message.delete()
         item = await self.bot.loop.run_in_executor(None, ud.random)
 

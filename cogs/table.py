@@ -46,7 +46,7 @@ def type_(type_):
 
 
 def element(_input):
-    """Takes periodic data as input, and returns the correct element."""
+    """Takes PT Data And Converts To Element Name"""
 
     value = type_(_input)
 
