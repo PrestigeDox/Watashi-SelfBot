@@ -8,6 +8,7 @@ import datetime
 # import random
 import aiohttp
 from collections import namedtuple
+from helpformatter import EmbedHelp
 
 
 class Watashi(commands.Bot):
@@ -25,6 +26,8 @@ class Watashi(commands.Bot):
         self.embed_colour = int(self.configs['embed_colour'], 16)
 
         super().__init__(command_prefix=self.configs['prefix'], self_bot=True)
+        self.remove_command("help")
+        self.formatter = EmbedHelp()
 
         # What even is this part?
         self.color_tuple = namedtuple('Colors', 'red orange yellow darkgreen lightgreen lightblue darkblue blurple purple grey')
