@@ -8,7 +8,7 @@ class Clean:
         self.bot = bot
 
     @commands.command(aliases=['clear'])
-    async def clean(self, ctx, *, limit = None):
+    async def clean(self, ctx, *, limit=None):
         await ctx.message.delete()
         if not limit:
             limit = 30
@@ -16,6 +16,7 @@ class Clean:
             if msg.author == self.bot.user:
                 await msg.delete()
                 await asyncio.sleep(1.2)
+
 
 def setup(bot):
     bot.add_cog(Clean(bot))
