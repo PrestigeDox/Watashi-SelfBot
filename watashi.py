@@ -8,7 +8,7 @@ import datetime
 # import random
 import aiohttp
 from collections import namedtuple
-from helpformatter import EmbedHelp
+from formatter import EmbedHelp
 
 
 class Watashi(commands.Bot):
@@ -20,7 +20,7 @@ class Watashi(commands.Bot):
         self.default_cogs = ('cogs.base', 'cogs.coding', 'cogs.emoji', 'cogs.wiki',
                              'cogs.aesthetic', 'cogs.urband', 'cogs.info', 'cogs.figlet', 
                              'cogs.eval', 'cogs.tinyurl', 'cogs.tags', 'cogs.games', 
-                             'cogs.clean','cogs.error', 'cogs.define', 'cogs.purge',
+                             'cogs.clean','cogs.error', 'cogs.define', 'cogs.purge', 'cogs.help',
                              'cogs.ytsearch')
 
         self.embed_colour = int(self.configs['embed_colour'], 16)
