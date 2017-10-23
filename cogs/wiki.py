@@ -15,7 +15,7 @@ class Wiki:
 
     @commands.command(name='wiki', aliases=['wi'])
     async def wiki_search(self, ctx, *, query=None):
-        """ Get the closest matching Wikipedia article for a given query """
+        """Search Something Through Wiki"""
 
         # Determine whether we want a random article
         if not query:
@@ -35,7 +35,8 @@ class Wiki:
 
         # No result found
         if not wiki_info[1]:
-            return await ctx.send(f"Sorry, I couldn't find anything for `{query}`.")
+            return await ctx.invoke(self.bot.get_command('error'),
+                                    err=f"Sorry, I couldn't find anything matching `{query}`.")
 
         # Create embed
         em = discord.Embed(title=wiki_info[1][0], color=discord.Color.blue())

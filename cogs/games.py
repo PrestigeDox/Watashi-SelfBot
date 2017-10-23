@@ -35,6 +35,7 @@ class Games:
 
     @commands.command(name="8ball")
     async def eight_ball(self, ctx, *, query: str):
+        """Let the mystical 8ball evaluate your question"""
         await ctx.message.delete()
         emb = discord.Embed(title=':8ball: Magic 8ball', colour = 0x00080A)
         emb.add_field(name="Question", value=query)
@@ -43,6 +44,7 @@ class Games:
 
     @commands.command(name="flip",aliases=["coinflip"])
     async def coin_flip(self, ctx):
+        """Toss a coin"""
         await ctx.message.delete()
         result = random.randint(0,1)
         emb = discord.Embed(title='Coin Flip', description = self.coins[result], colour = self.bot.embed_colour)
@@ -51,6 +53,7 @@ class Games:
 
     @commands.command(aliases=["choice"])
     async def choose(self, ctx, *, query: str):
+        """Let the bot choose between 2 choices!"""
         await ctx.message.delete()
         choice = random.choice(query.split('|'))
         emb = discord.Embed(title=":round_pushpin: Choices",colour = self.bot.embed_colour)

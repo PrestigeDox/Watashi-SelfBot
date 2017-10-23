@@ -8,12 +8,14 @@ class Clean:
         self.bot = bot
 
     @commands.command(aliases=['clear'])
-    async def clean(self, ctx, *, limit: int = 30):
+    async def clean(self, ctx, *, limit=None):
+        """ Cleanse the channel of your messages """
         await ctx.message.delete()
         async for msg in ctx.channel.history(limit=limit, before=ctx.message):
             if msg.author == self.bot.user:
                 await msg.delete()
                 await asyncio.sleep(1.2)
+
 
 def setup(bot):
     bot.add_cog(Clean(bot))

@@ -18,7 +18,7 @@ class YoutubeSearch:
 
     @commands.command(name="ytsearch", aliases=['yt'])
     async def yt_search(self, ctx, *,  query: str = None):
-        """Utilise youtube_dl to search YouTube without any API key"""
+        """Search YouTube Without An API Key"""
 
         await ctx.message.delete()
 

@@ -10,6 +10,7 @@ class Geoip:
 
     @commands.command(aliases=['geolocate', 'iptogeo', 'iptolocation', 'ip2geo', 'ip'])
     async def geoip(self, ctx, *, ipaddr: str = "1.3.3.7"):
+        """Convert an IP/URL in a GeoLocation"""
         await ctx.message.delete()
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://freegeoip.net/json/{ipaddr}') as resp:
