@@ -3,6 +3,7 @@ from discord.ext import commands
 
 # TODO: Rate limiting for more user-like deletion
 
+
 class Purge:
     def __init__(self, bot):
         self.bot = bot
@@ -21,4 +22,4 @@ class Purge:
 
 def setup(bot):
     bot.add_cog(Purge(bot))
-    
+
