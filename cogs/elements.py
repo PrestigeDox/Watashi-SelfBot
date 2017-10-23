@@ -24,7 +24,7 @@ class Elements:
             return await ctx.invoke(self.bot.get_command('error'), err='This Element does not exist!')
 
         em = discord.Embed(color=self.bot.embed_colour)
-        em.set_author(name=":microscope: Periodic Table")
+        em.title = "\U0001f52c Periodic Table"
         em.add_field(name="Element", value=element.name)
         em.add_field(name="Symbol", value=element.symbol)
         em.add_field(name="Atomic Number", value=element.atomic)
