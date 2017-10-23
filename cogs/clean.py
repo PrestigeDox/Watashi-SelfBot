@@ -8,10 +8,8 @@ class Clean:
         self.bot = bot
 
     @commands.command(aliases=['clear'])
-    async def clean(self, ctx, *, limit = None):
+    async def clean(self, ctx, *, limit: int = 30):
         await ctx.message.delete()
-        if not limit:
-            limit = 30
         async for msg in ctx.channel.history(limit=limit, before=ctx.message):
             if msg.author == self.bot.user:
                 await msg.delete()
