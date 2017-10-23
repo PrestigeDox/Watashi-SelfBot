@@ -15,7 +15,7 @@ class Wiki:
 
     @commands.command(name='wiki', aliases=['wi'])
     async def wiki_search(self, ctx, *, query=None):
-        """ Get the closest matching Wikipedia article for a given query """
+        """Search Something Through Wiki"""
 
         # Determine whether we want a random article
         if not query:

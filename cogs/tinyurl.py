@@ -9,6 +9,7 @@ class TinyURL:
 
     @commands.command()
     async def tinyurl(self, ctx, link: str = None):
+        """Convert A URL To A Shorter TinyURL"""
         await ctx.message.delete()
         if str == None:
             await ctx.send("Retard add a link")

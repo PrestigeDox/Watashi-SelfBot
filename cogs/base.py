@@ -12,6 +12,7 @@ class Base:
 
     @commands.command(aliases=['pingpong'])
     async def ping(self, ctx):
+        """Pong!"""
         await ctx.message.delete()
         pingtime = self.bot.latency * 1000
         pingtimerounded = int(pingtime)
@@ -22,6 +23,7 @@ class Base:
 
     @commands.command(aliases=['type'])
     async def typing(self, ctx, *, duration: float = None):
+        """Pretend That Your Always Typing"""
         if not duration:
             duration = 10
         async with ctx.channel.typing():
@@ -30,6 +32,7 @@ class Base:
 
     @commands.command(aliases=['emb'])
     async def embed(self, ctx, *, message: str = None):
+        """Create A Basic Embed"""
         if message == None:
             await ctx.message.delete()
             await ctx.send(":x: You need a message to embed")
@@ -40,13 +43,7 @@ class Base:
 
     @commands.command(aliases=['embadv', 'embadvanced', 'embedadv'])
     async def embedadvanced(self, ctx, *, msg: str = None):
-        '''
-        Code through this project has all been made by our dev team.
-        This section of code was taken from another bot and then edited and,
-        improved to work with Watashi. We than the creators of Appus bot
-        Who I got permission from to use this code. I'm lazy af so cba
-        to make my own version so just edited theirs ; )
-        '''
+        """Make An Advanced Embed"""
         if msg:
             if msg != '':
                 ptext = title = description = image = thumbnail = color = footer = author = None
@@ -136,6 +133,7 @@ class Base:
 
     @commands.command(aliases=['status'])
     async def presence(self, ctx, mode, *, message: str = None):
+        """Change your status (Stream, Online...)"""
 
         change = 1
 
@@ -184,6 +182,7 @@ class Base:
 
     @commands.command()
     async def emojis(self, ctx):
+        """Check All The Emojis On A Server"""
         await ctx.message.delete()
         try:
             await ctx.send('\n'.join(['{1} `:{0}:`'.format(e.name, str(e)) for e in ctx.message.guild.emojis]))
@@ -192,6 +191,7 @@ class Base:
 
     @commands.command(aliases=['logout', 'quit', 'exit'])
     async def exitbot(self, ctx):
+        """Close Watashi"""
         await ctx.message.delete()
         emb = discord.Embed(title="Watashi Logging Out!", colour=self.bot.embed_colour)
         await ctx.send(embed=emb)
@@ -208,6 +208,7 @@ class Base:
 
     @commands.command()
     async def source(self, ctx, *, command):
+        """Get The Source Code For Any Command"""
         await ctx.message.delete()
         source = str(inspect.getsource(self.bot.get_command(command).callback))
         async with aiohttp.ClientSession() as session:
