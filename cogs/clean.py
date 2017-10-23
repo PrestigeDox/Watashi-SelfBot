@@ -9,10 +9,8 @@ class Clean:
 
     @commands.command(aliases=['clear'])
     async def clean(self, ctx, *, limit=None):
-        """ Clense the channel of your messages """
+        """ Cleanse the channel of your messages """
         await ctx.message.delete()
-        if not limit:
-            limit = 30
         async for msg in ctx.channel.history(limit=limit, before=ctx.message):
             if msg.author == self.bot.user:
                 await msg.delete()
