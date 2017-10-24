@@ -1,13 +1,8 @@
 import discord
 from discord.ext import commands
-# import asyncio
 import json
-# import io
-# import random
 import datetime
-# import random
 import aiohttp
-from collections import namedtuple
 from formatter import EmbedHelp
 
 
@@ -16,6 +11,8 @@ class Watashi(commands.Bot):
         self.config_path = config_path
         with open(self.config_path) as f:
             self.configs = json.load(f)
+
+        self.starttime = datetime.datetime.now()
 
         self.default_cogs = ('cogs.base', 'cogs.coding', 'cogs.emoji', 'cogs.wiki',
                              'cogs.aesthetic', 'cogs.urband', 'cogs.info', 'cogs.figlet', 
@@ -30,19 +27,14 @@ class Watashi(commands.Bot):
         self.remove_command("help")
         self.formatter = EmbedHelp()
 
-        # What even is this part?
-        self.color_tuple = namedtuple('Colors', 'red orange yellow darkgreen lightgreen lightblue darkblue blurple purple grey')
-
-        self.colors = self.color_tuple(0xff0000,
-                                       0xffa500,
-                                       0xffff00,
-                                       0x6400,
-                                       0x8ff00,
-                                       0xe5ff,
-                                       0xff,
-                                       0x7289da,
-                                       0x800080,
-                                       0x808080)
+        # Colors can be called via shortcut
+        # class Foo:
+        #   def __init__(self, bot):
+        #       self.bot = bot
+        #       self.color = bot.color.gold()
+        # Note: this is nearly useless considering how short the command is anyway but whatever.
+        # discord.color.gold() -> self.color.gold()
+        self.color = discord.Color
 
         self.aiohttp_session = aiohttp.ClientSession(loop=self.loop)
 
@@ -62,4 +54,3 @@ class Watashi(commands.Bot):
         for cog in self.default_cogs:
             self.load_extension(cog)
 
-        self.starttime = datetime.datetime.now()
