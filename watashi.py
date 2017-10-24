@@ -20,9 +20,9 @@ class Watashi(commands.Bot):
         self.default_cogs = ('cogs.base', 'cogs.coding', 'cogs.emoji', 'cogs.wiki',
                              'cogs.aesthetic', 'cogs.urband', 'cogs.info', 'cogs.figlet', 
                              'cogs.eval', 'cogs.tinyurl', 'cogs.tags', 'cogs.games', 
-                             'cogs.clean','cogs.error', 'cogs.define', 'cogs.purge',
-                             'cogs.help','cogs.new_yt','cogs.elements', 'cogs.translate',
-                             'cogs.animate')
+                             'cogs.clean', 'cogs.error', 'cogs.define', 'cogs.purge',
+                             'cogs.help', 'cogs.new_yt', 'cogs.elements', 'cogs.translate',
+                             'cogs.animate', 'cogs.weather')
 
         self.embed_colour = int(self.configs['embed_colour'], 16)
 
