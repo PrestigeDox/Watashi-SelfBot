@@ -52,7 +52,8 @@ class Watashi(commands.Bot):
               "<----------------->\n"
               "Warning:\n"
               "Under the MIT license, the makers of Watashi-SelfBot are not liable for any\n"
-              "damage caused/action taken against you for using a selfbot, which is in violation of Discord's TOS")
+              "damage caused/action taken against you for using a selfbot, which is in \n"
+              "violation of Discord's TOS")
 
         for cog in self.default_cogs:
             self.load_extension(cog)
