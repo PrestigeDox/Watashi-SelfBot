@@ -5,12 +5,13 @@ from discord.ext import commands
 class Emoji:
     def __init__(self, bot):
         self.bot = bot
+        self.color = bot.color.gold()
 
     @commands.group(invoke_without_command=True)
     async def emoji(self, ctx):
         """Shows the usage of the Emoji Command"""
         await ctx.message.delete()
-        emb = discord.Embed(colour=self.bot.colors.gold)
+        emb = discord.Embed(colour=self.color)
         emb.add_field(name='Usage', value='{}emoji <emojiname>'.format(
             self.bot.configs['prefix']))
         await ctx.send(embed=emb)
@@ -81,8 +82,8 @@ class Emoji:
         await ctx.send("(╯°□°）╯︵ ┻━┻")
 
     @emoji.command(aliases=['0.o', '0.0', 'o.o'])
-    async def wierdeyes(self, ctx):
-        """Wierd Eyes Emoji"""
+    async def weirdeyes(self, ctx):
+        """Weird Eyes Emoji"""
         await ctx.message.delete()
         await ctx.send("◉_◉")
 

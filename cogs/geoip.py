@@ -7,26 +7,41 @@ import aiohttp
 class Geoip:
     def __init__(self, bot):
         self.bot = bot
+        self.session = bot.aiohttp_session
+        self.color = bot.user_color
 
     @commands.command(aliases=['geolocate', 'iptogeo', 'iptolocation', 'ip2geo', 'ip'])
     async def geoip(self, ctx, *, ipaddr: str = "1.3.3.7"):
-        """Convert an IP/URL in a GeoLocation"""
+        """Convert an IP/URL to a GeoLocation"""
         await ctx.message.delete()
-        async with aiohttp.ClientSession() as session:
-            async with session.get(f'https://freegeoip.net/json/{ipaddr}') as resp:
-                data = await resp.json()
-            emb = discord.Embed(colour=self.bot.embed_colour)
-            emb.add_field(name="IP", value=data['ip'], inline=True)
-            emb.add_field(name="Country", value=data['country_name'], inline=True)
-            emb.add_field(name="Country Code", value=data['country_code'], inline=True)
-            emb.add_field(name="Region Name", value=data['region_name'], inline=True)
-            emb.add_field(name="Region Code", value=data['region_code'], inline=True)
-            emb.add_field(name="City", value=data['city'], inline=True)
-            emb.add_field(name="Zip Code", value=data['zip_code'], inline=True)
-            emb.add_field(name="Time Zone", value=data['time_zone'], inline=True)
-            emb.add_field(name="Latitude", value=data['latitude'], inline=True)
-            emb.add_field(name="Longitude", value=data['longitude'], inline=True)
-            return await ctx.send(embed=emb)
+
+        async with self.session.get(f'https://freegeoip.net/json/{ipaddr}') as resp:
+            data = await resp.json()
+
+        # Create embed
+        em = discord.Embed(color=self.color)
+
+        # Fields which may be potentially empty
+        fields = [
+            {'name': 'IP', 'value': data['ip']},
+            {'name': 'Country', 'value': data['country_name']},
+            {'name': 'Country Code', 'value': data['country_code']},
+            {'name': 'Region Name', 'value': data['region_name']},
+            {'name': 'Region Code', 'value': data['region_code']},
+            {'name': 'City', 'value': data['city']},
+            {'name': 'Zip Code', 'value': data['zip_code']},
+            {'name': 'Time Zone', 'value': data['time_zone']},
+            {'name': 'Latitude', 'value': data['latitude']},
+            {'name': 'Longitude', 'value': data['longitude']}
+        ]
+
+        # Only add fields which are actually filled
+        for field in fields:
+            if field['value']:
+                em.add_field(name=field['name'], value=field['value'])
+
+        return await ctx.send(embed=em)
+
 
 def setup(bot):
     bot.add_cog(Geoip(bot))
