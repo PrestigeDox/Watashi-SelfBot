@@ -1,24 +1,23 @@
 import asyncio
 import discord
 from discord.ext import commands
-import time
 import inspect
-import aiohttp
 import string
 
 class Base:
     def __init__(self, bot):
         self.bot = bot
+        self.color = bot.embed_colour
+        self.session = bot.aiohttp_session
 
     @commands.command(aliases=['pingpong'])
     async def ping(self, ctx):
         """Pong!"""
         await ctx.message.delete()
-        pingtime = self.bot.latency * 1000
-        pingtimerounded = int(pingtime)
-        totalstring = str(pingtimerounded) + 'ms'
-        emb = discord.Embed(title='\U0001f3d3 Pong ' +
-                            totalstring, colour=self.bot.embed_colour)
+        ping_time = self.bot.latency * 1000
+
+        emb = discord.Embed(title=f'\U0001f3d3 Pong {ping_time:.2f}ms', colour=self.color)
+
         await ctx.send(embed=emb)
 
     @commands.command(aliases=['type'])
@@ -38,7 +37,7 @@ class Base:
             await ctx.send(":x: You need a message to embed")
         else:
             await ctx.message.delete()
-            emb = discord.Embed(title=message, colour=self.bot.embed_colour)
+            emb = discord.Embed(title=message, colour=self.color)
             await ctx.send(embed=emb)
 
     @commands.command(aliases=['embadv', 'embadvanced', 'embedadv'])
@@ -139,7 +138,7 @@ class Base:
 
         if message == None:
             change = 0
-            emb = discord.Embed(colour=self.bot.embed_colour)
+            emb = discord.Embed(colour=self.color)
             emb.add_field(name='Options',
                           value='Stream, Online, Idle, DND or Invis')
             await ctx.send(embed=emb)
@@ -167,7 +166,7 @@ class Base:
                 status = "Invisible"
             else:
                 change = 0
-                emb = discord.Embed(colour=self.bot.embed_colour)
+                emb = discord.Embed(colour=self.color)
                 emb.add_field(name='Options',
                               value='Stream, Online, Idle, DND or Invis')
                 await ctx.send(embed=emb)
@@ -193,7 +192,7 @@ class Base:
     async def exitbot(self, ctx):
         """Close Watashi"""
         await ctx.message.delete()
-        emb = discord.Embed(title="Watashi Logging Out!", colour=self.bot.embed_colour)
+        emb = discord.Embed(title="Watashi Logging Out!", colour=self.color)
         await ctx.send(embed=emb)
         await self.bot.logout()
 
@@ -204,21 +203,24 @@ class Base:
         for x in range(amount):
             await ctx.send(str(start))
             start = start + 1
-            time.sleep(2)
+            asyncio.sleep(2)
 
     @commands.command()
     async def source(self, ctx, *, command):
         """Get The Source Code For Any Command"""
         await ctx.message.delete()
         source = str(inspect.getsource(self.bot.get_command(command).callback))
-        async with aiohttp.ClientSession() as session:
-            async with session.post("https://hastebin.com/documents", data=source) as resp:
-                data = await resp.json()
-                key = data['key']
-            emb = discord.Embed(colour=self.bot.embed_colour)
-            emb.add_field(name="Command", value=string.capwords(command), inline=False)
-            emb.add_field(name="Source", value=f'<https://hastebin.com/{key}.py>', inline=False)
-            return await ctx.send(embed=emb)
+
+        async with self.session.post("https://hastebin.com/documents", data=source) as resp:
+            data = await resp.json()
+
+        h_key = data['key']
+
+        emb = discord.Embed(colour=self.color)
+        emb.add_field(name="Command", value=string.capwords(command), inline=False)
+        emb.add_field(name="Source", value=f'<https://hastebin.com/{h_key}.py>', inline=False)
+        return await ctx.send(embed=emb)
+
 
 def setup(bot):
     bot.add_cog(Base(bot))
