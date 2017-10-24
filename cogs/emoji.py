@@ -81,8 +81,8 @@ class Emoji:
         await ctx.send("(╯°□°）╯︵ ┻━┻")
 
     @emoji.command(aliases=['0.o', '0.0', 'o.o'])
-    async def wierdeyes(self, ctx):
-        """Wierd Eyes Emoji"""
+    async def weirdeyes(self, ctx):
+        """Weird Eyes Emoji"""
         await ctx.message.delete()
         await ctx.send("◉_◉")
 
