@@ -82,7 +82,7 @@ class Translate:
                            color=self.bot.embed_colour)
 
         em.add_field(name='Original Text', value=f'`{query}`')
-        em.add_field(name='Translated', value=f'`{trans_text}`')
+        em.add_field(name='Translated', value=f'`{trans_text}`', inline=False)
 
         await ctx.send(embed=em)
 
