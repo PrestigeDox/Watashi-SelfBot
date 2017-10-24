@@ -21,7 +21,12 @@ class YoutubeSearch:
         """Search YouTube Without An API Key"""
 
         await ctx.message.delete()
-
+        results = [x for x in soup.select('div.yt-lockup-content')]
+        # entries = [{'title': x.select('a.yt-uix-tile-link')[0].attrs.get('title'),
+        #             'url': "https://www.youtube.com" + x.select('a.yt-uix-tile-link')[0].attrs.get('href'),
+        #             'uploader': x.select('div.yt-lockup-byline')[0].text,
+        #             'uploader_url': "https://www.youtube.com" + x.select('div.yt-lockup-byline a')[0].attrs.get('href')}
+        #            for x in results[:6]]
         # Handle error if no search query was provided
         if query is None:
             return await ctx.invoke(self.bot.get_command('error'), err='Please provide a query!')
