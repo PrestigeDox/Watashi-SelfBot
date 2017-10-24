@@ -6,6 +6,7 @@ import unicodedata
 class Coding:
     def __init__(self, bot):
         self.bot = bot
+        self.color = bot.user_color
 
     @commands.command(aliases=['python'])
     async def py(self, ctx, *, code: str):
@@ -51,21 +52,20 @@ class Coding:
         await ctx.send("``\n{}```".format(code))
 
     @commands.command()
-    async def charinfo(self, ctx, *, characters: str):
+    async def charinfo(self, ctx, char: str):
         """Get The CharInfo For Any Emoji"""
         await ctx.message.delete()
-        if len(characters) > 25:
-            return await ctx.send(f'Too many characters ({len(characters)}/25)')
 
-        digit = f'{ord(characters):x}'
-        name = unicodedata.name(characters, 'Name not found.')
+        digit = f'{ord(char):x}'
+        name = unicodedata.name(char, 'Name not found.')
         
-        emb = discord.Embed(colour=self.bot.embed_colour)
-        emb.set_author(name="Charinfo For {}".format(characters))
+        emb = discord.Embed(colour=self.color)
+        emb.set_author(name="Charinfo For {}".format(char))
         emb.add_field(name="Name", value=name, inline=False)
         emb.add_field(name="Char", value=f'\\U{digit:>08}', inline=False)
         emb.add_field(name="Link", value=f'<http://www.fileformat.info/info/unicode/char/{digit}>')
         await ctx.send(embed=emb)
+
 
 def setup(bot):
     bot.add_cog(Coding(bot))
