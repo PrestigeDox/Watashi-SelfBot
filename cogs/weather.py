@@ -19,21 +19,27 @@ class Weather:
 
         await ctx.message.delete()
 
-        # Handle no query being provided
+        # Handle no query being provided.
         if query is None:
             return await ctx.invoke(self.bot.get_command('error'), delete_after=1.0, err='Please provide a query!')
 
-        # Get page source with custom headers
+        # Get page source with custom headers.
         async with self.aiohttp_session.get(self.url+query.replace(' ', '+'), headers=self.headers) as r:
             html = await r.text()
 
-        # Make some really 'beautiful' soup
+        # Make some really 'beautiful' soup.
         soup = BeautifulSoup(html)
 
-        # Using a very old user agent, scraping is made very trivial
+        # Using a very old user agent, scraping is made very trivial.
+        # If it can't find title with that selector, location is probably bogus or there's no available info about it.
+        try:
+            title = soup.select('div.wtr_locTitle')[0].text
+        except IndexError:
+            return await ctx.invoke(self.bot.get_command('error'), delete_after=1.0, err='Unable to provide weather '
+                                                                                         'for this location!')
+
         icon = soup.select('div.wtr_currIcon img')[0].attrs['src']
         temp = soup.select('div.wtr_condiTemp')[0].text.strip('F')
-        title = soup.select('div.wtr_locTitle')[0].text
         precipitation = soup.select('div.wtr_currPerci')[0].text.split()[1]
         wind = soup.select('div.wtr_currWind')[0].text.split(':')[1].strip()
         humidity = soup.select('div.wtr_currHumi')[0].text.split(':')[1].strip()
