@@ -19,11 +19,14 @@ class Watashi(commands.Bot):
                              'cogs.eval', 'cogs.tinyurl', 'cogs.tags', 'cogs.games', 
                              'cogs.clean', 'cogs.error', 'cogs.define', 'cogs.purge',
                              'cogs.help', 'cogs.new_yt', 'cogs.elements', 'cogs.translate',
-                             'cogs.animate', 'cogs.weather')
+                             'cogs.animate', 'cogs.weather', 'cogs.geoip')
 
-        self.embed_colour = int(self.configs['embed_colour'], 16)
+        self.user_color = int(self.configs['embed_colour'], 16)
 
         super().__init__(command_prefix=self.configs['prefix'], self_bot=True)
+
+        # TODO:
+        # Make this bit work with <prefix>help <command>
         self.remove_command("help")
         self.formatter = EmbedHelp()
 

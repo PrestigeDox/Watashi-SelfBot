@@ -7,7 +7,7 @@ import string
 class Base:
     def __init__(self, bot):
         self.bot = bot
-        self.color = bot.embed_colour
+        self.color = bot.user_color
         self.session = bot.aiohttp_session
 
     @commands.command(aliases=['pingpong'])
