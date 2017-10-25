@@ -7,7 +7,7 @@ class ErrorFormatter:
         self.bot = bot
 
     @commands.command(name='error', hidden=True)
-    async def error_formatter(self, ctx, delete_after=10.0, err: str=None, del_msg: discord.Message=None):
+    async def error_formatter(self, ctx, err: str=None, delete_after=10.0, del_msg: discord.Message=None):
         """ Send a nice embed error with a message
 
         Usage:
@@ -27,6 +27,10 @@ class ErrorFormatter:
 
         em = discord.Embed(title=':x: Error', color=discord.Color.dark_red(), description=err)
         await ctx.send(embed=em, delete_after=delete_after)
+
+    @commands.command()
+    async def kwarg(self, ctx, **kwargs):
+        await ctx.send(f'```py\n{kwargs}```')
 
 
 def setup(bot):
