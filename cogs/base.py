@@ -4,6 +4,7 @@ from discord.ext import commands
 import inspect
 import string
 
+
 class Base:
     def __init__(self, bot):
         self.bot = bot
@@ -84,7 +85,7 @@ class Base:
                 if ptext is title is description is image is thumbnail is color is footer is author is None and 'field=' not in msg:
                     await ctx.message.delete()
                     return await ctx.send(content=None,
-                                                       embed=discord.Embed(description=msg))
+                                          embed=discord.Embed(description=msg))
 
                 if color:
                     em = discord.Embed(timestamp=timestamp, title=title, description=description, color=int(color, 16))
@@ -105,7 +106,8 @@ class Base:
                     if 'icon=' in author:
                         text, icon = author.split('icon=')
                         if 'url=' in icon:
-                            em.set_author(name=text.strip()[5:], icon_url=icon.split('url=')[0].strip(), url=icon.split('url=')[1].strip())
+                            em.set_author(name=text.strip()[5:], icon_url=icon.split('url=')[0].strip(),
+                                          url=icon.split('url=')[1].strip())
                         else:
                             em.set_author(name=text.strip()[5:], icon_url=icon)
                     else:
@@ -145,7 +147,9 @@ class Base:
 
         else:
             if mode.lower() == "stream" or mode.lower() == "twitch":
-                await self.bot.change_presence(status=discord.Status.online, game=discord.Game(name=message, type=1, url="https://www.twitch.tv/{}".format(message)), afk=True)
+                await self.bot.change_presence(status=discord.Status.online, game=discord.Game(name=message, type=1,
+                                                                                               url="https://www.twitch.tv/{}".format(
+                                                                                                   message)), afk=True)
                 colour = self.bot.colors.purple
                 status = "Stream"
             elif mode.lower() == "online" or mode.lower() == "on":
@@ -161,7 +165,8 @@ class Base:
                 colour = self.bot.colors.red
                 status = "Do Not Disturb"
             elif mode.lower() == "invisible" or mode.lower() == "invis":
-                await self.bot.change_presence(status=discord.Status.invisible, game=discord.Game(name=message), afk=True)
+                await self.bot.change_presence(status=discord.Status.invisible, game=discord.Game(name=message),
+                                               afk=True)
                 colour = self.bot.colors.grey
                 status = "Invisible"
             else:
