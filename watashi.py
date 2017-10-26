@@ -14,7 +14,7 @@ class Watashi(commands.Bot):
 
         self.starttime = datetime.datetime.now()
 
-        self.default_cogs = [x.stem for x in Path('cogs').glob('*.py')]
+        self.default_cogs = [f'cogs.{x.stem}' for x in Path('cogs').glob('*.py')]
 
         self.user_color = int(self.configs['embed_colour'], 16)
 
