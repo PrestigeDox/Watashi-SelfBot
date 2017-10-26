@@ -27,7 +27,7 @@ class Images:
 
         # Create embed response.
         em = discord.Embed(title=':cat2: Random Cat',
-                           color=self.bot.user_color)
+                           color=self.bot.embed_colour)
         em.set_image(url=cat)
 
         await ctx.send(embed=em)
@@ -50,7 +50,7 @@ class Images:
 
         # Create embed response.
         em = discord.Embed(title=':dog2: Random dog',
-                           color=self.bot.user_color)
+                           color=self.bot.embed_colour)
         em.set_image(url=dog)
 
         await ctx.send(embed=em)

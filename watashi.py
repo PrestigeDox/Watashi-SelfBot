@@ -13,10 +13,12 @@ class Watashi(commands.Bot):
 
         self.starttime = datetime.datetime.now()
 
-        self.default_cogs = ('cogs.base', 'cogs.coding', 'cogs.emoji', 'cogs.wiki', 'cogs.aesthetic', 'cogs.urband',
-                             'cogs.info', 'cogs.figlet', 'cogs.eval', 'cogs.tinyurl', 'cogs.tags', 'cogs.games',
-                             'cogs.clean', 'cogs.error', 'cogs.define', 'cogs.help', 'cogs.youtube', 'cogs.elements',
-                             'cogs.translate', 'cogs.animate', 'cogs.weather', 'cogs.geoip', 'cogs.images')
+        self.default_cogs = ('cogs.base', 'cogs.coding', 'cogs.emoji', 'cogs.wiki',
+                             'cogs.aesthetic', 'cogs.urband', 'cogs.info', 'cogs.figlet',
+                             'cogs.eval', 'cogs.tinyurl', 'cogs.tags', 'cogs.games',
+                             'cogs.clean', 'cogs.error', 'cogs.define', 'cogs.help',
+                             'cogs.youtube', 'cogs.elements', 'cogs.translate', 'cogs.animate',
+                             'cogs.weather', 'cogs.geoip', 'cogs.google')
 
         self.user_color = int(self.configs['embed_colour'], 16)
 

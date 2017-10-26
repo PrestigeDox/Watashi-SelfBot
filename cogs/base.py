@@ -5,6 +5,7 @@ import string
 from discord.ext import commands
 
 
+
 class Base:
     def __init__(self, bot):
         self.bot = bot
@@ -55,7 +56,9 @@ class Base:
 
         else:
             if mode.lower() == "stream" or mode.lower() == "twitch":
-                await self.bot.change_presence(status=discord.Status.online, game=discord.Game(name=message, type=1, url="https://www.twitch.tv/{}".format(message)), afk=True)
+                await self.bot.change_presence(status=discord.Status.online, game=discord.Game(name=message, type=1,
+                                                                                               url="https://www.twitch.tv/{}".format(
+                                                                                                   message)), afk=True)
                 colour = self.bot.colors.purple
                 status = "Stream"
             elif mode.lower() == "online" or mode.lower() == "on":
@@ -71,7 +74,8 @@ class Base:
                 colour = self.bot.colors.red
                 status = "Do Not Disturb"
             elif mode.lower() == "invisible" or mode.lower() == "invis":
-                await self.bot.change_presence(status=discord.Status.invisible, game=discord.Game(name=message), afk=True)
+                await self.bot.change_presence(status=discord.Status.invisible, game=discord.Game(name=message),
+                                               afk=True)
                 colour = self.bot.colors.grey
                 status = "Invisible"
             else:
