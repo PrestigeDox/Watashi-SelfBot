@@ -107,12 +107,11 @@ class Base:
         await self.bot.logout()
 
     @commands.command()
-    async def count(self, ctx, startnumber: int, amount: int):
+    async def count(self, ctx, start: int, amount: int):
         await ctx.message.delete()
-        start = startnumber
         for x in range(amount):
             await ctx.send(str(start))
-            start = start + 1
+            start += 1
             asyncio.sleep(2)
 
     @commands.command()
