@@ -3,7 +3,6 @@ from discord.ext import commands
 import json
 import datetime
 import aiohttp
-from formatter import EmbedHelp
 
 
 class Watashi(commands.Bot):
