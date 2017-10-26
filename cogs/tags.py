@@ -1,4 +1,3 @@
-# !/bin/env python3
 import json
 import discord
 from pathlib import Path
@@ -9,6 +8,7 @@ class Tag:
     def __init__(self, bot):
         self.bot = bot
         self._load_tag_file()
+        self.cmd = bot.get_command
         self.color = bot.user_color
 
     @staticmethod
@@ -41,8 +41,10 @@ class Tag:
         try:
             with open('tag_file.json', 'w') as f:
                 json.dump(self.tag_dict, f)
-        except Exception as e:
+        except IOError as e:
             print(f'Problem writing to tag file:\n{e}')
+        except Exception as e:
+            print(f'Unhandled exception when writing to file:\{e}')
 
     @commands.group(invoke_without_command=True)
     async def tag(self, ctx, *, tag_name: str):
@@ -109,8 +111,7 @@ class Tag:
 
         # Lifted this tidbit from:
         # https://mail.python.org/pipermail/python-list/2010-August/586307.html
-        closest_match = min(
-            self.tag_dict, key=lambda v: len(set(tag_name) ^ set(v)))
+        closest_match = min(self.tag_dict, key=lambda v: len(set(tag_name) ^ set(v)))
         await ctx.send(f'Closest matching tag: `{closest_match}`.')
 
     @tag.command()
@@ -121,8 +122,7 @@ class Tag:
             return await ctx.message.delete()
 
         em = discord.Embed(color=self.color)
-        em.add_field(name='Tags', value='\n'.join(
-            [f"\u2022 {x}" for x in list(self.tag_dict)]))
+        em.add_field(name='Tags', value='\n'.join([f"\u2022 {x}" for x in list(self.tag_dict)]))
 
         await ctx.send(embed=em)
 
@@ -142,8 +142,7 @@ class Tag:
                            color=self.color)
 
         # Sorts tags based on usage
-        ranked_tag_list = sorted(
-            self.tag_dict, key=lambda x: self.tag_dict[x]['uses'], reverse=True)
+        ranked_tag_list = sorted(self.tag_dict, key=lambda x: self.tag_dict[x]['uses'], reverse=True)
         ranked_tag_list_str = '\n'.join([f'{idx+1}\U000020e3 {x} ({self.tag_dict[x]["uses"]} uses)'
                                          for idx, x in enumerate(ranked_tag_list[:5])])
         em.add_field(name='Top tags', value=ranked_tag_list_str)
