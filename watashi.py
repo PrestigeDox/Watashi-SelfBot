@@ -25,10 +25,7 @@ class Watashi(commands.Bot):
 
         super().__init__(command_prefix=self.configs['prefix'], self_bot=True)
 
-        # TODO:
-        # Make this bit work with <prefix>help <command>
         self.remove_command("help")
-        self.formatter = EmbedHelp()
 
         # Colors can be called via shortcut
         # class Foo:
