@@ -51,7 +51,7 @@ class Weather:
         # Create embed response
         em = discord.Embed(title='Weather in ' + title,
                            description=caption,
-                           color=self.self.color)
+                           color=self.color)
 
         em.add_field(name='Temperature', value=temp)
         em.add_field(name='Precipitation', value=precipitation, inline=True)
