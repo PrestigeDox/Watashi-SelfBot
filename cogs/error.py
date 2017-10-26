@@ -25,12 +25,9 @@ class ErrorFormatter:
         if del_msg is not None:
             await del_msg.delete()
 
-        em = discord.Embed(title=':x: Error', color=discord.Color.dark_red(), description=err)
+        em = discord.Embed(title=':x: Error',
+                           color=discord.Color.dark_red(), description=err)
         await ctx.send(embed=em, delete_after=delete_after)
-
-    @commands.command()
-    async def kwarg(self, ctx, **kwargs):
-        await ctx.send(f'```py\n{kwargs}```')
 
 
 def setup(bot):

@@ -10,6 +10,7 @@ class Translate:
         self.headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 '
                                       '(KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36'}
         self.aiohttp_session = bot.aiohttp_session
+        self.color = bot.user_color
         self.abv_dict = {'Afrikaans': 'af', 'Irish': 'ga', 'Albanian': 'sq', 'Italian': 'it', 'Arabic': 'ar',
                          'Japanese': 'ja', 'Azerbaijani': 'az', 'Kannada': 'kn', 'Basque': 'eu', 'Korean': 'ko',
                          'Bengali': 'bn', 'Latin': 'la', 'Belarusian': 'be', 'Latvian': 'lv', 'Bulgarian': 'bg',
@@ -79,7 +80,7 @@ class Translate:
         # Create embed response
         em = discord.Embed(title='Translation',
                            description=f'{inverted_abv_dict[from_lang]} -> {inverted_abv_dict[to_lang]}',
-                           color=self.bot.embed_colour)
+                           color=self.color)
 
         em.add_field(name='Original Text', value=f'`{query}`')
         em.add_field(name='Translated', value=f'`{trans_text}`', inline=False)
@@ -89,7 +90,7 @@ class Translate:
     @translate.command(name='abbreviations', aliases=['abv', 'ab'])
     async def list_abv(self, ctx, *, query: str=None):
         """ Get a GIANT list of abbreviations, or search for one (recommended) """
-        em = discord.Embed(color=self.bot.embed_colour)
+        em = discord.Embed(color=self.color)
 
         # Sends a giant spammy list
         if query is None:
@@ -102,7 +103,8 @@ class Translate:
 
         # Finds the closest item to a search
         if query not in self.abv_dict:
-            closest_match = min(self.abv_dict, key=lambda v: len(set(query) ^ set(v)))
+            closest_match = min(
+                self.abv_dict, key=lambda v: len(set(query) ^ set(v)))
 
         # Create an embed for style points
         if closest_match:

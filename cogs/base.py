@@ -1,8 +1,9 @@
 import asyncio
 import discord
-from discord.ext import commands
 import inspect
 import string
+from discord.ext import commands
+
 
 
 class Base:
@@ -18,7 +19,8 @@ class Base:
         await ctx.message.delete()
         ping_time = self.bot.latency * 1000
 
-        emb = discord.Embed(title=f'\U0001f3d3 Pong {ping_time:.2f}ms', colour=self.color)
+        emb = discord.Embed(
+            title=f'\U0001f3d3 Pong {ping_time:.2f}ms', colour=self.color)
 
         await ctx.send(embed=emb)
 
@@ -129,8 +131,10 @@ class Base:
         h_key = data['key']
 
         emb = discord.Embed(colour=self.color)
-        emb.add_field(name="Command", value=string.capwords(command), inline=False)
-        emb.add_field(name="Source", value=f'<https://hastebin.com/{h_key}.py>', inline=False)
+        emb.add_field(name="Command", value=string.capwords(
+            command), inline=False)
+        emb.add_field(
+            name="Source", value=f'<https://hastebin.com/{h_key}.py>', inline=False)
         return await ctx.send(embed=emb)
 
 

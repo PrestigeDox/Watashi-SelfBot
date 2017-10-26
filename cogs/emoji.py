@@ -1,6 +1,10 @@
 import discord
 from discord.ext import commands
 
+# TODO:
+# - Make the emoji commands edit the original message rather than delete and resend
+#   This should help mitigate some ratelimiting
+
 
 class Emoji:
     def __init__(self, bot):

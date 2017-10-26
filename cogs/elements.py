@@ -1,6 +1,5 @@
 import discord
 import cogs.table as table
-
 from discord.ext import commands
 
 

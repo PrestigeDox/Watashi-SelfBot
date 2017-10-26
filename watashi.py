@@ -15,8 +15,8 @@ class Watashi(commands.Bot):
         self.starttime = datetime.datetime.now()
 
         self.default_cogs = ('cogs.base', 'cogs.coding', 'cogs.emoji', 'cogs.wiki',
-                             'cogs.aesthetic', 'cogs.urband', 'cogs.info', 'cogs.figlet', 
-                             'cogs.eval', 'cogs.tinyurl', 'cogs.tags', 'cogs.games', 
+                             'cogs.aesthetic', 'cogs.urband', 'cogs.info', 'cogs.figlet',
+                             'cogs.eval', 'cogs.tinyurl', 'cogs.tags', 'cogs.games',
                              'cogs.clean', 'cogs.error', 'cogs.define', 'cogs.purge',
                              'cogs.help', 'cogs.new_yt', 'cogs.elements', 'cogs.translate',
                              'cogs.animate', 'cogs.weather', 'cogs.geoip', 'cogs.google')
@@ -25,10 +25,7 @@ class Watashi(commands.Bot):
 
         super().__init__(command_prefix=self.configs['prefix'], self_bot=True)
 
-        # TODO:
-        # Make this bit work with <prefix>help <command>
         self.remove_command("help")
-        self.formatter = EmbedHelp()
 
         # Colors can be called via shortcut
         # class Foo:
@@ -57,4 +54,3 @@ class Watashi(commands.Bot):
 
         for cog in self.default_cogs:
             self.load_extension(cog)
-
