@@ -19,9 +19,9 @@ class UrbanDictionary:
 
         em = discord.Embed(color=0x00ffff)
         em.set_author(name="\U0001f4d6 Urban Dictionary")
-        em.add_field(name="Word",value=item.word, inline=False)
-        em.add_field(name="Definition",value=item.definition, inline=False)
-        em.add_field(name="Example(s)",value=item.example, inline=False)
+        em.add_field(name="Word", value=item.word, inline=False)
+        em.add_field(name="Definition", value=item.definition, inline=False)
+        em.add_field(name="Example(s)", value=item.example, inline=False)
         await ctx.send(embed=em)
 
     @urban.command(aliases=['-s'])
@@ -60,9 +60,9 @@ class UrbanDictionary:
 
         em = discord.Embed(color=0x00ffff)
         em.set_author(name="\U0001f4d6 Urban Dictionary")
-        em.add_field(name="Word",value=item.word)
-        em.add_field(name="Definition",value=item.definition)
-        em.add_field(name="Example(s)",value=item.example)
+        em.add_field(name="Word", value=item.word)
+        em.add_field(name="Definition", value=item.definition)
+        em.add_field(name="Example(s)", value=item.example)
         await ctx.send(embed=em)
 
     @urban.command(aliases=['-r'])
@@ -73,9 +73,9 @@ class UrbanDictionary:
 
         em = discord.Embed(color=0x00ffff)
         em.set_author(name="\U0001f4d6 Urban Dictionary")
-        em.add_field(name="Word",value=item[0].word)
-        em.add_field(name="Definition",value=item[0].definition)
-        em.add_field(name="Example(s)",value=item[0].example)
+        em.add_field(name="Word", value=item[0].word)
+        em.add_field(name="Definition", value=item[0].definition)
+        em.add_field(name="Example(s)", value=item[0].example)
         await ctx.send(embed=em)
 
 

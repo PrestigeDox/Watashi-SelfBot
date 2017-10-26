@@ -25,7 +25,7 @@ class Weather:
             return await ctx.invoke(self.bot.get_command('error'), delete_after=1.0, err='Please provide a query!')
 
         # Get page source with custom headers.
-        async with self.aiohttp_session.get(self.url+query.replace(' ', '+'), headers=self.headers) as r:
+        async with self.aiohttp_session.get(self.url + query.replace(' ', '+'), headers=self.headers) as r:
             html = await r.text()
 
         # Make some really 'beautiful' soup.
@@ -43,12 +43,13 @@ class Weather:
         temp = soup.select('div.wtr_condiTemp')[0].text.strip('F')
         precipitation = soup.select('div.wtr_currPerci')[0].text.split()[1]
         wind = soup.select('div.wtr_currWind')[0].text.split(':')[1].strip()
-        humidity = soup.select('div.wtr_currHumi')[0].text.split(':')[1].strip()
+        humidity = soup.select('div.wtr_currHumi')[
+            0].text.split(':')[1].strip()
         caption = soup.select('div.wtr_caption')[0].text
         daytime = soup.select('div.wtr_dayTime')[0].text
 
         # Create embed response
-        em = discord.Embed(title='Weather in '+title,
+        em = discord.Embed(title='Weather in ' + title,
                            description=caption,
                            color=self.self.color)
 

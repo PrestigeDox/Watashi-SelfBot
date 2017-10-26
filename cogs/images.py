@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 class Images:
     def __init__(self, bot):
         self.bot = bot
-        self.urls = ['http://random.cat/','http://random.dog/']
+        self.urls = ['http://random.cat/', 'http://random.dog/']
         self.aiohttp_session = bot.aiohttp_session
 
     @commands.command()

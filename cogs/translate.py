@@ -103,7 +103,8 @@ class Translate:
 
         # Finds the closest item to a search
         if query not in self.abv_dict:
-            closest_match = min(self.abv_dict, key=lambda v: len(set(query) ^ set(v)))
+            closest_match = min(
+                self.abv_dict, key=lambda v: len(set(query) ^ set(v)))
 
         # Create an embed for style points
         if closest_match:

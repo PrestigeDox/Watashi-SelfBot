@@ -38,7 +38,8 @@ class Youtube:
         em.set_author(name="YouTube Search",
                       icon_url="https://www.seeklogo.net/wp-content/uploads/2016/06/YouTube-icon.png")
 
-        em.add_field(name='Results', value='\n'.join(f'{idx + 1}. [{x[0]}]({x[1]})' for idx, x in enumerate(items[:5])))
+        em.add_field(name='Results', value='\n'.join(
+            f'{idx + 1}. [{x[0]}]({x[1]})' for idx, x in enumerate(items[:5])))
 
         await ctx.send(embed=em)
 

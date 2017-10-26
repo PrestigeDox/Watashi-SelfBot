@@ -32,7 +32,6 @@ class Coding:
         await ctx.message.delete()
         await ctx.send("```ini\n{}```".format(code))
 
-
     @commands.command()
     async def c(self, ctx, *, code: str):
         """Send Code In A C Block"""
@@ -58,12 +57,13 @@ class Coding:
 
         digit = f'{ord(char):x}'
         name = unicodedata.name(char, 'Name not found.')
-        
+
         emb = discord.Embed(colour=self.color)
         emb.set_author(name="Charinfo For {}".format(char))
         emb.add_field(name="Name", value=name, inline=False)
         emb.add_field(name="Char", value=f'\\U{digit:>08}', inline=False)
-        emb.add_field(name="Link", value=f'<http://www.fileformat.info/info/unicode/char/{digit}>')
+        emb.add_field(
+            name="Link", value=f'<http://www.fileformat.info/info/unicode/char/{digit}>')
         await ctx.send(embed=emb)
 
 

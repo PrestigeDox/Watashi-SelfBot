@@ -53,9 +53,9 @@ class Info:
         await ctx.message.delete()
         emb = discord.Embed(colour=self.bot.embed_colour)
         emb.set_author(name="Avatar for {}".format(member.display_name),
-                           icon_url=member.avatar_url)
+                       icon_url=member.avatar_url)
         emb.add_field(name="**Avatar url**",
-                          value="[Here]({})".format(member.avatar_url))
+                      value="[Here]({})".format(member.avatar_url))
         emb.set_thumbnail(url=member.avatar_url)
         await ctx.send(embed=emb)
 
@@ -74,7 +74,8 @@ class Info:
             users = users + 1
 
         memberstot = sum(1 for _ in self.bot.get_all_members())
-        memberson = len({m.id for m in self.bot.get_all_members() if m.status is discord.Status.online})
+        memberson = len({m.id for m in self.bot.get_all_members()
+                         if m.status is discord.Status.online})
         membersuni = len(self.bot.users)
 
         voice_channels = []
@@ -101,21 +102,31 @@ class Info:
 
         emb = discord.Embed(colour=self.bot.embed_colour)
         emb.set_author(name="Watashi SelfBot", icon_url=ctx.author.avatar_url)
-        emb.add_field(name="About", value="Watashi Selfbot was made to enhance the experience of " + \
-            "Discord users who wanted to speed up daily processes. Watashi has a multitude of commands " + \
-            "which you can use and we regularly update the bot to add more commands and improve existing " + \
-            "commands! Make sure to join our Discord server to keep up with Watashi related announcements!", inline=False)
-        emb.add_field(name="Uptime \U0001f550", value=f'{days}D {hours}H {minutes}M {seconds}S', inline=True)
-        emb.add_field(name="Ping Time \U0001f3d3", value=f'{pingtime}ms', inline=True)
-        emb.add_field(name="Servers \U00002694", value=len(self.bot.guilds), inline=True)
-        emb.add_field(name="Users \U0001f476", value=f'Total: {memberstot}\nUnique: {membersuni}\nOnline: {memberson}', inline=True)
-        emb.add_field(name="Channels \U00002328", value=f'Text: {textchannels}\nVoice: {voicechannels}\nDM: {dmchannels}', inline=True)
-        emb.add_field(name="Status \U0001f47e", value=f'Presence: {currentstatus}\nPlaying: {ctx.author.game}', inline=True)
-        emb.add_field(name="Cogs \U00002699", value=len(self.bot.cogs), inline=True)
-        emb.add_field(name="Commands \U0001f50e", value=len(self.bot.commands), inline=True)
+        emb.add_field(name="About", value="Watashi Selfbot was made to enhance the experience of " +
+                      "Discord users who wanted to speed up daily processes. Watashi has a multitude of commands " +
+                      "which you can use and we regularly update the bot to add more commands and improve existing " +
+                      "commands! Make sure to join our Discord server to keep up with Watashi related announcements!", inline=False)
+        emb.add_field(name="Uptime \U0001f550",
+                      value=f'{days}D {hours}H {minutes}M {seconds}S', inline=True)
+        emb.add_field(name="Ping Time \U0001f3d3",
+                      value=f'{pingtime}ms', inline=True)
+        emb.add_field(name="Servers \U00002694",
+                      value=len(self.bot.guilds), inline=True)
+        emb.add_field(name="Users \U0001f476",
+                      value=f'Total: {memberstot}\nUnique: {membersuni}\nOnline: {memberson}', inline=True)
+        emb.add_field(name="Channels \U00002328",
+                      value=f'Text: {textchannels}\nVoice: {voicechannels}\nDM: {dmchannels}', inline=True)
+        emb.add_field(name="Status \U0001f47e",
+                      value=f'Presence: {currentstatus}\nPlaying: {ctx.author.game}', inline=True)
+        emb.add_field(name="Cogs \U00002699",
+                      value=len(self.bot.cogs), inline=True)
+        emb.add_field(name="Commands \U0001f50e",
+                      value=len(self.bot.commands), inline=True)
         emb.add_field(name="GitHub \U0001f516", value=github, inline=True)
-        emb.add_field(name="Discord \U0001f47e", value=discord_link, inline=True)
+        emb.add_field(name="Discord \U0001f47e",
+                      value=discord_link, inline=True)
         await ctx.send(embed=emb)
+
 
 def setup(bot):
     bot.add_cog(Info(bot))

@@ -4,6 +4,7 @@ from discord.ext import commands
 import inspect
 import aiohttp
 
+
 class Geoip:
     def __init__(self, bot):
         self.bot = bot

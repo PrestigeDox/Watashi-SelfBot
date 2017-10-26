@@ -15,8 +15,8 @@ class Watashi(commands.Bot):
         self.starttime = datetime.datetime.now()
 
         self.default_cogs = ('cogs.base', 'cogs.coding', 'cogs.emoji', 'cogs.wiki',
-                             'cogs.aesthetic', 'cogs.urband', 'cogs.info', 'cogs.figlet', 
-                             'cogs.eval', 'cogs.tinyurl', 'cogs.tags', 'cogs.games', 
+                             'cogs.aesthetic', 'cogs.urband', 'cogs.info', 'cogs.figlet',
+                             'cogs.eval', 'cogs.tinyurl', 'cogs.tags', 'cogs.games',
                              'cogs.clean', 'cogs.error', 'cogs.define', 'cogs.purge',
                              'cogs.help', 'cogs.new_yt', 'cogs.elements', 'cogs.translate',
                              'cogs.animate', 'cogs.weather', 'cogs.geoip', 'cogs.images')
@@ -54,4 +54,3 @@ class Watashi(commands.Bot):
 
         for cog in self.default_cogs:
             self.load_extension(cog)
-

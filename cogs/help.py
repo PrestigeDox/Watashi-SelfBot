@@ -14,7 +14,7 @@ class Help:
         """ Shows the possible help categories """
         em = discord.Embed(title='Help',
                            description='Below is a list of command categories.\n'
-                                       f'To get help or more information on a specific category or command, use:\n' 
+                                       f'To get help or more information on a specific category or command, use:\n'
                                        f'`{self.pre}help cat|category <category name>` for a category OR\n'
                                        f'`{self.pre}help cmd|command <command name>` for a specific command.',
                            color=self.color)
@@ -37,7 +37,8 @@ class Help:
         # We need the proper name, though, so we search for the proper capitalization
         # And set category_name = to it
         if category_name.casefold() in [x.casefold() for x in self.bot.cogs]:
-            category_name = min(self.bot.cogs, key=lambda v: len(set(category_name) ^ set(v)))
+            category_name = min(self.bot.cogs, key=lambda v: len(
+                set(category_name) ^ set(v)))
         else:
             return await ctx.invoke(self.cmd('error'), err=f'`{category_name}` is not a category.')
 
@@ -58,18 +59,22 @@ class Help:
         if cmd_obj is None:
             return await ctx.invoke(self.cmd('error'), err=f'Command {cmd_name} not found')
 
-        em = discord.Embed(title=cmd_obj.name, description=cmd_obj.short_doc, color=self.color)
+        em = discord.Embed(title=cmd_obj.name,
+                           description=cmd_obj.short_doc, color=self.color)
 
         # Input aliases and parameters to embed
         if cmd_obj.aliases:
-            em.add_field(name='Aliases', value='\n'.join([f'\u2022 {x}' for x in cmd_obj.aliases]))
+            em.add_field(name='Aliases', value='\n'.join(
+                [f'\u2022 {x}' for x in cmd_obj.aliases]))
         if cmd_obj.clean_params:
-            em.add_field(name='Parameters', value='\n'.join(f'\u2022 {x}' for x in cmd_obj.clean_params))
+            em.add_field(name='Parameters', value='\n'.join(
+                f'\u2022 {x}' for x in cmd_obj.clean_params))
 
         # Handle group commands
         if isinstance(cmd_obj, commands.core.Group):
             em.add_field(name='Group commands',
-                         value='\n'.join([f'\u2022 {x}' for x in cmd_obj.commands]),
+                         value='\n'.join(
+                             [f'\u2022 {x}' for x in cmd_obj.commands]),
                          inline=False)
 
         # Add usage last

@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import pyfiglet
 
+
 class Figlet:
     def __init__(self, bot):
         self.bot = bot
@@ -76,6 +77,7 @@ class Figlet:
             emb = discord.Embed(colour=self.bot.colors.red)
             emb.add_field(name=":x: Error", value="Message is too large!")
             await ctx.send(embed=emb)
+
 
 def setup(bot):
     bot.add_cog(Figlet(bot))

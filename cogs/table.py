@@ -29,7 +29,9 @@ class Element(_Base):
         representation = "<Element('%s', '%s')>"
         return representation % (self.symbol, self.atomic)
 
-elements = session.query(Element).order_by(Element.atomic).all()  # Ordered list of all of the elements
+
+elements = session.query(Element).order_by(
+    Element.atomic).all()  # Ordered list of all of the elements
 
 
 def type_(type_):
@@ -65,9 +67,13 @@ def element(_input):
     if value is str and len(_input) > 2:
         return session.query(Element).filter_by(name=_input).first()
 
-attributes = ['atomic', 'symbol', 'name', 'mass']  # Attributes in an Element instance
+
+# Attributes in an Element instance
+attributes = ['atomic', 'symbol', 'name', 'mass']
 
 #  TODO: Add math support for elements in interative_shell
+
+
 def interactive_shell():
     usage = """Enter any of the following periodic values of the element you are looking for:
 \t{attributes}
@@ -88,7 +94,8 @@ def interactive_shell():
             exit(0)
         element_ = element(query)
         try:
-            values = [attribute + ": %s" % getattr(element_, attribute) for attribute in attributes]
+            values = [attribute + ": %s" %
+                      getattr(element_, attribute) for attribute in attributes]
         except AttributeError:
             print("'{query}' is not valid!".format(query=query))
             print(usage)
@@ -96,6 +103,7 @@ def interactive_shell():
 
         for line in values:
             print(line)
+
 
 table = '''  -----                                                               -----
 1 | H |                                                               |He |
