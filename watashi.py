@@ -19,7 +19,7 @@ class Watashi(commands.Bot):
                              'cogs.eval', 'cogs.tinyurl', 'cogs.tags', 'cogs.games', 
                              'cogs.clean', 'cogs.error', 'cogs.define', 'cogs.purge',
                              'cogs.help', 'cogs.new_yt', 'cogs.elements', 'cogs.translate',
-                             'cogs.animate', 'cogs.weather', 'cogs.geoip')
+                             'cogs.animate', 'cogs.weather', 'cogs.geoip', 'cogs.images')
 
         self.user_color = int(self.configs['embed_colour'], 16)
 
@@ -49,7 +49,8 @@ class Watashi(commands.Bot):
               "<----------------->\n"
               "Warning:\n"
               "Under the MIT license, the makers of Watashi-SelfBot are not liable for any\n"
-              "damage caused/action taken against you for using a selfbot, which is in violation of Discord's TOS")
+              "damage caused/action taken against you for using a selfbot, which is in \n"
+              "violation of Discord's TOS")
 
         for cog in self.default_cogs:
             self.load_extension(cog)
