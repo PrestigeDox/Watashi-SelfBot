@@ -2,6 +2,7 @@ import asyncio
 from discord.ext import commands
 
 
+
 class Animate:
     def __init__(self, bot):
         self.bot = bot
