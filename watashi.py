@@ -19,7 +19,7 @@ class Watashi(commands.Bot):
                              'cogs.eval', 'cogs.tinyurl', 'cogs.tags', 'cogs.games', 
                              'cogs.clean', 'cogs.error', 'cogs.define', 'cogs.purge',
                              'cogs.help', 'cogs.new_yt', 'cogs.elements', 'cogs.translate',
-                             'cogs.animate', 'cogs.weather', 'cogs.geoip', 'cogs.images')
+                             'cogs.animate', 'cogs.weather', 'cogs.geoip', 'cogs.google')
 
         self.user_color = int(self.configs['embed_colour'], 16)
 

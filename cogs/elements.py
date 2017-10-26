@@ -12,6 +12,8 @@ class Elements:
     async def elements(self, ctx, *,  query=None):
         """Get Info About The Elements"""
 
+        # This uses the 'periodic' library available on pypi, but its for python 2, I had to modify it to work with this
+        # but the credit for element data goes to the creator of 'periodic'
         await ctx.message.delete()
 
         # Handle error if no search query was provided
