@@ -1,5 +1,4 @@
 import string
-
 from discord.ext import commands
 
 
