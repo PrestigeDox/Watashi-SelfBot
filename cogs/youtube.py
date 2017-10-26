@@ -17,8 +17,8 @@ class Youtube:
 
         # The super long class def'n here is required to only catch videos, and not users / channels
         return [(x.text, f"https://youtube.com{x['href']}")
-                for x in soup.find_all('a', {'class': 'yt-uix-tile-link yt-ui-ellipsis yt-ui-ellipsis-2 yt-uix-sessionlink spf-link '})]
-
+                for x in soup.find_all('a', {'class': 'yt-uix-tile-link '
+                                                      'yt-ui-ellipsis yt-ui-ellipsis-2 yt-uix-sessionlink spf-link '})]
 
     @commands.command(aliases=['yt'])
     async def youtube(self, ctx, *, query: str):
@@ -38,7 +38,8 @@ class Youtube:
         em.set_author(name="YouTube Search",
                       icon_url="https://www.seeklogo.net/wp-content/uploads/2016/06/YouTube-icon.png")
 
-        em.add_field(name='Results', value='\n'.join(f'{idx + 1}. [{x[0]}]({x[1]})' for idx, x in enumerate(items[:5])))
+        em.add_field(name='Results', value='\n'.join(
+            f'{idx + 1}. [{x[0]}]({x[1]})' for idx, x in enumerate(items[:5])))
 
         await ctx.send(embed=em)
 

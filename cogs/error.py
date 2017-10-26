@@ -7,7 +7,7 @@ class ErrorFormatter:
         self.bot = bot
 
     @commands.command(name='error', hidden=True)
-    async def error_formatter(self, ctx, delete_after=10.0, err: str=None, del_msg: discord.Message=None):
+    async def error_formatter(self, ctx, err: str=None, delete_after=10.0, del_msg: discord.Message=None):
         """ Send a nice embed error with a message
 
         Usage:
@@ -25,7 +25,8 @@ class ErrorFormatter:
         if del_msg is not None:
             await del_msg.delete()
 
-        em = discord.Embed(title=':x: Error', color=discord.Color.dark_red(), description=err)
+        em = discord.Embed(title=':x: Error',
+                           color=discord.Color.dark_red(), description=err)
         await ctx.send(embed=em, delete_after=delete_after)
 
 

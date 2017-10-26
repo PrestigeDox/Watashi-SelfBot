@@ -21,6 +21,8 @@ class BannedMember(commands.Converter):
         return user
 
 # Lay down the law on some fools
+
+
 class Mod:
     def __init__(self, bot):
         self.bot = bot
@@ -46,7 +48,6 @@ class Mod:
         await ctx.guild.unban(member.user, reason=reason)
         await ctx.send(f'Member `{member.user}` unbanned.\n'
                        f'Reason: `{reason}`.')
-
 
     def setup(bot):
         bot.add_cog(Mod(bot))

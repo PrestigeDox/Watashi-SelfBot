@@ -1,13 +1,15 @@
-# !/bin/env python3
 import json
 import discord
 from pathlib import Path
 from discord.ext import commands
 
+
 class Tag:
     def __init__(self, bot):
         self.bot = bot
         self._load_tag_file()
+        self.cmd = bot.get_command
+        self.color = bot.user_color
 
     @staticmethod
     def _tag_file_exists():
@@ -39,8 +41,10 @@ class Tag:
         try:
             with open('tag_file.json', 'w') as f:
                 json.dump(self.tag_dict, f)
-        except Exception as e:
+        except IOError as e:
             print(f'Problem writing to tag file:\n{e}')
+        except Exception as e:
+            print(f'Unhandled exception when writing to file:\{e}')
 
     @commands.group(invoke_without_command=True)
     async def tag(self, ctx, *, tag_name: str):
@@ -112,15 +116,15 @@ class Tag:
 
     @tag.command()
     async def list(self, ctx):
-        """ List all of your tags (warning, spammy) """
-        tag_keys = list(self.tag_dict.keys())
-
-        if len(tag_keys) == 0:
+        """ List all of your tags (Warning: potentially spammy) """
+        if len(self.tag_dict) == 0:
             await ctx.send('No tags to list.', delete_after=10.0)
             return await ctx.message.delete()
 
-        tag_str = '\n'.join(tag_keys)
-        await ctx.send(f'```{tag_str}```')
+        em = discord.Embed(color=self.color)
+        em.add_field(name='Tags', value='\n'.join([f"\u2022 {x}" for x in list(self.tag_dict)]))
+
+        await ctx.send(embed=em)
 
     @tag.command()
     async def stats(self, ctx):
@@ -132,15 +136,19 @@ class Tag:
             return await ctx.message.delete()
 
         total_tag_uses = sum(x['uses'] for x in self.tag_dict.values())
-        em = discord.Embed(title='Tag Statistics', description=f'Total tags: {total_tags}\n'
-                                                               f'Total tag uses: {total_tag_uses}',
-                                                    color=self.bot.embed_colour)
+        em = discord.Embed(title='Tag Statistics',
+                           description=f'Total tags: {total_tags}\n'
+                                       f'Total tag uses: {total_tag_uses}',
+                           color=self.color)
 
+        # Sorts tags based on usage
         ranked_tag_list = sorted(self.tag_dict, key=lambda x: self.tag_dict[x]['uses'], reverse=True)
-        ranked_tag_list_str = '\n'.join([f'{idx+1}\U000020e3 {x} ({self.tag_dict[x]["uses"]} uses)' for idx, x in enumerate(ranked_tag_list[:5])])
+        ranked_tag_list_str = '\n'.join([f'{idx+1}\U000020e3 {x} ({self.tag_dict[x]["uses"]} uses)'
+                                         for idx, x in enumerate(ranked_tag_list[:5])])
         em.add_field(name='Top tags', value=ranked_tag_list_str)
 
         await ctx.send(embed=em)
+
 
 def setup(bot):
     bot.add_cog(Tag(bot))

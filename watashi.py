@@ -3,7 +3,6 @@ from discord.ext import commands
 import json
 import datetime
 import aiohttp
-from formatter import EmbedHelp
 
 
 class Watashi(commands.Bot):
@@ -14,21 +13,16 @@ class Watashi(commands.Bot):
 
         self.starttime = datetime.datetime.now()
 
-        self.default_cogs = ('cogs.base', 'cogs.coding', 'cogs.emoji', 'cogs.wiki',
-                             'cogs.aesthetic', 'cogs.urband', 'cogs.info', 'cogs.figlet', 
-                             'cogs.eval', 'cogs.tinyurl', 'cogs.tags', 'cogs.games', 
-                             'cogs.clean', 'cogs.error', 'cogs.define', 'cogs.purge',
-                             'cogs.help', 'cogs.new_yt', 'cogs.elements', 'cogs.translate',
-                             'cogs.animate', 'cogs.weather', 'cogs.geoip', 'cogs.images')
+        self.default_cogs = ('cogs.base', 'cogs.coding', 'cogs.emoji', 'cogs.wiki', 'cogs.aesthetic', 'cogs.urband',
+                             'cogs.info', 'cogs.figlet', 'cogs.eval', 'cogs.tinyurl', 'cogs.tags', 'cogs.games',
+                             'cogs.clean', 'cogs.error', 'cogs.define', 'cogs.help', 'cogs.youtube', 'cogs.elements',
+                             'cogs.translate', 'cogs.animate', 'cogs.weather', 'cogs.geoip', 'cogs.images')
 
         self.user_color = int(self.configs['embed_colour'], 16)
 
         super().__init__(command_prefix=self.configs['prefix'], self_bot=True)
 
-        # TODO:
-        # Make this bit work with <prefix>help <command>
         self.remove_command("help")
-        self.formatter = EmbedHelp()
 
         # Colors can be called via shortcut
         # class Foo:
@@ -57,4 +51,3 @@ class Watashi(commands.Bot):
 
         for cog in self.default_cogs:
             self.load_extension(cog)
-

@@ -27,28 +27,28 @@ class Games:
             'My sources say no.',
             'Outlook not so good.',
             'Very doubtful.'
-            ]
-        self.coins = [
-            "Heads",
-            "Tails"
-            ]
+        ]
+        self.coins = ["Heads", "Tails"]
 
     @commands.command(name="8ball")
     async def eight_ball(self, ctx, *, query: str):
         """Let the mystical 8ball evaluate your question"""
         await ctx.message.delete()
-        emb = discord.Embed(title=':8ball: Magic 8ball', colour = 0x00080A)
+        emb = discord.Embed(title=':8ball: Magic 8ball', colour=0x00080A)
         emb.add_field(name="Question", value=query)
-        emb.add_field(name="Reply", value=random.choice(self.eight_responses),inline=False)
+        emb.add_field(name="Reply", value=random.choice(
+            self.eight_responses), inline=False)
         await ctx.send(embed=emb)
 
-    @commands.command(name="flip",aliases=["coinflip"])
+    @commands.command(name="flip", aliases=["coinflip"])
     async def coin_flip(self, ctx):
         """Toss a coin"""
         await ctx.message.delete()
-        result = random.randint(0,1)
-        emb = discord.Embed(title='Coin Flip', description = self.coins[result], colour = self.bot.embed_colour)
-        emb.set_thumbnail(url = "http://researchmaniacs.com/Random/Images/Quarter-Tails.png" if result else "http://researchmaniacs.com/Random/Images/Quarter-Heads.png")
+        result = random.randint(0, 1)
+        emb = discord.Embed(
+            title='Coin Flip', description=self.coins[result], colour=self.bot.embed_colour)
+        emb.set_thumbnail(
+            url="http://researchmaniacs.com/Random/Images/Quarter-Tails.png" if result else "http://researchmaniacs.com/Random/Images/Quarter-Heads.png")
         await ctx.send(embed=emb)
 
     @commands.command(aliases=["choice"])
@@ -56,10 +56,12 @@ class Games:
         """Let the bot choose between 2 choices!"""
         await ctx.message.delete()
         choice = random.choice(query.split('|'))
-        emb = discord.Embed(title=":round_pushpin: Choices",colour = self.bot.embed_colour)
-        emb.add_field(name="Choice between",value=query.replace('|',' or '))
-        emb.add_field(name="Result", value=choice,inline=False)
+        emb = discord.Embed(title=":round_pushpin: Choices",
+                            colour=self.bot.embed_colour)
+        emb.add_field(name="Choice between", value=query.replace('|', ' or '))
+        emb.add_field(name="Result", value=choice, inline=False)
         await ctx.send(embed=emb)
+
 
 def setup(bot):
     bot.add_cog(Games(bot))

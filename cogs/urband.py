@@ -9,7 +9,7 @@ class UrbanDictionary:
 
     @commands.group(invoke_without_command=True, aliases=['ud', 'urbandict'])
     async def urban(self, ctx, *, query: str):
-        """Chech The Urban Dict Meaning Of A Work"""
+        """ Check UrbanDictionary for the meaning of a word """
         await ctx.message.delete()
         try:
             resultlst = await self.bot.loop.run_in_executor(None, ud.define, query)
@@ -19,14 +19,18 @@ class UrbanDictionary:
 
         em = discord.Embed(color=0x00ffff)
         em.set_author(name="\U0001f4d6 Urban Dictionary")
-        em.add_field(name="Word",value=item.word, inline=False)
-        em.add_field(name="Definition",value=item.definition, inline=False)
-        em.add_field(name="Example(s)",value=item.example, inline=False)
+        em.add_field(name="Word", value=item.word, inline=False)
+        em.add_field(name="Definition", value=item.definition, inline=False)
+        em.add_field(name="Example(s)", value=item.example, inline=False)
         await ctx.send(embed=em)
 
     @urban.command(aliases=['-s'])
     async def search(self, ctx, *, query: str):
         """Search A Specific Word In The Urban Dict"""
+
+        # TODO:
+        # Re-evaluate this command
+        # Reason: very spammy and not necessarily intuitive for the user
         await ctx.message.delete()
         resultlst = await self.bot.loop.run_in_executor(None, ud.define, query)
 
@@ -56,9 +60,9 @@ class UrbanDictionary:
 
         em = discord.Embed(color=0x00ffff)
         em.set_author(name="\U0001f4d6 Urban Dictionary")
-        em.add_field(name="Word",value=item.word)
-        em.add_field(name="Definition",value=item.definition)
-        em.add_field(name="Example(s)",value=item.example)
+        em.add_field(name="Word", value=item.word)
+        em.add_field(name="Definition", value=item.definition)
+        em.add_field(name="Example(s)", value=item.example)
         await ctx.send(embed=em)
 
     @urban.command(aliases=['-r'])
@@ -69,9 +73,9 @@ class UrbanDictionary:
 
         em = discord.Embed(color=0x00ffff)
         em.set_author(name="\U0001f4d6 Urban Dictionary")
-        em.add_field(name="Word",value=item[0].word)
-        em.add_field(name="Definition",value=item[0].definition)
-        em.add_field(name="Example(s)",value=item[0].example)
+        em.add_field(name="Word", value=item[0].word)
+        em.add_field(name="Definition", value=item[0].definition)
+        em.add_field(name="Example(s)", value=item[0].example)
         await ctx.send(embed=em)
 
 

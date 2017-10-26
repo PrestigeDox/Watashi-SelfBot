@@ -1,12 +1,12 @@
-import discord
-from discord.ext import commands
 import asyncio
+from discord.ext import commands
+
 
 class Animate:
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.group(invoke_without_command=True, aliases=['anim'])
+    @commands.command(aliases=['anim'])
     async def animate(self, ctx, *, file):
         """Animated Text Files onto Discord"""
         try:
