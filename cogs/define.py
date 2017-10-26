@@ -16,7 +16,7 @@ class Define:
 
     @commands.command(aliases=['def'])
     async def define(self, ctx, word: str):
-        """Define A Word Through The Oxord Dictionary"""
+        """ Find the definition of a word """
         params = {'q': f'define+{word}', 'source': 'hp'}
 
         async with self.aiohttp_session.get(self.url, params=params, headers=self.headers) as r:
@@ -38,7 +38,7 @@ class Define:
         em.add_field(name='Definition', value=f'_{self.parts_of_speech[pos]}_, {defn}')
 
         if len(syn_list) != 0:
-            em.add_field(name='Synonyms', value=', '.join(syn_list[:4]), inline=False)
+            em.add_field(name='Synonyms', value=', '.join(syn_list[:5]), inline=False)
 
         await ctx.send(embed=em)
 
