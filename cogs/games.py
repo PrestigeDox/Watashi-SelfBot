@@ -28,10 +28,7 @@ class Games:
             'Outlook not so good.',
             'Very doubtful.'
         ]
-        self.coins = [
-            "Heads",
-            "Tails"
-        ]
+        self.coins = ["Heads", "Tails"]
 
     @commands.command(name="8ball")
     async def eight_ball(self, ctx, *, query: str):

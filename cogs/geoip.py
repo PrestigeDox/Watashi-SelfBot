@@ -1,8 +1,5 @@
-import asyncio
 import discord
 from discord.ext import commands
-import inspect
-import aiohttp
 
 
 class Geoip:

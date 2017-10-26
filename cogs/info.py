@@ -1,21 +1,21 @@
 import discord
-from discord.ext import commands
 import datetime
-import string
-from urllib.request import urlopen
+from discord.ext import commands
 
 
 class Info:
     def __init__(self, bot):
         self.bot = bot
+        self.cmd = bot.get_command
+        self.color = bot.user_color
 
     @commands.command()
     async def whois(self, ctx, member: discord.Member = None):
         """Get Info On A Member"""
-        if member == None:
+        if member is None:
             memberholder = ctx.message.author.id
             member = ctx.guild.get_member(memberholder)
-            emb = discord.Embed(colour=self.bot.embed_colour)
+            emb = discord.Embed(colour=self.color)
             emb.set_author(name="Whois for {}".format(member.display_name),
                            icon_url=member.avatar_url)
             emb.set_thumbnail(url=member.avatar_url)
@@ -29,7 +29,7 @@ class Info:
             emb.add_field(name="**Avatar url**",
                           value="[Here]({})".format(member.avatar_url))
         else:
-            emb = discord.Embed(colour=self.bot.embed_colour)
+            emb = discord.Embed(colour=self.color)
             emb.set_author(name="Whois for {}".format(member.display_name),
                            icon_url=member.avatar_url)
             emb.set_thumbnail(url=member.avatar_url)
@@ -44,19 +44,20 @@ class Info:
                           value="[Here]({})".format(member.avatar_url))
         try:
             await ctx.send(embed=emb)
-        except:
-            await ctx.send("Too much info...")
+        except discord.HTTPException:
+            await ctx.invoke(self.cmd('error'), err='Too much information to send.')
 
     @commands.command()
     async def avatar(self, ctx, member: discord.Member = None):
         """Get A Members Avatar"""
         await ctx.message.delete()
-        emb = discord.Embed(colour=self.bot.embed_colour)
+        emb = discord.Embed(colour=self.color)
         emb.set_author(name="Avatar for {}".format(member.display_name),
                        icon_url=member.avatar_url)
         emb.add_field(name="**Avatar url**",
                       value="[Here]({})".format(member.avatar_url))
         emb.set_thumbnail(url=member.avatar_url)
+
         await ctx.send(embed=emb)
 
     @commands.command(aliases=['about', 'selfbot', 'bot'])
@@ -66,8 +67,7 @@ class Info:
         github = '[Click Here](https://github.com/PrestigeDox/Watashi-SelfBot)'
         discord_link = '[Click Here](https://discord.gg/JAcAEU5)'
 
-        pingtime = self.bot.latency * 1000
-        pingtime = int(pingtime)
+        pingtime = int(self.bot.latency * 1000)
 
         users = 0
         for i in self.bot.get_all_members():
@@ -92,20 +92,15 @@ class Info:
         minutes, seconds = divmod(rem, 60)
         days, hours = divmod(hours, 24)
 
-        currentstatus = str(ctx.author.status)
-        if currentstatus == "dnd":
-            currentstatus = "DND"
-        else:
-            currentstatus = string.capwords(currentstatus)
+        currentstatus = str(ctx.author.status).title()
 
-        await ctx.message.delete()
-
-        emb = discord.Embed(colour=self.bot.embed_colour)
+        emb = discord.Embed(colour=self.color)
         emb.set_author(name="Watashi SelfBot", icon_url=ctx.author.avatar_url)
-        emb.add_field(name="About", value="Watashi Selfbot was made to enhance the experience of " +
-                      "Discord users who wanted to speed up daily processes. Watashi has a multitude of commands " +
-                      "which you can use and we regularly update the bot to add more commands and improve existing " +
-                      "commands! Make sure to join our Discord server to keep up with Watashi related announcements!", inline=False)
+        emb.add_field(name="About", value="Watashi Selfbot was made to enhance the experience of "
+                      "Discord users who wanted to speed up daily processes. Watashi has a multitude of commands "
+                      "which you can use and we regularly update the bot to add more commands and improve existing "
+                      "commands! Make sure to join our Discord server to keep up with Watashi related announcements!",
+                      inline=False)
         emb.add_field(name="Uptime \U0001f550",
                       value=f'{days}D {hours}H {minutes}M {seconds}S', inline=True)
         emb.add_field(name="Ping Time \U0001f3d3",
@@ -125,6 +120,7 @@ class Info:
         emb.add_field(name="GitHub \U0001f516", value=github, inline=True)
         emb.add_field(name="Discord \U0001f47e",
                       value=discord_link, inline=True)
+
         await ctx.send(embed=emb)
 
 

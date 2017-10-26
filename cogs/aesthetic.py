@@ -5,9 +5,7 @@ from discord.ext import commands
 class Aesthetic:
     def __init__(self, bot):
         self.bot = bot
-
-        self.tiny_table = str.maketrans(
-            string.ascii_lowercase, 'ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖ٩ʳˢᵗᵘᵛʷˣʸᶻ')
+        self.tiny_table = str.maketrans(string.ascii_lowercase, 'ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖ٩ʳˢᵗᵘᵛʷˣʸᶻ')
 
     @commands.command(aliases=['aesthet', 'at'])
     async def aesthetic(self, ctx, *, a_text):
