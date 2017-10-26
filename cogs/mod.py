@@ -49,5 +49,5 @@ class Mod:
         await ctx.send(f'Member `{member.user}` unbanned.\n'
                        f'Reason: `{reason}`.')
 
-    def setup(bot):
-        bot.add_cog(Mod(bot))
+def setup(bot):
+    bot.add_cog(Mod(bot))

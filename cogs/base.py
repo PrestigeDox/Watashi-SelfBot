@@ -1,13 +1,8 @@
 import asyncio
 import discord
-from discord.ext import commands
 import inspect
-<<<<<<< HEAD
 from discord.ext import commands
 
-=======
-import string
->>>>>>> 80828de44a0e06e877886ea013c6a02e40e9c164
 
 class Base:
     def __init__(self, bot):
@@ -188,7 +183,7 @@ class Base:
                 await ctx.send(embed=emb)
 
         if change == 1:
-            emb = discord.Embed(colour=colour)
+            emb = discord.Embed(colour=self.color)
             emb.add_field(name='Status', value=status, inline=False)
             emb.add_field(name='Message', value=message, inline=False)
             await ctx.send(embed=emb)
@@ -232,11 +227,7 @@ class Base:
         h_key = data['key']
 
         emb = discord.Embed(colour=self.color)
-<<<<<<< HEAD
         emb.add_field(name="Command", value=command.upper(), inline=False)
-=======
-        emb.add_field(name="Command", value=string.capwords(command), inline=False)
->>>>>>> 80828de44a0e06e877886ea013c6a02e40e9c164
         emb.add_field(name="Source", value=f'<https://hastebin.com/{h_key}.py>', inline=False)
         return await ctx.send(embed=emb)
 
