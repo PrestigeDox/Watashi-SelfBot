@@ -1,72 +1,85 @@
 import discord
-import urbandictionary as ud
 from discord.ext import commands
 
 
 class Help:
     def __init__(self, bot):
         self.bot = bot
+        self.color = bot.user_color
+        self.cmd = bot.get_command
+        self.pre = bot.command_prefix
 
-    @commands.command(name='help')
-    async def new_help_command(self, ctx, *commands : str):
-        """Shows this message."""
-        destination = ctx.message.author if self.bot.pm_help else ctx.message.channel
+    @commands.group(invoke_without_command=True)
+    async def help(self, ctx):
+        """ Shows the possible help categories """
+        em = discord.Embed(title='Help',
+                           description='Below is a list of command categories.\n'
+                                       f'To get help or more information on a specific category or command, use:\n' 
+                                       f'`{self.pre}help cat|category <category name>` for a category OR\n'
+                                       f'`{self.pre}help cmd|command <command name>` for a specific command.',
+                           color=self.color)
 
-        def repl(obj):
-            return self.bot._mentions_transforms.get(obj.group(0), '')
+        # This can't go in the init because help isn't loaded last & thus misses some commands
+        cog_name_list = sorted(self.bot.cogs)
 
-        # help by itself just lists our own commands.
-        if len(commands) == 0:
-            pages = await self.bot.formatter.format_help_for(ctx, self.bot)
-        elif len(commands) == 1:
-            # try to see if it is a cog name
-            name = self.bot._mention_pattern.sub(repl, commands[0])
-            command = None
-            if name in self.bot.cogs:
-                command = self.bot.cogs[name]
-            else:
-                command = self.bot.all_commands.get(name)
-                if command is None:
-                    await destination.send(self.bot.command_not_found.format(name))
-                    return
+        col1 = cog_name_list[:len(cog_name_list) // 2]
+        col2 = cog_name_list[len(cog_name_list) // 2:]
 
-            pages = await self.bot.formatter.format_help_for(ctx, command)
+        em.add_field(name='Categories', value='\n'.join(col1))
+        em.add_field(name='Categories (cont.)', value='\n'.join(col2))
+        await ctx.send(embed=em)
+
+    @help.command(name='category', aliases=['categories', 'cat'])
+    async def help_categories(self, ctx, *, category_name: str=None):
+        """ Get brief help for each command in a specific category """
+
+        # This bit checks whether the category exists -> case insensitive
+        # We need the proper name, though, so we search for the proper capitalization
+        # And set category_name = to it
+        if category_name.casefold() in [x.casefold() for x in self.bot.cogs]:
+            category_name = min(self.bot.cogs, key=lambda v: len(set(category_name) ^ set(v)))
         else:
-            name = self.bot._mention_pattern.sub(repl, commands[0])
-            command = self.bot.all_commands.get(name)
-            if command is None:
-                await destination.send(self.bot.command_not_found.format(name))
-                return
+            return await ctx.invoke(self.cmd('error'), err=f'`{category_name}` is not a category.')
 
-            for key in commands[1:]:
-                try:
-                    key = self.bot._mention_pattern.sub(repl, key)
-                    command = command.all_commands.get(key)
-                    if command is None:
-                        await destination.send(self.bot.command_not_found.format(key))
-                        return
-                except AttributeError:
-                    await destination.send(self.bot.command_has_no_subcommands.format(command, key))
-                    return
+        em = discord.Embed(title=category_name, color=self.color)
+        em.add_field(name='Commands', value='\n'.join([f'\u2022 `{self.pre}{x.name}` - {x.short_doc}'
+                                                       for x in self.bot.get_cog_commands(category_name)]))
 
-            pages = await self.bot.formatter.format_help_for(ctx, command)
+        await ctx.send(embed=em)
 
-        if self.bot.pm_help is None:
-            characters = sum(map(lambda l: len(l), pages))
-            # modify destination based on length of pages.
-            if characters > 1000:
-                destination = ctx.message.author
+    @help.command(name='command', aliases=['cmd', 'commands'])
+    async def help_command(self, ctx, *, cmd_name: str):
+        """ Sends help for a specific command """
 
-        color = self.bot.embed_colour
+        # Get command object
+        cmd_obj = self.cmd(cmd_name)
 
-        for embed in pages:
-            embed.color = color
-            try:
-                await ctx.send(embed=embed)
-            except discord.HTTPException:
-                em_list = await embedtobox.etb(embed)
-                for page in em_list:
-                    await ctx.send(page)
+        # Handle no command found
+        if cmd_obj is None:
+            return await ctx.invoke(self.cmd('error'), err=f'Command {cmd_name} not found')
+
+        em = discord.Embed(title=cmd_obj.name, description=cmd_obj.short_doc, color=self.color)
+
+        # Input aliases and parameters to embed
+        if cmd_obj.aliases:
+            em.add_field(name='Aliases', value='\n'.join([f'\u2022 {x}' for x in cmd_obj.aliases]))
+        if cmd_obj.clean_params:
+            em.add_field(name='Parameters', value='\n'.join(f'\u2022 {x}' for x in cmd_obj.clean_params))
+
+        # Handle group commands
+        if isinstance(cmd_obj, commands.core.Group):
+            em.add_field(name='Group commands',
+                         value='\n'.join([f'\u2022 {x}' for x in cmd_obj.commands]),
+                         inline=False)
+
+        # Add usage last
+        em.add_field(name='Usage',
+                     value=f'```{self.pre}\u200b{cmd_name} '
+                           f'{" ".join([f"<{x}>" for x in cmd_obj.clean_params])}```',
+                     inline=False)
+
+        await ctx.send(embed=em)
+
 
 def setup(bot):
     bot.add_cog(Help(bot))
