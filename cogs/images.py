@@ -8,6 +8,7 @@ class Images:
         self.bot = bot
         self.urls = ['http://random.cat/', 'http://random.dog/']
         self.aiohttp_session = bot.aiohttp_session
+        self.color = bot.user_color
 
     @commands.command()
     async def cat(self, ctx):
@@ -27,7 +28,7 @@ class Images:
 
         # Create embed response.
         em = discord.Embed(title=':cat2: Random Cat',
-                           color=self.bot.user_color)
+                           color=self.color)
         em.set_image(url=cat)
 
         await ctx.send(embed=em)
@@ -50,7 +51,7 @@ class Images:
 
         # Create embed response.
         em = discord.Embed(title=':dog2: Random dog',
-                           color=self.bot.user_color)
+                           color=self.color)
         em.set_image(url=dog)
 
         await ctx.send(embed=em)

@@ -6,11 +6,14 @@ from discord.ext import commands
 class Elements:
     def __init__(self, bot):
         self.bot = bot
+        self.color = bot.user_color
 
     @commands.command(name="periodic", aliases=['element'])
     async def elements(self, ctx, *,  query=None):
         """Get Info About The Elements"""
 
+        # This uses the 'periodic' library available on pypi, but its for python 2, I had to modify it to work with this
+        # but the credit for element data goes to the creator of 'periodic'
         await ctx.message.delete()
 
         # Handle error if no search query was provided
@@ -22,7 +25,7 @@ class Elements:
         if element is None:
             return await ctx.invoke(self.bot.get_command('error'), err='This Element does not exist!')
 
-        em = discord.Embed(color=self.bot.embed_colour)
+        em = discord.Embed(color=self.color)
         em.title = "\U0001f52c Periodic Table"
         em.add_field(name="Element", value=element.name)
         em.add_field(name="Symbol", value=element.symbol)
