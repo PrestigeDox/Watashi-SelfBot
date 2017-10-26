@@ -23,6 +23,8 @@ class Google:
     async def google(self, ctx, query: str=None):
         """Search Google for a query"""
 
+        await ctx.message.delete()
+
         # Handle no query being provided
         if query is None:
             return await ctx.invoke(self.bot.get_command('error'), delete_after=2.0, err='Please provide a query!')
