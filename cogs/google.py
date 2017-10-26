@@ -20,7 +20,7 @@ class Google:
             }
 
     @commands.command()
-    async def google(self, ctx, query: str=None):
+    async def google(self, ctx, *, query: str=None):
         """Search Google for a query"""
 
         await ctx.message.delete()
@@ -50,11 +50,11 @@ class Google:
         result_links = [cgi.parse_qs(urlparse(x.attrs['href'])[4])['url'][0] for x in soup.select('div.g h3.r a')[:4] if
                         '/search' not in x.attrs['href'] and not x.text == '']
         result_desc = [x.text for x in soup.select('div#ires div.g div.s span.st')[:4] if
-                       'Images for' not in x.text and not x.text == '']
+                       '/search' not in x.text and not x.text == '']
 
         # 'hp-xpdbox' is the class for google's embedded data, if this exists, google_embed is changed to True
         # and results are changed to 2
-        if soup.select('div.hp-xpdbox'):
+        if soup.select('div.hp-xpdbox div._tXc'):
             google_embed = True
             embed_title = [a.text for a in soup.select('div._B5d')][0]
             embed_type = [a.text for a in soup.select('div._Pxg')][0]
@@ -75,12 +75,12 @@ class Google:
             if img:
                 em.set_thumbnail(url=img)
 
-        results = "\n\n".join([f'{link}\n{desc}' for link, desc in list(zip(result_links, result_desc))[:results_num]])
+        results = "\n\n".join([f'<{link}>\n{desc}' for link, desc in list(zip(result_links, result_desc))[:results_num]])
 
         if google_embed:
-            await ctx.send(embed=em, content=f"\n**Also see:**\n{results}")
+            await ctx.send(embed=em, content=f"\n**Results for {query}:**\n{results}")
         else:
-            await ctx.send(embed=em, content=results)
+            await ctx.send(f"\n**Results for {query}:**\n{results}")
 
 
 def setup(bot):
