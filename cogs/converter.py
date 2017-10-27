@@ -6,7 +6,7 @@ from urllib.parse import quote_plus
 from urllib.parse import urlparse
 
 
-class Calculator:
+class Converter:
     def __init__(self, bot):
         self.bot = bot
         self.aiohttp_session = bot.aiohttp_session
@@ -19,8 +19,8 @@ class Calculator:
             'Cache-Control': 'no-cache'
             }
 
-    @commands.command(aliases=['calc'])
-    async def calculate(self, ctx, *, query: str=None):
+    @commands.command()
+    async def convert(self, ctx,  *, query=None):
         """ Calculate some expressions! """
 
         await ctx.message.delete()
@@ -29,29 +29,40 @@ class Calculator:
         if query is None:
             return await ctx.invoke(self.bot.get_command('error'), delete_after=2.0, err='Please provide a query!')
 
-        params = {'q': quote_plus(query), 'source': 'hp'}
+        from_unit = query.split()[0]
+        to_unit = query.split()[1]
+
+        try:
+            val = float(query.split()[2])
+        except ValueError:
+            return await ctx.invoke(self.bot.get_command('error'), delete_after=2.0, err='Invalid query!')
+
+        # Doing this in the f-string later would become f-string-ception and that doesn't work
+        qstr = quote_plus(f'{val} {from_unit} to {to_unit}')
 
         # Tries its best to imitate a real browser visit, an old user-agent is used to make scraping easier
-        async with self.aiohttp_session.get(self.url, params=params, headers=self.headers) as r:
+        async with self.aiohttp_session.get(f'{self.url}?q={qstr}&source=hp', headers=self.headers) as r:
             html = await r.text()
 
         # Beautiful soup
         soup = BeautifulSoup(html, 'lxml')
 
-        # The span inside div#topstuff has the result for the expression, if it doesnt exist google doesn't like
+        # The span inside div._Qeb has the result for the expression, if it doesnt exist google doesn't like
         # your expression or its just invalid
-        if not soup.select('div#topstuff span.nobr'):
-            return await ctx.invoke(self.bot.get_command('error'), delete_after=2.0, err='Could not calculate '
+        if not soup.select('div#ires div._Qeb span'):
+            return await ctx.invoke(self.bot.get_command('error'), delete_after=2.0, err='Could not convert '
                                                                                          'expression!')
-        result = soup.select('div#topstuff span.nobr')[0].text
+        # Values with units
+        from_val = soup.select("div#ires div._Qeb span")[0].text
+        to_val = soup.select("div#ires div._Peb")[0].text
 
         em = discord.Embed(color=self.bot.user_color)
-        em.add_field(name="Expression", value=query)
-        em.add_field(name="Result", value=result.split('=')[1].strip())
-        em.set_author(name="Calculator", icon_url="https://maxcdn.icons8.com/Share/icon/Science/calculator1600.png")
+        em.add_field(name=' '.join(from_val.split()[1:]).title(), value=from_val.split()[0])
+        em.add_field(name=' '.join(to_val.split()[1:]).title(), value=to_val.split()[0])
+        em.set_author(name="Unit Converter", icon_url="http://i67.tinypic.com/aag6c4.png")
 
         await ctx.send(embed=em)
 
 
 def setup(bot):
-    bot.add_cog(Calculator(bot))
+    bot.add_cog(Converter(bot))
