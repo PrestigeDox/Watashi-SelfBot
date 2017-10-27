@@ -1,9 +1,7 @@
-import cgi
 import discord
 from discord.ext import commands
 from bs4 import BeautifulSoup
 from urllib.parse import quote_plus
-from urllib.parse import urlparse
 
 
 class Calculator:
