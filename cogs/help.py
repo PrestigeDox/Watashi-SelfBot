@@ -10,13 +10,19 @@ class Help:
         self.pre = bot.command_prefix
 
     @commands.group(invoke_without_command=True)
-    async def help(self, ctx):
+    async def help(self, ctx, *, command_name: str=None):
         """ Shows the possible help categories """
+
+        # Shortcut to command search
+        if command_name is not None:
+            return await ctx.invoke(self.cmd('help command'), cmd_name=command_name)
+
         em = discord.Embed(title='Help',
                            description='Below is a list of command categories.\n'
                                        f'To get help or more information on a specific category or command, use:\n'
                                        f'`{self.pre}help cat|category <category name>` for a category OR\n'
-                                       f'`{self.pre}help cmd|command <command name>` for a specific command.',
+                                       f'`{self.pre}help cmd|command <command name>` for a specific command.\n'
+                                       f'`{self.pre}help <command name> is also a shortcut for the above.',
                            color=self.color)
 
         # This can't go in the init because help isn't loaded last & thus misses some commands
@@ -37,8 +43,7 @@ class Help:
         # We need the proper name, though, so we search for the proper capitalization
         # And set category_name = to it
         if category_name.casefold() in [x.casefold() for x in self.bot.cogs]:
-            category_name = min(self.bot.cogs, key=lambda v: len(
-                set(category_name) ^ set(v)))
+            category_name = min(self.bot.cogs, key=lambda v: len(set(category_name) ^ set(v)))
         else:
             return await ctx.invoke(self.cmd('error'), err=f'`{category_name}` is not a category.')
 
