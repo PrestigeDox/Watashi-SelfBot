@@ -22,7 +22,8 @@ class Presence:
 
     @presence.group(aliases=['stream', 'streaming'])
     async def twitch(self, ctx, game_name: str, twitch_channel_name: str):
-        """ Set your status to streaming with a twitch channel name """
+        """ Set your status to streaming with a twitch channel name
+        NOTE: Your game name must be double-quoted if it is longer than 1 word with spaces """
         await self.bot.change_presence(game=discord.Game(name=game_name,
                                                          type=1,
                                                          url=f'https://www.twitch.tv/{twitch_channel_name}'))
