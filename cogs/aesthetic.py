@@ -13,16 +13,12 @@ class Aesthetic:
         ascii_to_wide = dict((i, chr(i + 0xfee0)) for i in range(0x21, 0x7f))
         ascii_to_wide.update({0x20: u'\u3000', 0x2D: u'\u2212'})
 
-        await ctx.message.edit(content='{}'.format(a_text.translate(ascii_to_wide)))
+        await ctx.message.edit(content=f'{a_text.translate(ascii_to_wide)}')
 
     @commands.command(aliases=['tinyfont', 'small', 'smallfont'])
     async def tiny(self, ctx, *, text: str = None):
         """ Tiny Text Converter """
-        await ctx.message.delete()
-
-        textlower = text.lower()
-        dvl = textlower.translate(self.tiny_table)
-        await ctx.channel.send(dvl)
+        await ctx.message.edit(content=text.lower().translate(self.tiny_table))
 
 
 def setup(bot):
