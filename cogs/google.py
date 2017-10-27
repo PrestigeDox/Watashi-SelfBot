@@ -1,10 +1,9 @@
-import cgi
 import discord
 from discord.ext import commands
 from bs4 import BeautifulSoup
 from urllib.parse import quote_plus
 from urllib.parse import urlparse
-
+from urllib.parse import parse_qs
 
 class Google:
     def __init__(self, bot):
@@ -47,7 +46,7 @@ class Google:
         # URLs on google search are redirected through 'google.com/url?url=xxxxx' , this uses cgi and urlparse to
         # grab only the 'url' URL parameter and get rid of the other parameters google passes for logging etc to
         # 'google.com/url'
-        result_links = [cgi.parse_qs(urlparse(x.attrs['href'])[4])['url'][0] for x in soup.select('div.g h3.r a')[:4] if
+        result_links = [parse_qs(urlparse(x.attrs['href'])[4])['url'][0] for x in soup.select('div.g h3.r a')[:4] if
                         '/search' not in x.attrs['href'] and not x.text == '']
         result_desc = [x.text for x in soup.select('div#ires div.g div.s span.st')[:4] if
                        '/search' not in x.text and not x.text == '']
