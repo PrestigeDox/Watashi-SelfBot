@@ -19,15 +19,13 @@ class Google:
             'Cache-Control': 'no-cache'
             }
 
-    @commands.command()
+    @commands.command(aliases=['g'])
     async def google(self, ctx, *, query: str=None):
         """Search Google for a query"""
-
-        await ctx.message.delete()
-
         # Handle no query being provided
         if query is None:
-            return await ctx.invoke(self.bot.get_command('error'), delete_after=2.0, err='Please provide a query!')
+            return await ctx.invoke(self.bot.get_command('error'), delete_after=2.0, err='Please provide a query!',
+                                    del_msg=ctx.message)
 
         # 'google_embed' is dependent on a test that checks whether google has embedded any external data on the page
         # 'result_nums' is the no. of results to display when there is no embedded data
@@ -78,9 +76,9 @@ class Google:
         results = "\n\n".join([f'<{link}>\n{desc}' for link, desc in list(zip(result_links, result_desc))[:results_num]])
 
         if google_embed:
-            await ctx.send(embed=em, content=f"\n**Results for {query}:**\n{results}")
+            await ctx.message.edit(embed=em, content=f"\n**Results for {query}:**\n{results}")
         else:
-            await ctx.send(f"\n**Results for {query}:**\n{results}")
+            await ctx.message.edit(content=f"\n**Results for {query}:**\n{results}")
 
 
 def setup(bot):
