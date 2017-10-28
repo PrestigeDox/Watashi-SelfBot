@@ -6,6 +6,9 @@ class Aesthetic:
     def __init__(self, bot):
         self.bot = bot
         self.tiny_table = str.maketrans(string.ascii_lowercase, 'ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖ٩ʳˢᵗᵘᵛʷˣʸᶻ')
+        self.flip_table = str.maketrans(string.ascii_lowercase, '\u0250q\u0254p\u01dd\u025f\u0183\u0265\u0131\u027e'
+                                                                '\u029e\u05df\u026fuodb\u0279s\u0287n\u028c\u028dx'
+                                                                '\u028ez')
 
     @commands.command(aliases=['aesthet', 'at'])
     async def aesthetic(self, ctx, *, a_text):
@@ -19,6 +22,11 @@ class Aesthetic:
     async def tiny(self, ctx, *, text: str = None):
         """ Tiny Text Converter """
         await ctx.message.edit(content=text.lower().translate(self.tiny_table))
+
+    @commands.command()
+    async def textflip(self, ctx, *, text: str = None):
+        """ Upside Down Text """
+        await ctx.message.edit(content=text.lower().translate(self.flip_table)[::-1])
 
 
 def setup(bot):

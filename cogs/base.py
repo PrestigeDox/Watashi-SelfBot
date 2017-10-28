@@ -21,6 +21,8 @@ class Base:
     @commands.command(aliases=['type'])
     async def typing(self, ctx, *, duration: float=10.0):
         """Pretend that you're typing for a duration"""
+        await ctx.message.delete()
+
         async with ctx.channel.typing():
             await asyncio.sleep(duration)
 
