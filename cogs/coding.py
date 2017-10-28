@@ -10,49 +10,49 @@ class Coding:
 
     @commands.command(aliases=['python'])
     async def py(self, ctx, *, code: str):
-        """Send Code In A Python Block"""
+        """ Send Code In A Python Block """
         await ctx.message.delete()
         await ctx.send("```py\n{}```".format(code))
 
     @commands.command()
     async def css(self, ctx, *, code: str):
-        """Send Code In A CSS Block"""
+        """ Send Code In A CSS Block """
         await ctx.message.delete()
         await ctx.send("```css\n{}```".format(code))
 
     @commands.command(aliases=['html5'])
     async def html(self, ctx, *, code: str):
-        """Send Code In A HTML Block"""
+        """ Send Code In A HTML Block """
         await ctx.message.delete()
         await ctx.send("```html\n{}```".format(code))
 
     @commands.command()
     async def ini(self, ctx, *, code: str):
-        """Send Code In A INI Block"""
+        """ Send Code In A INI Block """
         await ctx.message.delete()
         await ctx.send("```ini\n{}```".format(code))
 
     @commands.command()
     async def c(self, ctx, *, code: str):
-        """Send Code In A C Block"""
+        """ Send Code In A C Block """
         await ctx.message.delete()
         await ctx.send("```c\n{}```".format(code))
 
     @commands.command()
     async def codeblock(self, ctx, *, code: str):
-        """Send Text In A Code Block"""
+        """ Send Text In A Code Block """
         await ctx.message.delete()
         await ctx.send("```\n{}```".format(code))
 
     @commands.command(aliases=['onecodeblock'])
     async def linecodeblock(self, ctx, *, code: str):
-        """Send Text In A Basic Code Block"""
+        """ Send Text In A Basic Code Block """
         await ctx.message.delete()
         await ctx.send("``\n{}```".format(code))
 
     @commands.command()
     async def charinfo(self, ctx, char: str):
-        """Get The CharInfo For Any Emoji"""
+        """ Get The CharInfo For Any Emoji """
         await ctx.message.delete()
 
         digit = f'{ord(char):x}'

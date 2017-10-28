@@ -10,6 +10,8 @@ class Clean:
     async def clean(self, ctx, limit: int=None, sleep: float=1.0):
         """ Cleanse the channel of your messages """
         await ctx.message.delete()
+
+        # Go over each message in the channel's history before your current message, delete it if it's from you
         async for msg in ctx.channel.history(limit=limit, before=ctx.message):
             if msg.author == self.bot.user:
                 await msg.delete()

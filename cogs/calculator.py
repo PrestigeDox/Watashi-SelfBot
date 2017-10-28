@@ -43,6 +43,7 @@ class Calculator:
                                                                                          'expression!')
         result = soup.select('div#topstuff span.nobr')[0].text
 
+        # Create Embed response
         em = discord.Embed(color=self.bot.user_color)
         em.add_field(name="Expression", value=query)
         em.add_field(name="Result", value=result.split('=')[1].strip())
