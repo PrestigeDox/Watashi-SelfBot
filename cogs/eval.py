@@ -12,6 +12,7 @@ class Eval:
         self._last_result = None
         self.sessions = set()
 
+    @staticmethod
     def cleanup_code(self, content):
         """Automatically removes code blocks from the code."""
         # remove ```py\n```
@@ -21,6 +22,7 @@ class Eval:
         # remove `foo`
         return content.strip('` \n')
 
+    @staticmethod
     def get_syntax_error(self, e):
         if e.text is None:
             return f'```py\n{e.__class__.__name__}: {e}\n```'

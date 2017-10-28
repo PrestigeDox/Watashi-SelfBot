@@ -8,7 +8,8 @@ class Wiki:
     def __init__(self, bot):
         self.bot = bot
         self.search_uri = 'http://en.wikipedia.org/w/api.php?action=opensearch&format=json&search={}'
-        self.random_uri = 'https://en.wikipedia.org/w/api.php?action=query&list=random&format=json&rnnamespace=0&rnlimit=1'
+        self.random_uri = 'https://en.wikipedia.org/w/api.php?action=query&list=random&format=json&rnnamespace=0' \
+                          '&rnlimit=1 '
         self.headers = {
             'user-agent': 'Watashi-Bot/0.1a - A fantastic selfbot (https://github.com/PrestigeDox/Watashi-SelfBot)'}
         self.aiohttp_session = bot.aiohttp_session

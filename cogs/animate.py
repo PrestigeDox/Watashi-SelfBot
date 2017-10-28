@@ -8,7 +8,7 @@ class Animate:
 
     @commands.command(aliases=['anim'])
     async def animate(self, ctx, *, file):
-        """Animated Text Files onto Discord"""
+        """ Animate Text Files onto Discord """
         try:
             with open(f'animations/{file}.txt') as a:
                 anim = a.read().splitlines()

@@ -20,11 +20,15 @@ class Define:
         """ Find the definition of a word """
         params = {'q': f'define+{word}', 'source': 'hp'}
 
+        # Request page source with custom headers and params from above
         async with self.aiohttp_session.get(self.url, params=params, headers=self.headers) as r:
             html = await r.text()
 
+        # Soup
         soup = BeautifulSoup(html, 'lxml')
 
+        # Looks for google's embedded word data, raised AttributeError is caught to inform of possible reasons
+        # to why no definition was found
         try:
             defn = soup.find('div', attrs={'data-dobid': 'dfn'}).text
             pos = soup.find('div', attrs={'class': 'lr_dct_sf_h'}).span.text

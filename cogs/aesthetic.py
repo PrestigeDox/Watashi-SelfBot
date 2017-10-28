@@ -13,6 +13,12 @@ class Aesthetic:
     @commands.command(aliases=['aesthet', 'at'])
     async def aesthetic(self, ctx, *, a_text):
         """ Larger Text Converter """
+
+        # Handle no text being provided
+        if a_text is None:
+            return await ctx.invoke(self.bot.get_command('error'), delete_after=2.0, err='Please provide text to '
+                                                                                         'convert!')
+
         ascii_to_wide = dict((i, chr(i + 0xfee0)) for i in range(0x21, 0x7f))
         ascii_to_wide.update({0x20: u'\u3000', 0x2D: u'\u2212'})
 
@@ -21,11 +27,24 @@ class Aesthetic:
     @commands.command(aliases=['tinyfont', 'small', 'smallfont'])
     async def tiny(self, ctx, *, text: str = None):
         """ Tiny Text Converter """
+
+        # Handle no text being provided
+        if text is None:
+            return await ctx.invoke(self.bot.get_command('error'), delete_after=2.0, err='Please provide text to '
+                                                                                         'convert!')
+
+        # Convert text to lowercase and use the tiny_table translation table to translate text.
         await ctx.message.edit(content=text.lower().translate(self.tiny_table))
 
     @commands.command()
     async def textflip(self, ctx, *, text: str = None):
         """ Upside Down Text """
+
+        # Handle no text being provided
+        if text is None:
+            return await ctx.invoke(self.bot.get_command('error'), delete_after=2.0, err='Please provide text to '
+                                                                                         'convert!')
+        # Convert text to lowercase and use the flip_table translation table to translate text.
         await ctx.message.edit(content=text.lower().translate(self.flip_table)[::-1])
 
 
