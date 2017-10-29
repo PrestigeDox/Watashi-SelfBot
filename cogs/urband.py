@@ -26,7 +26,7 @@ class UrbanDictionary:
 
     @urban.command(aliases=['-s'])
     async def search(self, ctx, *, query: str):
-        """Search A Specific Word In The Urban Dict"""
+        """ Search UrbanDictoinary for a Specific Word """
 
         # TODO:
         # Re-evaluate this command
@@ -67,7 +67,7 @@ class UrbanDictionary:
 
     @urban.command(aliases=['-r'])
     async def random(self, ctx):
-        """Search A Random Word In The Urban Dict"""
+        """ Get a Random Word and its Meaning from UrbanDictionary """
         await ctx.message.delete()
         item = await self.bot.loop.run_in_executor(None, ud.random)
 

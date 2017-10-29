@@ -11,7 +11,7 @@ class Info:
 
     @commands.command()
     async def whois(self, ctx, member: discord.Member = None):
-        """Get Info On A Member"""
+        """ Get Info On A Member """
         if member is None:
             memberholder = ctx.message.author.id
             member = ctx.guild.get_member(memberholder)
@@ -49,7 +49,7 @@ class Info:
 
     @commands.command()
     async def avatar(self, ctx, member: discord.Member = None):
-        """Get A Members Avatar"""
+        """ Get A Member's Avatar """
         await ctx.message.delete()
         emb = discord.Embed(colour=self.color)
         emb.set_author(name="Avatar for {}".format(member.display_name),
@@ -62,7 +62,7 @@ class Info:
 
     @commands.command(aliases=['about', 'selfbot', 'bot'])
     async def info(self, ctx):
-        """Get Info/Statistics On The Bot"""
+        """ Get Info/Statistics On The Bot """
 
         github = '[Click Here](https://github.com/PrestigeDox/Watashi-SelfBot)'
         discord_link = '[Click Here](https://discord.gg/JAcAEU5)'
