@@ -8,7 +8,6 @@ class Base:
     def __init__(self, bot):
         self.bot = bot
         self.color = bot.user_color
-        self.cmd = bot.get_command
         self.session = bot.aiohttp_session
 
     @commands.command(aliases=['pingpong'])
@@ -30,7 +29,7 @@ class Base:
     async def embed(self, ctx, *, message: str=None):
         """ Create an embed """
         if message is None:
-            return await ctx.invoke(self.cmd('error'), err='You must add something to embed')
+            return await ctx.error('You must add something to embed.')
 
         emb = discord.Embed(title=message, colour=self.color)
         await ctx.message.edit(content=None, embed=emb)
@@ -44,7 +43,7 @@ class Base:
         emojis = '\n'.join(['{1} `:{0}:`'.format(e.name, str(e)) for e in ctx.message.guild.emojis])
 
         if len(emojis) > 2000:
-            return await ctx.invoke(self.bot.get_command('error'), delete_after=2.0, err='Too many emojis!')
+            return await ctx.error('Too many emojis to send!', delete_after=2.0)
 
         await ctx.send(emojis)
 

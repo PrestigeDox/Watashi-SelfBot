@@ -20,12 +20,9 @@ class Calculator:
     @commands.command(aliases=['calc'])
     async def calculate(self, ctx, *, query: str=None):
         """ Calculate some expressions! """
-
-        await ctx.message.delete()
-
         # Handle no query being provided
         if query is None:
-            return await ctx.invoke(self.bot.get_command('error'), delete_after=2.0, err='Please provide a query!')
+            return await ctx.invoke('Please provide a query!', delete_after=2.0)
 
         params = {'q': quote_plus(query), 'source': 'hp'}
 
@@ -49,7 +46,7 @@ class Calculator:
         em.add_field(name="Result", value=result.split('=')[1].strip())
         em.set_author(name="Calculator", icon_url="https://maxcdn.icons8.com/Share/icon/Science/calculator1600.png")
 
-        await ctx.send(embed=em)
+        await ctx.message.edit(embed=em)
 
 
 def setup(bot):

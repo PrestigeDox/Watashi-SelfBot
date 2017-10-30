@@ -13,7 +13,7 @@ class Eval:
         self.sessions = set()
 
     @staticmethod
-    def cleanup_code(self, content):
+    def cleanup_code(content):
         """Automatically removes code blocks from the code."""
         # remove ```py\n```
         if content.startswith('```') and content.endswith('```'):
@@ -23,7 +23,7 @@ class Eval:
         return content.strip('` \n')
 
     @staticmethod
-    def get_syntax_error(self, e):
+    def get_syntax_error(e):
         if e.text is None:
             return f'```py\n{e.__class__.__name__}: {e}\n```'
         return f'```py\n{e.text}{"^":>{e.offset}}\n{e.__class__.__name__}: {e}```'
@@ -48,7 +48,7 @@ class Eval:
         try:
             exec(to_compile, env)
         except Exception as e:
-            return await ctx.send(f'```py\n{e.__class__.__name__}: {e}\n```')
+            return await ctx.error(f'```py\n{e.__class__.__name__}: {e}\n```')
 
         func = env['func']
         try:
@@ -56,7 +56,7 @@ class Eval:
                 ret = await func()
         except Exception as e:
             value = stdout.getvalue()
-            await ctx.send(f'```py\n{value}{traceback.format_exc()}\n```')
+            await ctx.error(f'```py\n{value}{traceback.format_exc()}\n```')
         else:
             value = stdout.getvalue()
 
@@ -83,7 +83,7 @@ class Eval:
                 await ctx.send(f'`{cmd}` produced no output')
 
         except Exception as e:
-            await ctx.send(f'Unable to send output\n```py\n{e}```')
+            await ctx.error(f'Unable to send output\n```py\n{e}```')
 
 
 def setup(bot):

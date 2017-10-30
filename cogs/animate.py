@@ -13,9 +13,9 @@ class Animate:
             with open(f'animations/{file}.txt') as a:
                 anim = a.read().splitlines()
         except FileNotFoundError:
-            return await ctx.send('File not found.')
+            return await ctx.error('File not found.')
         except IOError:
-            return await ctx.send('Cannot open file.')
+            return await ctx.error('Cannot open file.')
 
         interval = anim[0]
         for line in anim[1:]:

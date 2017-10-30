@@ -8,9 +8,14 @@ class Presence:
         self.cmd = bot.get_command
 
     @commands.group(invoke_without_command=True, aliases=['pres'])
-    async def presence(self, ctx, *, game_name: str):
-        """ Change your discord presence """
-        await ctx.invoke(self.cmd('presence game'), game_name=game_name)
+    async def presence(self, ctx, *, game_name: str=None):
+        """ Change your discord presence
+        Usage: provide a game name as a shortcut to presence game OR
+        Provide no input and no subcommand to clear your playing status """
+        if game_name is not None:
+            return await ctx.invoke(self.cmd('presence game'), game_name=game_name)
+
+        return await ctx.invoke(self.cmd('presence clear'))
 
     @presence.command(aliases=['g', 'play', 'playing'])
     async def game(self, ctx, *, game_name: str):

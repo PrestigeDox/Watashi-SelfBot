@@ -36,7 +36,7 @@ class Define:
 
         except AttributeError:
             print('Unable to find definition. Ensure you do not have to do a Google captcha.')
-            return await ctx.invoke(self.bot.get_command('error'), err=f'Unable to find a definition for `{word}`.')
+            return await ctx.error(f'Unable to find a definition for `{word}`.')
 
         # Create embed
         em = discord.Embed(title=word.capitalize(),
@@ -46,7 +46,7 @@ class Define:
         if len(syn_list) != 0:
             em.add_field(name='Synonyms', value=', '.join(syn_list[:5]), inline=False)
 
-        await ctx.send(embed=em)
+        await ctx.message.edit(embed=em)
 
 
 def setup(bot):
