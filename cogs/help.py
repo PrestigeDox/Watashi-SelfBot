@@ -22,7 +22,7 @@ class Help:
                                        f'To get help or more information on a specific category or command, use:\n'
                                        f'`{self.pre}help cat|category <category name>` for a category OR\n'
                                        f'`{self.pre}help cmd|command <command name>` for a specific command.\n'
-                                       f'`{self.pre}help <command name> is also a shortcut for the above.',
+                                       f'`{self.pre}help <command name>` is also a shortcut for the above.',
                            color=self.color)
 
         # This can't go in the init because help isn't loaded last & thus misses some commands
