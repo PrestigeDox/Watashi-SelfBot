@@ -11,8 +11,6 @@ class Geoip:
     @commands.command(aliases=['geolocate', 'iptogeo', 'iptolocation', 'ip2geo', 'ip'])
     async def geoip(self, ctx, *, ipaddr: str = "1.3.3.7"):
         """ Convert an IP/URL to a GeoLocation """
-        await ctx.message.delete()
-
         async with self.session.get(f'https://freegeoip.net/json/{ipaddr}') as resp:
             data = await resp.json()
 
@@ -38,7 +36,7 @@ class Geoip:
             if field['value']:
                 em.add_field(name=field['name'], value=field['value'])
 
-        return await ctx.send(embed=em)
+        return await ctx.message.edit(embed=em, content=None)
 
 
 def setup(bot):

@@ -41,7 +41,7 @@ class Coding:
     @commands.command(aliases=['onecodeblock'])
     async def linecodeblock(self, ctx, *, code: str):
         """ Send Text In A Basic Code Block """
-        await ctx.message.edit("``\n{}```".format(code))
+        await ctx.message.edit("```\n{}```".format(code))
 
     @commands.command()
     async def charinfo(self, ctx, char: str):

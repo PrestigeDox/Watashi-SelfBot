@@ -6,23 +6,23 @@ from discord.ext import commands
 class UrbanDictionary:
     def __init__(self, bot):
         self.bot = bot
+        self.color = bot.user_color
 
     @commands.group(invoke_without_command=True, aliases=['ud', 'urbandict'])
     async def urban(self, ctx, *, query: str):
         """ Check UrbanDictionary for the meaning of a word """
-        await ctx.message.delete()
         try:
             resultlst = await self.bot.loop.run_in_executor(None, ud.define, query)
             item = resultlst[0]
         except:
             return
 
-        em = discord.Embed(color=0x00ffff)
+        em = discord.Embed(color=self.color)
         em.set_author(name="\U0001f4d6 Urban Dictionary")
         em.add_field(name="Word", value=item.word, inline=False)
         em.add_field(name="Definition", value=item.definition, inline=False)
         em.add_field(name="Example(s)", value=item.example, inline=False)
-        await ctx.send(embed=em)
+        await ctx.message.edit(embed=em, content=None)
 
     @urban.command(aliases=['-s'])
     async def search(self, ctx, *, query: str):
@@ -31,14 +31,12 @@ class UrbanDictionary:
         # TODO:
         # Re-evaluate this command
         # Reason: very spammy and not necessarily intuitive for the user
-        await ctx.message.delete()
         resultlst = await self.bot.loop.run_in_executor(None, ud.define, query)
 
         msg = str()
         for number, option in enumerate(resultlst[:4]):
             msg += "{0}. {1}\n".format(number + 1, option.word)
-        em = discord.Embed(title="Results", description=msg,
-                           color=0x00ffff)
+        em = discord.Embed(title="Results", description=msg, color=self.color)
         em.set_footer(text="Type 'exit' to leave the menu.")
         menumsg = await ctx.send(embed=em)
 
@@ -58,25 +56,24 @@ class UrbanDictionary:
         except IndexError:
             return
 
-        em = discord.Embed(color=0x00ffff)
+        em = discord.Embed(color=self.color)
         em.set_author(name="\U0001f4d6 Urban Dictionary")
         em.add_field(name="Word", value=item.word)
         em.add_field(name="Definition", value=item.definition)
         em.add_field(name="Example(s)", value=item.example)
-        await ctx.send(embed=em)
+        await ctx.message.edit(embed=em, content=None)
 
     @urban.command(aliases=['-r'])
     async def random(self, ctx):
         """ Get a Random Word and its Meaning from UrbanDictionary """
-        await ctx.message.delete()
         item = await self.bot.loop.run_in_executor(None, ud.random)
 
-        em = discord.Embed(color=0x00ffff)
+        em = discord.Embed(color=self.color)
         em.set_author(name="\U0001f4d6 Urban Dictionary")
         em.add_field(name="Word", value=item[0].word)
         em.add_field(name="Definition", value=item[0].definition)
         em.add_field(name="Example(s)", value=item[0].example)
-        await ctx.send(embed=em)
+        await ctx.message.edit(embed=em, content=None)
 
 
 def setup(bot):

@@ -28,8 +28,8 @@ class Eval:
             return f'```py\n{e.__class__.__name__}: {e}\n```'
         return f'```py\n{e.text}{"^":>{e.offset}}\n{e.__class__.__name__}: {e}```'
 
-    @commands.command(hidden=True, name='pyval')
-    async def _eval(self, ctx, *, body: str):
+    @commands.command()
+    async def pyval(self, ctx, *, body: str):
         """Evaluate some python code"""
 
         env = {
@@ -67,7 +67,7 @@ class Eval:
                 self._last_result = ret
                 await ctx.send(f'```py\n{value}{ret}\n```')
 
-    @commands.command(name='eval', hidden=True)
+    @commands.command(name='eval')
     async def shell_access(self, ctx, *, cmd):
         """Access the commandline from the bot"""
 

@@ -85,7 +85,7 @@ class Translate:
         em.add_field(name='Original Text', value=f'`{query}`')
         em.add_field(name='Translated', value=f'`{trans_text}`', inline=False)
 
-        await ctx.send(embed=em)
+        await ctx.message.edit(embed=em, content=None)
 
     @translate.command(name='abbreviations', aliases=['abv', 'ab'])
     async def list_abv(self, ctx, *, query: str=None):
@@ -94,8 +94,11 @@ class Translate:
 
         # Sends a giant spammy list
         if query is None:
-            em.add_field(name='Language - Abbreviation', value='\n'.join([f'{x} - `{self.abv_dict[x]}`'
-                                                                          for x in self.abv_dict.keys()]))
+            abv_list = [f'{x} - `{self.abv_dict[x]}`' for x in self.abv_dict]
+            abv_col1 = abv_list[:len(abv_list) // 2]
+            abv_col2 = abv_list[len(abv_list) // 2:]
+            em.add_field(name='Abbreviations', value='\n'.join(abv_col1))
+            em.add_field(name='Abbreviations (cont.)', value='\n'.join(abv_col2))
             return await ctx.send(embed=em)
 
         query = query.title()
@@ -103,8 +106,7 @@ class Translate:
 
         # Finds the closest item to a search
         if query not in self.abv_dict:
-            closest_match = min(
-                self.abv_dict, key=lambda v: len(set(query) ^ set(v)))
+            closest_match = min( self.abv_dict, key=lambda v: len(set(query) ^ set(v)))
 
         # Create an embed for style points
         if closest_match:
@@ -114,7 +116,7 @@ class Translate:
             em.title = 'Matching Abbreviation'
             em.description = f'{query} - `{self.abv_dict[query]}`'
 
-        await ctx.send(embed=em)
+        await ctx.message.edit(embed=em)
 
 
 def setup(bot):
