@@ -11,8 +11,10 @@ class Wiki:
         self.random_uri = 'https://en.wikipedia.org/w/api.php?action=query&list=random&format=json&rnnamespace=0' \
                           '&rnlimit=1 '
         self.headers = {
-            'user-agent': 'Watashi-Bot/0.1a - A fantastic selfbot (https://github.com/PrestigeDox/Watashi-SelfBot)'}
+            'user-agent': 'Watashi-Bot/0.1a - A fantastic selfbot (https://github.com/PrestigeDox/Watashi-SelfBot)'
+        }
         self.aiohttp_session = bot.aiohttp_session
+        self.color = bot.user_color
 
     @commands.command(name='wiki', aliases=['wi'])
     async def wiki_search(self, ctx, *, query=None):
@@ -20,8 +22,7 @@ class Wiki:
 
         # Determine whether we want a random article
         if not query:
-            async with self.aiohttp_session.get(self.random_uri,
-                                                headers=self.headers) as r:
+            async with self.aiohttp_session.get(self.random_uri, headers=self.headers) as r:
                 rand_resp = await r.json()
 
             query = rand_resp['query']['random'][0]['title']
@@ -30,14 +31,12 @@ class Wiki:
         formatted_query = query.replace(' ', '+')
 
         # Get wiki page
-        async with self.aiohttp_session.get(self.search_uri.format(formatted_query),
-                                            headers=self.headers) as r:
+        async with self.aiohttp_session.get(self.search_uri.format(formatted_query), headers=self.headers) as r:
             wiki_info = await r.json()
 
         # No result found
         if not wiki_info[1]:
-            return await ctx.invoke(self.bot.get_command('error'),
-                                    err=f"Sorry, I couldn't find anything matching `{query}`.")
+            return await ctx.error(f"Sorry, I couldn't find anything matching `{query}`.")
 
         # Create embed
         em = discord.Embed(title=wiki_info[1][0], color=discord.Color.blue())

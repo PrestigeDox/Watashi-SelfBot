@@ -17,12 +17,9 @@ class Weather:
     @commands.command()
     async def weather(self, ctx,  *, query: str = None):
         """ Search Bing for weather """
-
-        await ctx.message.delete()
-
         # Handle no query being provided.
         if query is None:
-            return await ctx.invoke(self.bot.get_command('error'), delete_after=1.0, err='Please provide a query!')
+            return await ctx.error('Please provide a query.')
 
         # Get page source with custom headers.
         async with self.aiohttp_session.get(self.url + query.replace(' ', '+'), headers=self.headers) as r:
@@ -36,8 +33,7 @@ class Weather:
         try:
             title = soup.select('div.wtr_locTitle')[0].text
         except IndexError:
-            return await ctx.invoke(self.bot.get_command('error'), delete_after=1.0, err='Unable to provide weather '
-                                                                                         'for this location!')
+            return await ctx.error('Unable to provide weather for this location!')
 
         icon = soup.select('div.wtr_currIcon img')[0].attrs['src']
         temp = soup.select('div.wtr_condiTemp')[0].text.strip('F')
@@ -49,10 +45,7 @@ class Weather:
         daytime = soup.select('div.wtr_dayTime')[0].text
 
         # Create embed response
-        em = discord.Embed(title='Weather in ' + title,
-                           description=caption,
-                           color=self.color)
-
+        em = discord.Embed(title=f'Weather in {title}', description=caption, color=self.color)
         em.add_field(name='Temperature', value=temp)
         em.add_field(name='Precipitation', value=precipitation, inline=True)
         em.add_field(name="Wind", value=wind, inline=True)

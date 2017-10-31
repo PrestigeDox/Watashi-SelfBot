@@ -31,15 +31,14 @@ class Youtube:
         items = self.get_yt_items(html)
 
         if len(items) == 0:
-            return await ctx.invoke(self.bot.get_command('error'), err=f'No YouTube videos found for `{query}`.')
+            return await ctx.error(f'No YouTube videos found for `{query}`.')
 
         # Create a neat embed
         em = discord.Embed(color=discord.Color.dark_red())
         em.set_author(name="YouTube Search",
                       icon_url="https://www.seeklogo.net/wp-content/uploads/2016/06/YouTube-icon.png")
 
-        em.add_field(name='Results', value='\n'.join(
-            f'{idx + 1}. [{x[0]}]({x[1]})' for idx, x in enumerate(items[:5])))
+        em.add_field(name='Results', value='\n'.join(f'{idx + 1}. [{x[0]}]({x[1]})' for idx, x in enumerate(items[:5])))
 
         await ctx.send(embed=em)
 
