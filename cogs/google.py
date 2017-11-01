@@ -24,8 +24,7 @@ class Google:
         """ Search Google for a query """
         # Handle no query being provided
         if query is None:
-            return await ctx.invoke(self.bot.get_command('error'), delete_after=2.0, err='Please provide a query!',
-                                    del_msg=ctx.message)
+            return await ctx.error('Please provide a query!')
 
         # 'google_embed' is dependent on a test that checks whether google has embedded any external data on the page
         # 'result_nums' is the no. of results to display when there is no embedded data

@@ -10,11 +10,8 @@ class TinyURL:
     @commands.command()
     async def tinyurl(self, ctx, link: str = None):
         """ Convert A URL To A Shorter TinyURL """
-        await ctx.message.delete()
-
-        if str is None:
-            return await ctx.invoke(self.bot.get_command('error'), delete_after=2.0, err='Please provide a link to '
-                                                                                         'shorten!')
+        if link is None:
+            return await ctx.error('Please provide a link to shorten!')
 
         api_tiny = 'http://tinyurl.com/api-create.php?url='
 
@@ -25,9 +22,9 @@ class TinyURL:
         emb = discord.Embed(colour=self.bot.user_color)
         emb.add_field(name="\U0001f30d Original Link",
                       value=link, inline=False)
-        emb.add_field(name="Shortened Link \U0001f517",
+        emb.add_field(name="\U0001f517 Shortened Link",
                       value=shortenurl, inline=False)
-        await ctx.send(embed=emb)
+        await ctx.message.edit(embed=emb)
 
 
 def setup(bot):

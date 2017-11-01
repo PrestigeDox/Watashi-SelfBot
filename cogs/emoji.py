@@ -1,22 +1,17 @@
 import discord
 from discord.ext import commands
 
-# TODO:
-# - Make the emoji commands edit the original message rather than delete and resend
-#   This should help mitigate some ratelimiting
-
 
 class Emoji:
     def __init__(self, bot):
         self.bot = bot
-        self.color = bot.color.gold()
+        self.color = bot.user_color
 
     @commands.group(invoke_without_command=True)
     async def emoji(self, ctx):
         """ Shows the usage of the Emoji Command """
         emb = discord.Embed(colour=self.color)
-        emb.add_field(name='Usage', value='{}emoji <emojiname>'.format(
-            self.bot.configs['prefix']))
+        emb.add_field(name='Usage', value=f'```{self.bot.command_prefix}emoji <emojiname>```')
         await ctx.message.edit(embed=emb)
 
     @emoji.command()

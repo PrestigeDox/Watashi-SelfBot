@@ -28,8 +28,8 @@ class Eval:
             return f'```py\n{e.__class__.__name__}: {e}\n```'
         return f'```py\n{e.text}{"^":>{e.offset}}\n{e.__class__.__name__}: {e}```'
 
-    @commands.command(hidden=True, name='pyval')
-    async def _eval(self, ctx, *, body: str):
+    @commands.command()
+    async def pyval(self, ctx, *, body: str):
         """Evaluate some python code"""
 
         env = {
@@ -56,7 +56,7 @@ class Eval:
                 ret = await func()
         except Exception as e:
             value = stdout.getvalue()
-            await ctx.error(f'```py\n{value}{traceback.format_exc()}\n```')
+            await ctx.error(f'```py\n{value}{traceback.format_exc()}\n```', delete_after=15.0)
         else:
             value = stdout.getvalue()
 
@@ -67,7 +67,7 @@ class Eval:
                 self._last_result = ret
                 await ctx.send(f'```py\n{value}{ret}\n```')
 
-    @commands.command(name='eval', hidden=True)
+    @commands.command(name='eval')
     async def shell_access(self, ctx, *, cmd):
         """Access the commandline from the bot"""
 
@@ -83,7 +83,7 @@ class Eval:
                 await ctx.send(f'`{cmd}` produced no output')
 
         except Exception as e:
-            await ctx.error(f'Unable to send output\n```py\n{e}```')
+            await ctx.error(f'Unable to send output\n```py\n{e}```', delete_after=15.0)
 
 
 def setup(bot):

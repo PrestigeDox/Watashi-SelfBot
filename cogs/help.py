@@ -38,6 +38,9 @@ class Help:
     @help.command(name='category', aliases=['categories', 'cat'])
     async def help_categories(self, ctx, *, category_name: str=None):
         """ Get brief help for each command in a specific category """
+        # Handle no input
+        if category_name is None:
+            return await ctx.error('Category must be provided.')
 
         # This bit checks whether the category exists -> case insensitive
         # We need the proper name, though, so we search for the proper capitalization
@@ -51,10 +54,10 @@ class Help:
         em.add_field(name='Commands', value='\n'.join([f'\u2022 `{self.pre}{x.name}` - {x.short_doc}'
                                                        for x in self.bot.get_cog_commands(category_name)]))
 
-        await ctx.send(embed=em)
+        await ctx.message.edit(embed=em)
 
     @help.command(name='command', aliases=['cmd', 'commands'])
-    async def help_command(self, ctx, *, cmd_name: str):
+    async def help_command(self, ctx, *, cmd_name: str=None):
         """ Sends help for a specific command """
 
         # Get command object
@@ -84,7 +87,7 @@ class Help:
                            f'{" ".join([f"<{x}>" for x in cmd_obj.clean_params])}```',
                      inline=False)
 
-        await ctx.send(embed=em)
+        await ctx.message.edit(embed=em)
 
 
 def setup(bot):

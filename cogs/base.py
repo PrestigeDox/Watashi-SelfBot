@@ -37,52 +37,50 @@ class Base:
     @commands.command(name='custom_emojis', aliases=['emojis'])
     async def get_custom_emojis(self, ctx):
         """ Check All The Emojis On A Server """
-
-        await ctx.message.delete()
-
         emojis = '\n'.join(['{1} `:{0}:`'.format(e.name, str(e)) for e in ctx.message.guild.emojis])
 
         if len(emojis) > 2000:
-            return await ctx.error('Too many emojis to send!', delete_after=2.0)
+            return await ctx.error('Too many emojis to send!')
+        if len(emojis) == 0:
+            return await ctx.error('No custom emojis to display.')
 
-        await ctx.send(emojis)
+        await ctx.message.edit(content=emojis)
 
     @commands.command(aliases=['logout', 'quit', 'exit'])
     async def exitbot(self, ctx):
         """ Close Watashi """
-        await ctx.message.delete()
-
         emb = discord.Embed(title="Watashi Logging Out!", colour=self.color)
-        await ctx.send(embed=emb)
+        await ctx.message.edit(embed=emb)
         await self.bot.logout()
 
     @commands.command()
-    async def count(self, ctx, start: int, amount: int):
+    async def count(self, ctx, start: int, end: int):
         """ Count numbers from a given start point """
-        await ctx.message.delete()
-
-        for x in range(amount):
-            await ctx.send(str(start))
-            start += 1
-            asyncio.sleep(2)
+        for x in range(start, end + 1):
+            await ctx.message.edit(content=x)
+            await asyncio.sleep(1.2)
 
     @commands.command()
     async def source(self, ctx, *, command):
         """ Get The Source Code For Any Command """
-        await ctx.message.delete()
+        try:
+            source = str(inspect.getsource(self.bot.get_command(command).callback))
+        except AttributeError:
+            return await ctx.error(f'Command `{command}` does not exist.')
 
-        source = str(inspect.getsource(self.bot.get_command(command).callback))
-
+        # TODO
+        # 1. Make this syntax more clear & maybe add some helpers
+        # 2. Let's link this to github instead of posting to hastebin
         async with self.session.post("https://hastebin.com/documents", data=source) as resp:
             data = await resp.json()
 
         h_key = data['key']
 
         emb = discord.Embed(colour=self.color)
-        emb.add_field(name="Command", value=command.upper(), inline=False)
+        emb.add_field(name="Command", value=command.title(), inline=False)
         emb.add_field(name="Source", value=f'<https://hastebin.com/{h_key}.py>', inline=False)
 
-        return await ctx.send(embed=emb)
+        return await ctx.message.edit(embed=emb)
 
 
 def setup(bot):

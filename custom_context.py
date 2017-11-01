@@ -3,7 +3,7 @@ from discord.ext import commands
 
 
 class WatashiContext(commands.Context):
-    async def error(self, err: str, delete_after: float=10.0):
+    async def error(self, err: str, delete_after: float=5.0):
         em = discord.Embed(title=':x: Error',
                            color=discord.Color.dark_red(),
                            description=err.format())
