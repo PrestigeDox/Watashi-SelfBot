@@ -27,7 +27,6 @@ class Figlet:
     @commands.command(aliases=['asciibulbhead', 'figbulbhead', 'ascbulbhead'])
     async def figletbulbhead(self, ctx, *, message: str):
         """ Cool FigletBulbLook Text """
-        await ctx.message.delete()
         f = pyfiglet.Figlet(font='bulbhead')
         try:
             await ctx.message.edit(content=f'```http\n{f.renderText(message)}```')
@@ -37,7 +36,6 @@ class Figlet:
     @commands.command(aliases=['ascii3d', 'fig3d', 'asc3d'])
     async def figlet3d(self, ctx, *, message: str):
         """ Cool Figlet3D Text """
-        await ctx.message.delete()
         f = pyfiglet.Figlet(font='larry3d')
         try:
             await ctx.message.edit(content=f'```http\n{f.renderText(message)}```')
@@ -47,7 +45,6 @@ class Figlet:
     @commands.command(aliases=['asciirectangle', 'figrectangle', 'ascrectangle'])
     async def figletrectangle(self, ctx, *, message: str):
         """ Cool FigletRegtangular Text """
-        await ctx.message.delete()
         f = pyfiglet.Figlet(font='rectangles')
         try:
             await ctx.message.edit(content=f'```http\n{f.renderText(message)}```')
@@ -57,7 +54,6 @@ class Figlet:
     @commands.command(aliases=['asciiscript', 'figscript', 'ascscript'])
     async def figletscript(self, ctx, *, message: str):
         """ Cool FigletNeatWriting Text """
-        await ctx.message.delete()
         f = pyfiglet.Figlet(font='slscript')
         try:
             await ctx.message.edit(content=f'```http\n{f.renderText(message)}```')
