@@ -31,9 +31,8 @@ class Info:
             await ctx.error('Too much information to send.')
 
     @commands.command()
-    async def avatar(self, ctx, member: discord.Member = None):
+    async def avatar(self, ctx, member: discord.Member=None):
         """ Get A Member's Avatar """
-        await ctx.message.delete()
         emb = discord.Embed(colour=self.color)
         emb.set_author(name="Avatar for {}".format(member.display_name),
                        icon_url=member.avatar_url)

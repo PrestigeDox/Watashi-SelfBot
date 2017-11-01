@@ -22,7 +22,7 @@ class TinyURL:
         emb = discord.Embed(colour=self.bot.user_color)
         emb.add_field(name="\U0001f30d Original Link",
                       value=link, inline=False)
-        emb.add_field(name="Shortened Link \U0001f517",
+        emb.add_field(name="\U0001f517 Shortened Link",
                       value=shortenurl, inline=False)
         await ctx.message.edit(embed=emb)
 

@@ -56,7 +56,7 @@ class Eval:
                 ret = await func()
         except Exception as e:
             value = stdout.getvalue()
-            await ctx.error(f'```py\n{value}{traceback.format_exc()}\n```')
+            await ctx.error(f'```py\n{value}{traceback.format_exc()}\n```', delete_after=15.0)
         else:
             value = stdout.getvalue()
 
@@ -83,7 +83,7 @@ class Eval:
                 await ctx.send(f'`{cmd}` produced no output')
 
         except Exception as e:
-            await ctx.error(f'Unable to send output\n```py\n{e}```')
+            await ctx.error(f'Unable to send output\n```py\n{e}```', delete_after=15.0)
 
 
 def setup(bot):

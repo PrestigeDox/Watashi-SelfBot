@@ -40,7 +40,7 @@ class Youtube:
 
         em.add_field(name='Results', value='\n'.join(f'{idx + 1}. [{x[0]}]({x[1]})' for idx, x in enumerate(items[:5])))
 
-        await ctx.send(embed=em)
+        await ctx.message.edit(embed=em)
 
 
 def setup(bot):

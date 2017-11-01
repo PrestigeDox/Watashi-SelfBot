@@ -6,6 +6,9 @@ import json
 from discord.ext import commands
 
 
+# TODO
+# Make this optional because... who needs element data?
+
 class Elements:
     def __init__(self, bot):
         self.bot = bot

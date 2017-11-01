@@ -65,7 +65,7 @@ class Tag:
         """ Create a new tag """
         tag_name = tag_name.lower()
         if tag_name in self.tag_dict:
-            return await ctx.error(f'Tag `{tag_name} already exists. Use `tag edit` to change it.')
+            return await ctx.error(f'Tag `{tag_name}` already exists. Use `tag edit` to change it.')
 
         self.tag_dict[tag_name] = {'contents': tag_contents, 'uses': 0}
         self._write_tag_file()
@@ -106,7 +106,7 @@ class Tag:
         # Lifted this tidbit from:
         # https://mail.python.org/pipermail/python-list/2010-August/586307.html
         closest_match = min(self.tag_dict, key=lambda v: len(set(tag_name) ^ set(v)))
-        await ctx.send(f'Closest matching tag: `{closest_match}`.')
+        await ctx.edit(content=f'Closest tag to `{tag_name}`: `{closest_match}`.')
 
     @tag.command()
     async def list(self, ctx):

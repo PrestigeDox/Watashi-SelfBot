@@ -11,37 +11,37 @@ class Coding:
     @commands.command(aliases=['python'])
     async def py(self, ctx, *, code: str):
         """ Send Code In A Python Block """
-        await ctx.message.edit("```py\n{}```".format(code))
+        await ctx.message.edit(content="```py\n{}```".format(code))
 
     @commands.command()
     async def css(self, ctx, *, code: str):
         """ Send Code In A CSS Block """
-        await ctx.message.edit("```css\n{}```".format(code))
+        await ctx.message.edit(content="```css\n{}```".format(code))
 
     @commands.command(aliases=['html5'])
     async def html(self, ctx, *, code: str):
         """ Send Code In A HTML Block """
-        await ctx.message.edit("```html\n{}```".format(code))
+        await ctx.message.edit(content="```html\n{}```".format(code))
 
     @commands.command()
     async def ini(self, ctx, *, code: str):
         """ Send Code In A INI Block """
-        await ctx.message.edit("```ini\n{}```".format(code))
+        await ctx.message.edit(content="```ini\n{}```".format(code))
 
     @commands.command()
     async def c(self, ctx, *, code: str):
         """ Send Code In A C Block """
-        await ctx.message.edit("```c\n{}```".format(code))
+        await ctx.message.edit(content="```c\n{}```".format(code))
 
     @commands.command()
     async def codeblock(self, ctx, *, code: str):
         """ Send Text In A Code Block """
-        await ctx.message.edit("```\n{}```".format(code))
+        await ctx.message.edit(content="```\n{}```".format(code))
 
     @commands.command(aliases=['onecodeblock'])
     async def linecodeblock(self, ctx, *, code: str):
         """ Send Text In A Basic Code Block """
-        await ctx.message.edit("```\n{}```".format(code))
+        await ctx.message.edit(content="```\n{}```".format(code))
 
     @commands.command()
     async def charinfo(self, ctx, char: str):

@@ -44,7 +44,7 @@ class Base:
         if len(emojis) == 0:
             return await ctx.error('No custom emojis to display.')
 
-        await ctx.message.edit(emojis)
+        await ctx.message.edit(content=emojis)
 
     @commands.command(aliases=['logout', 'quit', 'exit'])
     async def exitbot(self, ctx):
@@ -56,15 +56,17 @@ class Base:
     @commands.command()
     async def count(self, ctx, start: int, end: int):
         """ Count numbers from a given start point """
-        for x in range(end):
-            await ctx.message.edit(str(start))
-            start += 1
-            asyncio.sleep(1)
+        for x in range(start, end + 1):
+            await ctx.message.edit(content=x)
+            await asyncio.sleep(1.2)
 
     @commands.command()
     async def source(self, ctx, *, command):
         """ Get The Source Code For Any Command """
-        source = str(inspect.getsource(self.bot.get_command(command).callback))
+        try:
+            source = str(inspect.getsource(self.bot.get_command(command).callback))
+        except AttributeError:
+            return await ctx.error(f'Command `{command}` does not exist.')
 
         # TODO
         # 1. Make this syntax more clear & maybe add some helpers

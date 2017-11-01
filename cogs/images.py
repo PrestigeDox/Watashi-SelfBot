@@ -18,7 +18,7 @@ class Images:
             html = await r.text()
 
         # Make some really 'beautiful' soup.
-        soup = BeautifulSoup(html)
+        soup = BeautifulSoup(html, 'lxml')
 
         # Cat.
         cat = self.urls[0] + soup.select('img#cat')[0].attrs['src']
@@ -33,10 +33,10 @@ class Images:
     async def dog(self, ctx):
         """ A dog from random.dog """
         # random.dog is a bit special, it gives you a video sometimes ill just make another request if its a video
-        while 1:
+        while True:
             async with self.aiohttp_session.get(self.urls[1]) as r:
                 html = await r.text()
-            soup = BeautifulSoup(html)
+            soup = BeautifulSoup(html, 'lxml')
             if not soup.select('img#dog-img'):
                 continue
             dog = self.urls[1] + soup.select('img#dog-img')[0].attrs['src']

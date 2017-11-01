@@ -15,7 +15,7 @@ class UrbanDictionary:
             resultlst = await self.bot.loop.run_in_executor(None, ud.define, query)
             item = resultlst[0]
         except:
-            return
+            return await ctx.error(f'Unable to find definition for `{query}`.')
 
         em = discord.Embed(color=self.color)
         em.set_author(name="\U0001f4d6 Urban Dictionary")

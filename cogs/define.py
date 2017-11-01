@@ -7,6 +7,7 @@ class Define:
     def __init__(self, bot):
         self.bot = bot
         self.aiohttp_session = bot.aiohttp_session
+        self.color = bot.user_color
         self.url = 'https://google.com/search'
         self.headers = {'User-Agent':
                         'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) '
@@ -40,13 +41,13 @@ class Define:
 
         # Create embed
         em = discord.Embed(title=word.capitalize(),
-                           color=discord.Color.blurple())
+                           color=self.color)
         em.add_field(name='Definition', value=f'_{self.parts_of_speech[pos]}_, {defn}')
 
         if len(syn_list) != 0:
             em.add_field(name='Synonyms', value=', '.join(syn_list[:5]), inline=False)
 
-        await ctx.message.edit(embed=em)
+        await ctx.message.edit(embed=em, content=None)
 
 
 def setup(bot):

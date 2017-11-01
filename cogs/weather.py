@@ -26,14 +26,14 @@ class Weather:
             html = await r.text()
 
         # Make some really 'beautiful' soup.
-        soup = BeautifulSoup(html)
+        soup = BeautifulSoup(html, 'lxml')
 
         # Using a very old user agent, scraping is made very trivial.
         # If it can't find title with that selector, location is probably bogus or there's no available info about it.
         try:
             title = soup.select('div.wtr_locTitle')[0].text
         except IndexError:
-            return await ctx.error('Unable to provide weather for this location!')
+            return await ctx.error(f'Unable to provide weather for `{query}`.')
 
         icon = soup.select('div.wtr_currIcon img')[0].attrs['src']
         temp = soup.select('div.wtr_condiTemp')[0].text.strip('F')
@@ -53,7 +53,7 @@ class Weather:
         em.add_field(name="Time and Date", value=daytime)
         em.set_thumbnail(url=icon)
 
-        await ctx.send(embed=em)
+        await ctx.message.edit(embed=em)
 
 
 def setup(bot):
