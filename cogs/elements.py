@@ -6,6 +6,9 @@ import json
 from discord.ext import commands
 
 
+# TODO
+# Make this optional because... who needs element data?
+
 class Elements:
     def __init__(self, bot):
         self.bot = bot
@@ -13,12 +16,9 @@ class Elements:
     @commands.command()
     async def element(self, ctx, *, query=None):
         """ Search for elements by name or atomic number """
-
-        await ctx.message.delete()
-
         # Handle no query being provided.
         if query is None:
-            return await ctx.invoke(self.bot.get_command('error'), delete_after=1.0, err='Please provide a query!')
+            return await ctx.error('Please provide a query!')
 
         # Users element set to none for checks further down
         u_element = None
@@ -49,8 +49,8 @@ class Elements:
 
         # Handle invalid query with an error message
         if u_element is None:
-            return await ctx.invoke(self.bot.get_command('error'), delete_after=1.0, err="Your query didn't match any "
-                                                                                         "elements!")
+            return await ctx.error("Query didn't match any elements!")
+
         # Create the embed response
         em = discord.Embed(title=u_element["name"],
                            description=f'{u_element["appearance"].title()}, {u_element["category"].title()}',
@@ -63,7 +63,7 @@ class Elements:
         em.add_field(name="Melting Point", value=f'{u_element["melt"]} K')
         em.add_field(name="Boiling Point", value=f'{u_element["boil"]} K')
 
-        await ctx.send(embed=em)
+        await ctx.message.edit(embed=em)
 
 
 def setup(bot):

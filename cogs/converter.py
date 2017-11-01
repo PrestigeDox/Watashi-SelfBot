@@ -20,12 +20,9 @@ class Converter:
     @commands.command()
     async def convert(self, ctx,  *, query=None):
         """ Calculate some expressions! """
-
-        await ctx.message.delete()
-
         # Handle no query being provided
         if query is None:
-            return await ctx.invoke(self.bot.get_command('error'), delete_after=2.0, err='Please provide a query!')
+            return await ctx.error('Please provide a query!')
 
         from_unit = query.split()[0]
         to_unit = query.split()[1]
@@ -33,7 +30,7 @@ class Converter:
         try:
             val = float(query.split()[2])
         except ValueError:
-            return await ctx.invoke(self.bot.get_command('error'), delete_after=2.0, err='Invalid query!')
+            return await ctx.error('Invalid query.')
 
         # Doing this in the f-string later would become f-string-ception and that doesn't work
         qstr = quote_plus(f'{val} {from_unit} to {to_unit}')
@@ -48,8 +45,8 @@ class Converter:
         # The span inside div._Qeb has the result for the expression, if it doesnt exist google doesn't like
         # your expression or its just invalid
         if not soup.select('div#ires div._Qeb span'):
-            return await ctx.invoke(self.bot.get_command('error'), delete_after=2.0, err='Could not convert '
-                                                                                         'expression!')
+            return await ctx.error('Could not convert expression.')
+
         # Values with units
         from_val = soup.select("div#ires div._Qeb span")[0].text
         to_val = soup.select("div#ires div._Peb")[0].text
@@ -59,7 +56,7 @@ class Converter:
         em.add_field(name=' '.join(to_val.split()[1:]).title(), value=to_val.split()[0])
         em.set_author(name="Unit Converter", icon_url="http://i67.tinypic.com/aag6c4.png")
 
-        await ctx.send(embed=em)
+        await ctx.message.edit(embed=em)
 
 
 def setup(bot):

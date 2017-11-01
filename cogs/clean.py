@@ -7,7 +7,7 @@ class Clean:
         self.bot = bot
 
     @commands.command(aliases=['clear', 'purge'])
-    async def clean(self, ctx, limit: int=None, sleep: float=1.0):
+    async def clean(self, ctx, limit: int=None, delay: float=1.0):
         """ Cleanse the channel of your messages """
         await ctx.message.delete()
 
@@ -15,7 +15,7 @@ class Clean:
         async for msg in ctx.channel.history(limit=limit, before=ctx.message):
             if msg.author == self.bot.user:
                 await msg.delete()
-                await asyncio.sleep(sleep)
+                await asyncio.sleep(delay)
 
 
 def setup(bot):

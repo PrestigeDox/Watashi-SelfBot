@@ -22,7 +22,7 @@ class Help:
                                        f'To get help or more information on a specific category or command, use:\n'
                                        f'`{self.pre}help cat|category <category name>` for a category OR\n'
                                        f'`{self.pre}help cmd|command <command name>` for a specific command.\n'
-                                       f'`{self.pre}help <command name> is also a shortcut for the above.',
+                                       f'`{self.pre}help <command name>` is also a shortcut for the above.',
                            color=self.color)
 
         # This can't go in the init because help isn't loaded last & thus misses some commands
@@ -38,6 +38,9 @@ class Help:
     @help.command(name='category', aliases=['categories', 'cat'])
     async def help_categories(self, ctx, *, category_name: str=None):
         """ Get brief help for each command in a specific category """
+        # Handle no input
+        if category_name is None:
+            return await ctx.error('Category must be provided.')
 
         # This bit checks whether the category exists -> case insensitive
         # We need the proper name, though, so we search for the proper capitalization
@@ -45,16 +48,16 @@ class Help:
         if category_name.casefold() in [x.casefold() for x in self.bot.cogs]:
             category_name = min(self.bot.cogs, key=lambda v: len(set(category_name) ^ set(v)))
         else:
-            return await ctx.invoke(self.cmd('error'), err=f'`{category_name}` is not a category.')
+            return await ctx.error(f'`{category_name}` is not a category.')
 
         em = discord.Embed(title=category_name, color=self.color)
         em.add_field(name='Commands', value='\n'.join([f'\u2022 `{self.pre}{x.name}` - {x.short_doc}'
                                                        for x in self.bot.get_cog_commands(category_name)]))
 
-        await ctx.send(embed=em)
+        await ctx.message.edit(embed=em)
 
     @help.command(name='command', aliases=['cmd', 'commands'])
-    async def help_command(self, ctx, *, cmd_name: str):
+    async def help_command(self, ctx, *, cmd_name: str=None):
         """ Sends help for a specific command """
 
         # Get command object
@@ -62,24 +65,20 @@ class Help:
 
         # Handle no command found
         if cmd_obj is None:
-            return await ctx.invoke(self.cmd('error'), err=f'Command {cmd_name} not found')
+            return await ctx.error(f'Command {cmd_name} not found')
 
-        em = discord.Embed(title=cmd_obj.name,
-                           description=cmd_obj.short_doc, color=self.color)
+        em = discord.Embed(title=cmd_obj.name, description=cmd_obj.short_doc, color=self.color)
 
         # Input aliases and parameters to embed
         if cmd_obj.aliases:
-            em.add_field(name='Aliases', value='\n'.join(
-                [f'\u2022 {x}' for x in cmd_obj.aliases]))
+            em.add_field(name='Aliases', value='\n'.join([f'\u2022 {x}' for x in cmd_obj.aliases]))
         if cmd_obj.clean_params:
-            em.add_field(name='Parameters', value='\n'.join(
-                f'\u2022 {x}' for x in cmd_obj.clean_params))
+            em.add_field(name='Parameters', value='\n'.join([f'\u2022 {x}' for x in cmd_obj.clean_params]))
 
         # Handle group commands
         if isinstance(cmd_obj, commands.core.Group):
             em.add_field(name='Group commands',
-                         value='\n'.join(
-                             [f'\u2022 {x}' for x in cmd_obj.commands]),
+                         value='\n'.join([f'\u2022 {x}' for x in cmd_obj.commands]),
                          inline=False)
 
         # Add usage last
@@ -88,7 +87,7 @@ class Help:
                            f'{" ".join([f"<{x}>" for x in cmd_obj.clean_params])}```',
                      inline=False)
 
-        await ctx.send(embed=em)
+        await ctx.message.edit(embed=em)
 
 
 def setup(bot):

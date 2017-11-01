@@ -43,25 +43,15 @@ class Translate:
         Example: <prefix>translate en es I am very hungry, please help """
 
         inverted_abv_dict = {v: k for k, v in self.abv_dict.items()}
-        err_cmd = self.bot.get_command('error')
 
         if len(to_lang) + len(from_lang) != 4:
-            return await ctx.invoke(err_cmd,
-                                    err='Language code must be 2 characters long.',
-                                    del_msg=ctx.message)
+            return await ctx.error('Language code must be 2 characters long.')
 
         if to_lang not in inverted_abv_dict:
-            return await ctx.invoke(err_cmd,
-                                    err=f'Language abbreviation `{to_lang}` not found.',
-                                    del_msg=ctx.message)
+            return await ctx.error(f'Language abbreviation `{to_lang}` not found.')
 
         if from_lang not in inverted_abv_dict:
-            return await ctx.invoke(err_cmd,
-                                    err=f'Language abbreviation `{from_lang}` not found.',
-                                    del_msg=ctx.message)
-
-        # Delete the original message because the information is contained in the embed anyway
-        await ctx.message.delete()
+            return await ctx.error(f'Language abbreviation `{from_lang}` not found.')
 
         # Params for the request
         params = {'sl': from_lang, 'hl': to_lang, 'q': query}
@@ -73,9 +63,7 @@ class Translate:
         trans_text = self.get_translation(html)
 
         if trans_text is None:
-            return await ctx.invoke(self.bot.get_command('error'),
-                                    err=f"Couldn't find a translation for `{query}`.",
-                                    del_msg=ctx.message)
+            return await ctx.error(f'Could not find a translation for `{query}`.')
 
         # Create embed response
         em = discord.Embed(title='Translation',
@@ -85,7 +73,7 @@ class Translate:
         em.add_field(name='Original Text', value=f'`{query}`')
         em.add_field(name='Translated', value=f'`{trans_text}`', inline=False)
 
-        await ctx.send(embed=em)
+        await ctx.message.edit(embed=em, content=None)
 
     @translate.command(name='abbreviations', aliases=['abv', 'ab'])
     async def list_abv(self, ctx, *, query: str=None):
@@ -94,8 +82,11 @@ class Translate:
 
         # Sends a giant spammy list
         if query is None:
-            em.add_field(name='Language - Abbreviation', value='\n'.join([f'{x} - `{self.abv_dict[x]}`'
-                                                                          for x in self.abv_dict.keys()]))
+            abv_list = [f'{x} - `{self.abv_dict[x]}`' for x in self.abv_dict]
+            abv_col1 = abv_list[:len(abv_list) // 2]
+            abv_col2 = abv_list[len(abv_list) // 2:]
+            em.add_field(name='Abbreviations', value='\n'.join(abv_col1))
+            em.add_field(name='Abbreviations (cont.)', value='\n'.join(abv_col2))
             return await ctx.send(embed=em)
 
         query = query.title()
@@ -103,8 +94,7 @@ class Translate:
 
         # Finds the closest item to a search
         if query not in self.abv_dict:
-            closest_match = min(
-                self.abv_dict, key=lambda v: len(set(query) ^ set(v)))
+            closest_match = min(self.abv_dict, key=lambda v: len(set(query) ^ set(v)))
 
         # Create an embed for style points
         if closest_match:
@@ -114,7 +104,7 @@ class Translate:
             em.title = 'Matching Abbreviation'
             em.description = f'{query} - `{self.abv_dict[query]}`'
 
-        await ctx.send(embed=em)
+        await ctx.message.edit(embed=em, content=None)
 
 
 def setup(bot):

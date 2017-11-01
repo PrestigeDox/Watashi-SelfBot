@@ -20,12 +20,9 @@ class Calculator:
     @commands.command(aliases=['calc'])
     async def calculate(self, ctx, *, query: str=None):
         """ Calculate some expressions! """
-
-        await ctx.message.delete()
-
         # Handle no query being provided
         if query is None:
-            return await ctx.invoke(self.bot.get_command('error'), delete_after=2.0, err='Please provide a query!')
+            return await ctx.error('Please provide a query!')
 
         params = {'q': quote_plus(query), 'source': 'hp'}
 
@@ -39,8 +36,8 @@ class Calculator:
         # The span inside div#topstuff has the result for the expression, if it doesnt exist google doesn't like
         # your expression or its just invalid
         if not soup.select('div#topstuff span.nobr'):
-            return await ctx.invoke(self.bot.get_command('error'), delete_after=2.0, err='Could not calculate '
-                                                                                         'expression!')
+            return await ctx.error('Could not calculate expression!')
+
         result = soup.select('div#topstuff span.nobr')[0].text
 
         # Create Embed response
@@ -49,7 +46,7 @@ class Calculator:
         em.add_field(name="Result", value=result.split('=')[1].strip())
         em.set_author(name="Calculator", icon_url="https://maxcdn.icons8.com/Share/icon/Science/calculator1600.png")
 
-        await ctx.send(embed=em)
+        await ctx.message.edit(embed=em)
 
 
 def setup(bot):

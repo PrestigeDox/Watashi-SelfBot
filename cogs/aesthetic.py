@@ -16,8 +16,7 @@ class Aesthetic:
 
         # Handle no text being provided
         if a_text is None:
-            return await ctx.invoke(self.bot.get_command('error'), delete_after=2.0, err='Please provide text to '
-                                                                                         'convert!')
+            return await ctx.error('Please provide text to convert!')
 
         ascii_to_wide = dict((i, chr(i + 0xfee0)) for i in range(0x21, 0x7f))
         ascii_to_wide.update({0x20: u'\u3000', 0x2D: u'\u2212'})
@@ -30,8 +29,7 @@ class Aesthetic:
 
         # Handle no text being provided
         if text is None:
-            return await ctx.invoke(self.bot.get_command('error'), delete_after=2.0, err='Please provide text to '
-                                                                                         'convert!')
+            return await ctx.error('Please provide text to convert!')
 
         # Convert text to lowercase and use the tiny_table translation table to translate text.
         await ctx.message.edit(content=text.lower().translate(self.tiny_table))
@@ -42,8 +40,8 @@ class Aesthetic:
 
         # Handle no text being provided
         if text is None:
-            return await ctx.invoke(self.bot.get_command('error'), delete_after=2.0, err='Please provide text to '
-                                                                                         'convert!')
+            return await ctx.error('Please provide text to convert!')
+
         # Convert text to lowercase and use the flip_table translation table to translate text.
         await ctx.message.edit(content=text.lower().translate(self.flip_table)[::-1])
 

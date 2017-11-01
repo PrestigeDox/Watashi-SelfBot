@@ -2,6 +2,7 @@ import discord
 import json
 import datetime
 import aiohttp
+import custom_context
 from pathlib import Path
 from discord.ext import commands
 
@@ -35,6 +36,11 @@ class Watashi(commands.Bot):
 
     def run(self):
         super().run(self.configs['token'], bot=False)
+
+    # Custom context which includes better error support
+    async def on_message(self, message):
+        ctx = await self.get_context(message, cls=custom_context.WatashiContext)
+        await self.invoke(ctx)
 
     async def on_ready(self):
         print("<----------------->\n"

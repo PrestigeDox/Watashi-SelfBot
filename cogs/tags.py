@@ -50,81 +50,81 @@ class Tag:
     async def tag(self, ctx, *, tag_name: str):
         """ Retrieve a previously stored tag """
         tag_name = tag_name.lower()
-        if tag_name in self.tag_dict:
-            # Increment uses
-            self.tag_dict[tag_name]['uses'] += 1
+        if tag_name not in self.tag_dict:
+            await ctx.error(f'Tag `{tag_name}` does not exist.')
 
-            self._write_tag_file()
+        # Increment uses
+        self.tag_dict[tag_name]['uses'] += 1
 
-            return await ctx.send(self.tag_dict[tag_name]['contents'])
+        self._write_tag_file()
 
-        await ctx.send(f'Tag `{tag_name}` does not exist.', delete_after=10.0)
-        await ctx.message.delete()
+        return await ctx.send(self.tag_dict[tag_name]['contents'])
 
     @tag.command()
     async def create(self, ctx, tag_name: str, *, tag_contents: str):
         """ Create a new tag """
         tag_name = tag_name.lower()
         if tag_name in self.tag_dict:
-            await ctx.send(f'Tag `{tag_name} already exists. Use `tag edit` to change it.', delete_after=10.0)
-            return await ctx.message.delete()
+            return await ctx.error(f'Tag `{tag_name}` already exists. Use `tag edit` to change it.')
 
         self.tag_dict[tag_name] = {'contents': tag_contents, 'uses': 0}
-
         self._write_tag_file()
 
-        await ctx.send(f'Tag `{tag_name}` successfully created.')
+        await ctx.message.edit(content=f'Tag `{tag_name}` successfully created.')
 
     @tag.command(name='delete', aliases=['del'])
     async def _delete(self, ctx, *, tag_name: str):
         """ Delete a tag you've previously created """
         if tag_name not in self.tag_dict:
-            await ctx.send(f'Tag `{tag_name}` does not exist.', delete_after=10.0)
-            return await ctx.message.delete()
+            return await ctx.error(f'Tag `{tag_name}` does not exist.')
 
         del self.tag_dict[tag_name]
         self._write_tag_file()
 
-        await ctx.send(f'Tag `{tag_name}` deleted.')
+        await ctx.message.edit(content=f'Tag `{tag_name}` deleted.')
 
     @tag.command()
     async def edit(self, ctx, tag_name: str, *, tag_contents: str):
         """ Edit a tag which you've previously created """
         tag_name = tag_name.lower()
         if tag_name not in self.tag_dict:
-            await ctx.send(f'Tag `{tag_name}` does not exist.', delete_after=10.0)
-            return await ctx.message.delete()
+            return await ctx.error(f'Tag `{tag_name}` does not exist.')
 
         self.tag_dict[tag_name]['contents'] = tag_contents
         self._write_tag_file()
 
-        await ctx.send(f'Tag `{tag_name}` succesfully edited.')
+        await ctx.message.edit(content=f'Tag `{tag_name}` succesfully edited.')
 
     @tag.command()
     async def search(self, ctx, *, tag_name: str):
         """ Search for the closest matching tag """
         if len(self.tag_dict) == 0:
-            await ctx.send('No tags to search for.', delete_after=10.0)
-            return await ctx.message.delete()
+            return await ctx.error('No tags to search for.')
 
         tag_name = tag_name.lower()
 
         # Lifted this tidbit from:
         # https://mail.python.org/pipermail/python-list/2010-August/586307.html
         closest_match = min(self.tag_dict, key=lambda v: len(set(tag_name) ^ set(v)))
-        await ctx.send(f'Closest matching tag: `{closest_match}`.')
+        await ctx.edit(content=f'Closest tag to `{tag_name}`: `{closest_match}`.')
 
     @tag.command()
     async def list(self, ctx):
         """ List all of your tags (Warning: potentially spammy) """
         if len(self.tag_dict) == 0:
-            await ctx.send('No tags to list.', delete_after=10.0)
-            return await ctx.message.delete()
+            return await ctx.error('No tags to list.')
 
         em = discord.Embed(color=self.color)
-        em.add_field(name='Tags', value='\n'.join([f"\u2022 {x}" for x in list(self.tag_dict)]))
 
-        await ctx.send(embed=em)
+        # Create two columns just in case there's a lot of stuff to send
+        tag_list = [x for x in list(self.tag_dict)]
+        tag_col1 = tag_list[:len(tag_list) // 2]
+        tag_col2 = tag_list[len(tag_list) // 2:]
+
+        em.add_field(name='Tags', value='\n'.join([f"\u2022 {x}" for x in tag_col1]))
+        em.add_field(name='Tags (cont.)', value='\n'.join([f"\u2022 {x}" for x in tag_col2]))
+
+        await ctx.message.edit(embed=em)
 
     @tag.command()
     async def stats(self, ctx):
@@ -132,8 +132,7 @@ class Tag:
         total_tags = len(self.tag_dict)
 
         if total_tags == 0:
-            await ctx.send('No tags to show stats for.', delete_after=10.0)
-            return await ctx.message.delete()
+            return await ctx.error('No tags to show stats for.')
 
         total_tag_uses = sum(x['uses'] for x in self.tag_dict.values())
         em = discord.Embed(title='Tag Statistics',
@@ -147,7 +146,7 @@ class Tag:
                                          for idx, x in enumerate(ranked_tag_list[:5])])
         em.add_field(name='Top tags', value=ranked_tag_list_str)
 
-        await ctx.send(embed=em)
+        await ctx.message.edit(embed=em, content=None)
 
 
 def setup(bot):
