@@ -5,6 +5,7 @@ from urllib.parse import quote_plus
 from urllib.parse import urlparse
 from urllib.parse import parse_qs
 
+
 class Google:
     def __init__(self, bot):
         self.bot = bot
@@ -53,7 +54,10 @@ class Google:
         if soup.select('div.hp-xpdbox div._tXc'):
             google_embed = True
             embed_title = [a.text for a in soup.select('div._B5d')][0]
-            embed_type = [a.text for a in soup.select('div._Pxg')][0]
+            try:
+                embed_type = [a.text for a in soup.select('div._Pxg')][0]
+            except IndexError:
+                embed_type = None
             embed_details = [a.text for a in soup.select('div._tXc span')][0]
             results_num -= 1
 
@@ -66,7 +70,7 @@ class Google:
 
         # Create embed if google_embed is true
         if google_embed:
-            em = discord.Embed(title=embed_title, description=embed_type,color=self.bot.user_color)
+            em = discord.Embed(title=embed_title, description=embed_type, color=self.bot.user_color)
             em.add_field(name="Info", value=embed_details)
             if img:
                 em.set_thumbnail(url=img)
