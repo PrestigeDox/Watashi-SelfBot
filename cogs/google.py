@@ -5,6 +5,7 @@ from urllib.parse import quote_plus
 from urllib.parse import urlparse
 from urllib.parse import parse_qs
 
+
 class Google:
     def __init__(self, bot):
         self.bot = bot

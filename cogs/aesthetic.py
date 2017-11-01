@@ -11,7 +11,7 @@ class Aesthetic:
                                                                 '\u028ez')
 
     @commands.command(aliases=['aesthet', 'at'])
-    async def aesthetic(self, ctx, *, a_text):
+    async def aesthetic(self, ctx, *, a_text: str = None):
         """ Larger Text Converter """
 
         # Handle no text being provided
