@@ -24,7 +24,7 @@ class Calculator:
         if query is None:
             return await ctx.error('Please provide a query!')
 
-        params = {'q': quote_plus(query), 'source': 'hp'}
+        params = {'q': quote_plus(query.replace(" ", "")), 'source': 'hp'}
 
         # Tries its best to imitate a real browser visit, an old user-agent is used to make scraping easier
         async with self.aiohttp_session.get(self.url, params=params, headers=self.headers) as r:
