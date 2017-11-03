@@ -91,6 +91,72 @@ class Base:
 
         return await ctx.message.edit(embed=emb)
 
+    @commands.group(invoke_without_command=True)
+    async def quote(self, ctx, message_id: int = None, *, reply: str = None):
+        """ Quote a message by using its ID """
+
+        if message_id is None:
+            return await ctx.error('Provide a message id please')
+
+        try:
+            obj = discord.Object(id=message_id + 1)
+            async for mess in ctx.channel.history(limit=1, before=obj):
+                if mess.id == message_id:
+                    message = mess
+                else:
+                    return await ctx.error("Message doesn't exist")
+        except discord.NotFound:
+            return await ctx.error("Message doesn't exist")
+        except discord.Forbidden:
+            return await ctx.error("You do not have the permissions to request this message")
+        except discord.HTTPException:
+            return await ctx.error("Couldn't retrieve the message")
+
+        emb = discord.Embed(colour=self.color, description=message.content)
+        emb.set_author(name=f'{message.author.display_name}#{message.author.discriminator}',
+                       icon_url=message.author.avatar_url)
+        emb.set_footer(text=f'#{ctx.channel.name} | {message.created_at.strftime("%a, %d %b %Y at %I:%M%p")}')
+
+        await ctx.message.delete()
+
+        await ctx.send(embed=emb)
+
+        if reply is not None:
+            await ctx.send(reply)
+
+    @quote.command(name='fake')
+    async def fake(self, ctx, message_id: int = None, *, fake_text: str = None):
+        """ Make a fake quote with custom text referring to a real message by ID """
+
+        if message_id is None:
+            return await ctx.error('Provide a message id please')
+
+        if fake_text is None:
+            return await ctx.error('Provide text to substitute please')
+
+        try:
+            obj = discord.Object(id=message_id + 1)
+            async for mess in ctx.channel.history(limit=1, before=obj):
+                if mess.id == message_id:
+                    message = mess
+                else:
+                    return await ctx.error("Message doesn't exist")
+        except discord.NotFound:
+            return await ctx.error("Message doesn't exist")
+        except discord.Forbidden:
+            return await ctx.error("You do not have the permissions to request this message")
+        except discord.HTTPException:
+            return await ctx.error("Couldn't retrieve the message")
+
+        emb = discord.Embed(colour=self.color, description=fake_text)
+        emb.set_author(name=f'{message.author.display_name}#{message.author.discriminator}',
+                       icon_url=message.author.avatar_url)
+        emb.set_footer(text=f'#{ctx.channel.name} | {message.created_at.strftime("%a, %d %b %Y at %I:%M%p")}')
+
+        await ctx.message.delete()
+
+        await ctx.send(embed=emb)
+
 
 def setup(bot):
     bot.add_cog(Base(bot))
