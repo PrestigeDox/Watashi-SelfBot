@@ -14,7 +14,7 @@ class Define:
                         'Chrome/41.0.2228.0 Safari/537.36'}
         self.parts_of_speech = {'noun': 'n.', 'verb': 'v.', 'adjective': 'adj.', 'adverb': 'adv.',
                                 'interjection': 'interj.', 'conjunction': 'conj.', 'preposition': 'prep.',
-                                'pronoun': 'pron.'}
+                                'pronoun': 'pron.', 'contraction': 'cont.'}
 
     @commands.command(aliases=['def'])
     async def define(self, ctx, word: str):
@@ -40,8 +40,7 @@ class Define:
             return await ctx.error(f'Unable to find a definition for `{word}`.')
 
         # Create embed
-        em = discord.Embed(title=word.capitalize(),
-                           color=self.color)
+        em = discord.Embed(title=word.capitalize(), color=self.color)
         em.add_field(name='Definition', value=f'_{self.parts_of_speech[pos]}_, {defn}')
 
         if len(syn_list) != 0:
