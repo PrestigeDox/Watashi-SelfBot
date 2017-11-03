@@ -1,6 +1,8 @@
 import asyncio
 import discord
 import inspect
+import os
+
 from discord.ext import commands
 
 
@@ -63,24 +65,97 @@ class Base:
     @commands.command()
     async def source(self, ctx, *, command):
         """ Get The Source Code For Any Command """
+
+        # Try to get the command by name, if it doesn't exist, AttributeError is actually called from trying to access
+        # 'callback', which either way serves the purpose and an error is sent.
         try:
-            source = str(inspect.getsource(self.bot.get_command(command).callback))
+            cmd = self.bot.get_command(command).callback
         except AttributeError:
             return await ctx.error(f'Command `{command}` does not exist.')
 
-        # TODO
-        # 1. Make this syntax more clear & maybe add some helpers
-        # 2. Let's link this to github instead of posting to hastebin
-        async with self.session.post("https://hastebin.com/documents", data=source) as resp:
-            data = await resp.json()
+        # If the command exists, getsourcelines returns a tuple with starting line and lines as a list
+        # starting line number is taken as it is, and end_line is calculated by adding the length of all lines to
+        # 'starting_line'.
+        lines = inspect.getsourcelines(cmd)
+        starting_line = lines[1]
+        end_line = starting_line + len(lines[0])
 
-        h_key = data['key']
+        # 'os.path.basename', handles extracting filename regardless of operating system and the slashes used for paths.
+        file = os.path.basename(inspect.getsourcefile(cmd))
 
+        # Create Embed Response.
         emb = discord.Embed(colour=self.color)
         emb.add_field(name="Command", value=command.title(), inline=False)
-        emb.add_field(name="Source", value=f'<https://hastebin.com/{h_key}.py>', inline=False)
+        emb.add_field(name="Source", value='<https://github.com/PrestigeDox/Watashi-SelfBot/tree/master/cogs/'
+                                           f'{file}#L{starting_line}-L{end_line}>', inline=False)
 
         return await ctx.message.edit(embed=emb)
+
+    @commands.group(invoke_without_command=True)
+    async def quote(self, ctx, message_id: int = None, *, reply: str = None):
+        """ Quote a message by using its ID """
+
+        if message_id is None:
+            return await ctx.error('Provide a message id please')
+
+        try:
+            obj = discord.Object(id=message_id + 1)
+            async for mess in ctx.channel.history(limit=1, before=obj):
+                if mess.id == message_id:
+                    message = mess
+                else:
+                    return await ctx.error("Message doesn't exist")
+        except discord.NotFound:
+            return await ctx.error("Message doesn't exist")
+        except discord.Forbidden:
+            return await ctx.error("You do not have the permissions to request this message")
+        except discord.HTTPException:
+            return await ctx.error("Couldn't retrieve the message")
+
+        emb = discord.Embed(colour=self.color, description=message.content)
+        emb.set_author(name=f'{message.author.display_name}#{message.author.discriminator}',
+                       icon_url=message.author.avatar_url)
+        emb.set_footer(text=f'#{ctx.channel.name} | {message.created_at.strftime("%a, %d %b %Y at %I:%M%p")}')
+
+        await ctx.message.delete()
+
+        await ctx.send(embed=emb)
+
+        if reply is not None:
+            await ctx.send(reply)
+
+    @quote.command(name='fake')
+    async def fake(self, ctx, message_id: int = None, *, fake_text: str = None):
+        """ Make a fake quote with custom text referring to a real message by ID """
+
+        if message_id is None:
+            return await ctx.error('Provide a message id please')
+
+        if fake_text is None:
+            return await ctx.error('Provide text to substitute please')
+
+        try:
+            obj = discord.Object(id=message_id + 1)
+            async for mess in ctx.channel.history(limit=1, before=obj):
+                if mess.id == message_id:
+                    message = mess
+                else:
+                    return await ctx.error("Message doesn't exist")
+        except discord.NotFound:
+            return await ctx.error("Message doesn't exist")
+        except discord.Forbidden:
+            return await ctx.error("You do not have the permissions to request this message")
+        except discord.HTTPException:
+            return await ctx.error("Couldn't retrieve the message")
+
+        emb = discord.Embed(colour=self.color, description=fake_text)
+        emb.set_author(name=f'{message.author.display_name}#{message.author.discriminator}',
+                       icon_url=message.author.avatar_url)
+        emb.set_footer(text=f'#{ctx.channel.name} | {message.created_at.strftime("%a, %d %b %Y at %I:%M%p")}')
+
+        await ctx.message.delete()
+
+        await ctx.send(embed=emb)
 
 
 def setup(bot):
