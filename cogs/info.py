@@ -33,14 +33,13 @@ class Info:
     @commands.command()
     async def avatar(self, ctx, member: discord.Member=None):
         """ Get A Member's Avatar """
-        emb = discord.Embed(colour=self.color)
-        emb.set_author(name="Avatar for {}".format(member.display_name),
-                       icon_url=member.avatar_url)
-        emb.add_field(name="**Avatar url**",
-                      value="[Here]({})".format(member.avatar_url))
-        emb.set_thumbnail(url=member.avatar_url)
+        if member is None:
+            member = ctx.author
+        emb = discord.Embed(colour=self.color, description=f'[Link]({member.avatar_url})')
+        emb.set_author(name=f"Avatar for {member.display_name}")
+        emb.set_image(url=member.avatar_url)
 
-        await ctx.message.edit(embed=emb)
+        await ctx.message.edit(content=None, embed=emb)
 
     @commands.command(aliases=['about', 'selfbot', 'bot'])
     async def info(self, ctx):
@@ -81,22 +80,22 @@ class Info:
                       inline=False)
 
         emb.add_field(name="Uptime \U0001f550",
-                      value=f'{days}D {hours}H {minutes}M {seconds}S', inline=True)
-        emb.add_field(name="Ping Time \U0001f3d3", value=f'{pingtime}ms', inline=True)
+                      value=f'{days}D {hours}H {minutes}M {seconds}S')
+        emb.add_field(name="Ping Time \U0001f3d3", value=f'{pingtime}ms')
 
-        emb.add_field(name="Servers \U00002694", value=len(self.bot.guilds), inline=True)
+        emb.add_field(name="Servers \U00002694", value=len(self.bot.guilds))
         emb.add_field(name="Users \U0001f476",
-                      value=f'Total: {total_members}\nUnique: {unique_members}\nOnline: {online_members}', inline=True)
+                      value=f'Total: {total_members}\nUnique: {unique_members}\nOnline: {online_members}')
         emb.add_field(name="Channels \U00002328",
-                      value=f'Text: {len(text_channels)}\nVoice: {len(voice_channels)}\nDM: {len(dm_channels)}', inline=True)
+                      value=f'Text: {len(text_channels)}\nVoice: {len(voice_channels)}\nDM: {len(dm_channels)}')
 
         emb.add_field(name="Status \U0001f47e",
-                      value=f'Presence: {ctx.author.status}\nPlaying: {ctx.author.game}', inline=True)
+                      value=f'Presence: {ctx.author.status}\nPlaying: {ctx.author.game}')
 
-        emb.add_field(name="Cogs \U00002699", value=len(self.bot.cogs), inline=True)
-        emb.add_field(name="Commands \U0001f50e", value=len(self.bot.commands), inline=True)
-        emb.add_field(name="GitHub \U0001f516", value=github, inline=True)
-        emb.add_field(name="Discord \U0001f47e", value=discord_link, inline=True)
+        emb.add_field(name="Cogs \U00002699", value=len(self.bot.cogs))
+        emb.add_field(name="Commands \U0001f50e", value=len(self.bot.commands))
+        emb.add_field(name="GitHub \U0001f516", value=github)
+        emb.add_field(name="Discord \U0001f47e", value=discord_link)
 
         await ctx.message.edit(embed=emb)
 
