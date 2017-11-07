@@ -1,4 +1,5 @@
 import discord
+from datetime import datetime
 from discord.ext import commands
 from bs4 import BeautifulSoup
 
@@ -14,7 +15,7 @@ class Weather:
         self.color = bot.user_color
         self.aiohttp_session = bot.aiohttp_session
 
-    @commands.command()
+    @commands.command(aliases=['wt'])
     async def weather(self, ctx,  *, query: str = None):
         """ Search Bing for weather """
         # Handle no query being provided.
@@ -39,18 +40,16 @@ class Weather:
         temp = soup.select('div.wtr_condiTemp')[0].text.strip('F')
         precipitation = soup.select('div.wtr_currPerci')[0].text.split()[1]
         wind = soup.select('div.wtr_currWind')[0].text.split(':')[1].strip()
-        humidity = soup.select('div.wtr_currHumi')[
-            0].text.split(':')[1].strip()
+        humidity = soup.select('div.wtr_currHumi')[0].text.split(':')[1].strip()
         caption = soup.select('div.wtr_caption')[0].text
-        daytime = soup.select('div.wtr_dayTime')[0].text
 
         # Create embed response
         em = discord.Embed(title=f'Weather in {title}', description=caption, color=self.color)
+        em.timestamp = datetime.now()
         em.add_field(name='Temperature', value=temp)
-        em.add_field(name='Precipitation', value=precipitation, inline=True)
-        em.add_field(name="Wind", value=wind, inline=True)
+        em.add_field(name='Precipitation', value=precipitation)
+        em.add_field(name="Wind", value=wind)
         em.add_field(name="Humidity", value=humidity)
-        em.add_field(name="Time and Date", value=daytime)
         em.set_thumbnail(url=icon)
 
         await ctx.message.edit(embed=em)

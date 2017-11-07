@@ -39,7 +39,7 @@ class Info:
         emb.set_author(name=f"Avatar for {member.display_name}")
         emb.set_image(url=member.avatar_url)
 
-        await ctx.message.edit(embed=emb)
+        await ctx.message.edit(content=None, embed=emb)
 
     @commands.command(aliases=['about', 'selfbot', 'bot'])
     async def info(self, ctx):

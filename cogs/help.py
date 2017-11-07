@@ -30,12 +30,11 @@ class Help:
 
         col1 = cog_name_list[:len(cog_name_list) // 2]
         col2 = cog_name_list[len(cog_name_list) // 2:]
-
         em.add_field(name='Categories', value='\n'.join(col1))
         em.add_field(name='Categories (cont.)', value='\n'.join(col2))
         await ctx.send(embed=em)
 
-    @help.command(name='category', aliases=['categories', 'cat'])
+    @help.command(name='category', aliases=['categories', 'ctg'])
     async def help_categories(self, ctx, *, category_name: str=None):
         """ Get brief help for each command in a specific category """
         # Handle no input
