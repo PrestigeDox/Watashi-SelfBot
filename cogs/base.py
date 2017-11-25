@@ -16,8 +16,7 @@ class Base:
     async def ping(self, ctx):
         """ Pong! """
         ping_time = self.bot.latency * 1000
-        emb = discord.Embed(title=f'\U0001f3d3 Pong {ping_time:.2f}ms', colour=self.color)
-        await ctx.message.edit(content=None, embed=emb)
+        await ctx.message.edit(content=f'\U0001f3d3 Pong {ping_time:.2f}ms')
 
     @commands.command(aliases=['type'])
     async def typing(self, ctx, *, duration: float=10.0):
@@ -26,15 +25,6 @@ class Base:
 
         async with ctx.channel.typing():
             await asyncio.sleep(duration)
-
-    @commands.command(aliases=['emb'])
-    async def embed(self, ctx, *, message: str=None):
-        """ Create an embed """
-        if message is None:
-            return await ctx.error('You must add something to embed.')
-
-        emb = discord.Embed(title=message, colour=self.color)
-        await ctx.message.edit(content=None, embed=emb)
 
     @commands.command(name='custom_emojis', aliases=['emojis'])
     async def get_custom_emojis(self, ctx):
@@ -51,8 +41,7 @@ class Base:
     @commands.command(aliases=['logout', 'quit', 'exit'])
     async def exitbot(self, ctx):
         """ Close Watashi """
-        emb = discord.Embed(title="Watashi Logging Out!", colour=self.color)
-        await ctx.message.edit(embed=emb)
+        await ctx.message.edit("Watashi Logging Out!")
         await self.bot.logout()
 
     @commands.command()
@@ -83,13 +72,8 @@ class Base:
         # 'os.path.basename', handles extracting filename regardless of operating system and the slashes used for paths.
         file = os.path.basename(inspect.getsourcefile(cmd))
 
-        # Create Embed Response.
-        emb = discord.Embed(colour=self.color)
-        emb.add_field(name="Command", value=command.title(), inline=False)
-        emb.add_field(name="Source", value='<https://github.com/PrestigeDox/Watashi-SelfBot/tree/master/cogs/'
-                                           f'{file}#L{starting_line}-L{end_line}>', inline=False)
-
-        return await ctx.message.edit(embed=emb)
+        return await ctx.message.edit(f'{command.title()}\n<https://github.com/PrestigeDox/Watashi-SelfBot/tree'
+                                      f'/master/cogs/{file}#L{starting_line}-L{end_line}>')
 
     @commands.group(invoke_without_command=True)
     async def quote(self, ctx, message_id: int = None, *, reply: str = None):
@@ -115,19 +99,16 @@ class Base:
         except discord.HTTPException:
             return await ctx.error("Couldn't retrieve the message")
 
-        emb = discord.Embed(colour=self.color, description=message.content)
-        emb.set_author(name=f'{message.author.display_name}#{message.author.discriminator}',
-                       icon_url=message.author.avatar_url)
-
         # DMChannel doesn't have a name attr, not doing any fancy ternary op, its already messy
         if not isinstance(ctx.channel, discord.DMChannel):
-            emb.set_footer(text=f'#{ctx.channel.name} | {message.created_at.strftime("%a, %d %b %Y at %I:%M%p")}')
+            at = f'#{ctx.channel.name} | {message.created_at.strftime("%a, %d %b %Y at %I:%M%p")}'
         else:
-            emb.set_footer(text=f'{message.created_at.strftime("%a, %d %b %Y at %I:%M%p")}')
-
+            at = f'{message.created_at.strftime("%a, %d %b %Y at %I:%M%p")}'
         await ctx.message.delete()
 
-        await ctx.send(embed=emb)
+        head = f"**{message.author.display_name}#{message.author.discriminator}** - *{at}*"
+
+        await ctx.message.edit(f'{head}\n{message.content}')
 
         # Optional reply
         if reply is not None:
@@ -160,19 +141,16 @@ class Base:
         except discord.HTTPException:
             return await ctx.error("Couldn't retrieve the message")
 
-        emb = discord.Embed(colour=self.color, description=fake_text)
-        emb.set_author(name=f'{message.author.display_name}#{message.author.discriminator}',
-                       icon_url=message.author.avatar_url)
-
         # DMChannel doesn't have a name attr, not doing any fancy ternary op, its already messy
         if not isinstance(ctx.channel, discord.DMChannel):
-            emb.set_footer(text=f'#{ctx.channel.name} | {message.created_at.strftime("%a, %d %b %Y at %I:%M%p")}')
+            at = f'#{ctx.channel.name} | {message.created_at.strftime("%a, %d %b %Y at %I:%M%p")}'
         else:
-            emb.set_footer(text=f'{message.created_at.strftime("%a, %d %b %Y at %I:%M%p")}')
-
+            at = f'{message.created_at.strftime("%a, %d %b %Y at %I:%M%p")}'
         await ctx.message.delete()
 
-        await ctx.send(embed=emb)
+        head = f"**{message.author.display_name}#{message.author.discriminator}** - *{at}*"
+
+        await ctx.message.edit(f'{head}\n{fake_text}')
 
 
 def setup(bot):

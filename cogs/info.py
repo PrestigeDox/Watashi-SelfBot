@@ -10,7 +10,7 @@ class Info:
         self.color = bot.user_color
 
     @commands.command()
-    async def whois(self, ctx, member: discord.Member=None):
+    async def whois(self, ctx, member: discord.Member = None):
         """ Get Info On A Member """
         if member is None:
             member = ctx.guild.get_member(ctx.author.id)
@@ -31,7 +31,7 @@ class Info:
             await ctx.error('Too much information to send.')
 
     @commands.command()
-    async def avatar(self, ctx, member: discord.Member=None):
+    async def avatar(self, ctx, member: discord.Member = None):
         """ Get A Member's Avatar """
         emb = discord.Embed(colour=self.color)
         emb.set_author(name="Avatar for {}".format(member.display_name),
@@ -54,7 +54,7 @@ class Info:
         # Get member stats
         total_members = sum(1 for _ in self.bot.get_all_members())
         online_members = len({m.id for m in self.bot.get_all_members()
-                         if m.status is discord.Status.online})
+                              if m.status is discord.Status.online})
         unique_members = len(self.bot.users)
 
         # Get channel stats

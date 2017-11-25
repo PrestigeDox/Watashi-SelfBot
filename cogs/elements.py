@@ -12,6 +12,8 @@ from discord.ext import commands
 class Elements:
     def __init__(self, bot):
         self.bot = bot
+        self.subs = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
+        self.sups = str.maketrans("0123456789", "⁰¹²³⁴⁵⁶⁷⁸⁹")
 
     @commands.command()
     async def element(self, ctx, *, query=None):
@@ -51,19 +53,16 @@ class Elements:
         if u_element is None:
             return await ctx.error("Query didn't match any elements!")
 
-        # Create the embed response
-        em = discord.Embed(title=u_element["name"],
-                           description=f'{u_element["appearance"].title()}, {u_element["category"].title()}',
-                           color=self.bot.user_color)
-        em.add_field(name="Symbol", value=u_element["symbol"])
-        em.add_field(name="Named By", value=u_element["named_by"])
-        em.add_field(name="Atomic Mass", value=str(u_element["atomic_mass"]))
-        em.add_field(name="Phase", value=u_element["phase"])
-        em.add_field(name="Period", value=str(u_element["period"]))
-        em.add_field(name="Melting Point", value=f'{u_element["melt"]} K')
-        em.add_field(name="Boiling Point", value=f'{u_element["boil"]} K')
+        msg = f'**{u_element["name"]}** '
+        msg += f'({u_element["symbol"]}{str(u_element["number"]).translate(self.subs)}, '
+        msg += f'{u_element["appearance"].title()}, {u_element["category"].title()})\n'
+        msg += f'Named by: {u_element["named_by"]}\n'
+        msg += f'Atomic Mass: {str(u_element["atomic_mass"])}\n'
+        msg += f'Phase: {u_element["phase"]}\n'
+        msg += f'Melting Point: {u_element["melt"]} K'
+        msg += f'Boiling Point: {u_element["boil"]} K'
 
-        await ctx.message.edit(embed=em)
+        await ctx.message.edit(msg)
 
 
 def setup(bot):

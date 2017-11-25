@@ -70,17 +70,19 @@ class Google:
 
         # Create embed if google_embed is true
         if google_embed:
-            em = discord.Embed(title=embed_title, description=embed_type, color=self.bot.user_color)
-            em.add_field(name="Info", value=embed_details)
+            msg = f"**{embed_title}**"
+            if embed_type is not None:
+                msg += f" ({embed_type})"
+            msg += f"\n{embed_details}"
             if img:
-                em.set_thumbnail(url=img)
+                msg += f"**Image:**\n{img}"
 
         results = "\n\n".join([f'<{link}>\n{desc}' for link, desc in list(zip(result_links, result_desc))[:results_num]])
 
         if google_embed:
-            await ctx.message.edit(embed=em, content=f"\n**Results for {query}:**\n{results}")
+            await ctx.message.edit(content=f"**Results for {query}:**\n{results}\n{msg}")
         else:
-            await ctx.message.edit(content=f"\n**Results for {query}:**\n{results}")
+            await ctx.message.edit(content=f"**Results for {query}:**\n{results}")
 
 
 def setup(bot):

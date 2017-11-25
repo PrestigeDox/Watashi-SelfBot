@@ -43,11 +43,11 @@ class Define:
         em = discord.Embed(title=word.capitalize(),
                            color=self.color)
         em.add_field(name='Definition', value=f'_{self.parts_of_speech[pos]}_, {defn}')
-
+        msg = f"**{word.capitalize()}:**\n_{self.parts_of_speech[pos]}_, {defn}"
         if len(syn_list) != 0:
-            em.add_field(name='Synonyms', value=', '.join(syn_list[:5]), inline=False)
+            msg += f"Synonyms:\n{', '.join(syn_list[:5])}"
 
-        await ctx.message.edit(embed=em, content=None)
+        await ctx.message.edit(msg)
 
 
 def setup(bot):

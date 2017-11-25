@@ -48,15 +48,13 @@ class Converter:
             return await ctx.error('Could not convert expression.')
 
         # Values with units
-        from_val = soup.select("div#ires div._Qeb span")[0].text
-        to_val = soup.select("div#ires div._Peb")[0].text
+        from_val = soup.select("div#ires div._Qeb span")[0].text.split()[0]
+        to_val = soup.select("div#ires div._Peb")[0].text.split()[0]
 
-        em = discord.Embed(color=self.bot.user_color)
-        em.add_field(name=' '.join(from_val.split()[1:]).title(), value=from_val.split()[0])
-        em.add_field(name=' '.join(to_val.split()[1:]).title(), value=to_val.split()[0])
-        em.set_author(name="Unit Converter", icon_url="http://i67.tinypic.com/aag6c4.png")
+        from_unit = ' '.join(from_val.split()[1:]).title()
+        to_unit = ' '.join(to_val.split()[1:]).title()
 
-        await ctx.message.edit(embed=em)
+        await ctx.message.edit(f"{from_val} {from_unit} = {to_val} {to_unit}")
 
 
 def setup(bot):

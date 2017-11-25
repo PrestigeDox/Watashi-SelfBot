@@ -40,13 +40,7 @@ class Calculator:
 
         result = soup.select('div#topstuff span.nobr')[0].text
 
-        # Create Embed response
-        em = discord.Embed(color=self.bot.user_color)
-        em.add_field(name="Expression", value=query)
-        em.add_field(name="Result", value=result.split('=')[1].strip())
-        em.set_author(name="Calculator", icon_url="https://maxcdn.icons8.com/Share/icon/Science/calculator1600.png")
-
-        await ctx.message.edit(embed=em)
+        await ctx.message.edit(f"{query} = {result.split('=')[1].strip()}")
 
 
 def setup(bot):

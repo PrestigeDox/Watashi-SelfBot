@@ -24,10 +24,9 @@ class Images:
         cat = self.urls[0] + soup.select('img#cat')[0].attrs['src']
 
         # Create embed response.
-        em = discord.Embed(title=':cat2: Random Cat', color=self.color)
-        em.set_image(url=cat)
+        msg = f':cat2: Random Cat\n{cat}'
 
-        await ctx.message.edit(embed=em, content=None)
+        await ctx.message.edit(content=msg)
 
     @commands.command()
     async def dog(self, ctx):
@@ -43,10 +42,9 @@ class Images:
             break
 
         # Create embed response.
-        em = discord.Embed(title=':dog2: Random dog', color=self.color)
-        em.set_image(url=dog)
+        msg = f':dog2: Random dog\n{dog}'
 
-        await ctx.send(embed=em, content=None)
+        await ctx.send(content=msg)
 
 
 def setup(bot):

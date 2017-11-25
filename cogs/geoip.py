@@ -34,12 +34,13 @@ class Geoip:
             {'name': 'Longitude', 'value': data['longitude']}
         ]
 
+        msg = str()
         # Only add fields which are actually filled
         for field in fields:
             if field['value']:
-                em.add_field(name=field['name'], value=field['value'])
+                msg += f"**{field['name']}:** {field['value']}"
 
-        return await ctx.message.edit(embed=em, content=None)
+        return await ctx.message.edit(msg)
 
 
 def setup(bot):
