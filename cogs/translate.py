@@ -1,3 +1,4 @@
+import columnize
 import discord
 from discord.ext import commands
 from bs4 import BeautifulSoup
@@ -65,15 +66,10 @@ class Translate:
         if trans_text is None:
             return await ctx.error(f'Could not find a translation for `{query}`.')
 
-        # Create embed response
-        em = discord.Embed(title='Translation',
-                           description=f'{inverted_abv_dict[from_lang]} -> {inverted_abv_dict[to_lang]}',
-                           color=self.color)
+        msg = f'**{inverted_abv_dict[from_lang]} -> {inverted_abv_dict[to_lang]}**\n'
+        msg += f'`{query}` -> `{trans_text}`'
 
-        em.add_field(name='Original Text', value=f'`{query}`')
-        em.add_field(name='Translated', value=f'`{trans_text}`', inline=False)
-
-        await ctx.message.edit(embed=em, content=None)
+        await ctx.message.edit(content=msg)
 
     @translate.command(name='abbreviations', aliases=['abv', 'ab'])
     async def list_abv(self, ctx, *, query: str=None):
@@ -82,12 +78,8 @@ class Translate:
 
         # Sends a giant spammy list
         if query is None:
-            abv_list = [f'{x} - `{self.abv_dict[x]}`' for x in self.abv_dict]
-            abv_col1 = abv_list[:len(abv_list) // 2]
-            abv_col2 = abv_list[len(abv_list) // 2:]
-            em.add_field(name='Abbreviations', value='\n'.join(abv_col1))
-            em.add_field(name='Abbreviations (cont.)', value='\n'.join(abv_col2))
-            return await ctx.send(embed=em)
+            abv_list = columnize.columnize([f'{x} - `{self.abv_dict[x]}`' for x in self.abv_dict])
+            return await ctx.message.edit(content=f"**Abbreviations:**\n{abv_list}")
 
         query = query.title()
         closest_match = None
@@ -96,15 +88,14 @@ class Translate:
         if query not in self.abv_dict:
             closest_match = min(self.abv_dict, key=lambda v: len(set(query) ^ set(v)))
 
-        # Create an embed for style points
         if closest_match:
-            em.title = 'Closest Abbreviation'
-            em.description = f'{closest_match} - `{self.abv_dict[closest_match]}`'
+            msg = '**Closest Abbreviation**'
+            msg += f'{closest_match} - `{self.abv_dict[closest_match]}`'
         else:
-            em.title = 'Matching Abbreviation'
-            em.description = f'{query} - `{self.abv_dict[query]}`'
+            msg = '**Matching Abbreviation**'
+            msg += f'{query} - `{self.abv_dict[query]}`'
 
-        await ctx.message.edit(embed=em, content=None)
+        await ctx.message.edit(content=msg)
 
 
 def setup(bot):

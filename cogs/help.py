@@ -17,23 +17,18 @@ class Help:
         if command_name is not None:
             return await ctx.invoke(self.cmd('help command'), cmd_name=command_name)
 
-        em = discord.Embed(title='Help',
-                           description='Below is a list of command categories.\n'
-                                       f'To get help or more information on a specific category or command, use:\n'
-                                       f'`{self.pre}help cat|category <category name>` for a category OR\n'
-                                       f'`{self.pre}help cmd|command <command name>` for a specific command.\n'
-                                       f'`{self.pre}help <command name>` is also a shortcut for the above.',
-                           color=self.color)
+        desc = 'Below is a list of command categories.\n'\
+               f'To get help or more information on a specific category or command, use:\n'\
+               f'`{self.pre}help cat|category <category name>` for a category OR\n'\
+               f'`{self.pre}help cmd|command <command name>` for a specific command.\n'\
+               f'`{self.pre}help <command name>` is also a shortcut for the above.'
 
         # This can't go in the init because help isn't loaded last & thus misses some commands
         cog_name_list = sorted(self.bot.cogs)
 
-        col1 = cog_name_list[:len(cog_name_list) // 2]
-        col2 = cog_name_list[len(cog_name_list) // 2:]
+        cat = ', '.join([f"`{cog}`" for cog in cog_name_list])
 
-        em.add_field(name='Categories', value='\n'.join(col1))
-        em.add_field(name='Categories (cont.)', value='\n'.join(col2))
-        await ctx.send(embed=em)
+        await ctx.message.edit(content=f"**Help**\n{desc}\n**Categories:**\n{cat}")
 
     @help.command(name='category', aliases=['categories', 'cat'])
     async def help_categories(self, ctx, *, category_name: str=None):
@@ -50,11 +45,10 @@ class Help:
         else:
             return await ctx.error(f'`{category_name}` is not a category.')
 
-        em = discord.Embed(title=category_name, color=self.color)
-        em.add_field(name='Commands', value='\n'.join([f'\u2022 `{self.pre}{x.name}` - {x.short_doc}'
-                                                       for x in self.bot.get_cog_commands(category_name)]))
+        cmds = '\n'.join([f'\u2022 `{self.pre}{x.name}` - {x.short_doc}'
+                         for x in self.bot.get_cog_commands(category_name)])
 
-        await ctx.message.edit(embed=em)
+        await ctx.message.edit(content=f"**{category_name}:**\n{cmds}")
 
     @help.command(name='command', aliases=['cmd', 'commands'])
     async def help_command(self, ctx, *, cmd_name: str=None):
@@ -67,27 +61,23 @@ class Help:
         if cmd_obj is None:
             return await ctx.error(f'Command {cmd_name} not found')
 
-        em = discord.Embed(title=cmd_obj.name, description=cmd_obj.short_doc, color=self.color)
+        msg = f"**{cmd_obj.name}**:\n{cmd_obj.short_doc}"
 
         # Input aliases and parameters to embed
         if cmd_obj.aliases:
-            em.add_field(name='Aliases', value='\n'.join([f'\u2022 {x}' for x in cmd_obj.aliases]))
+            msg += f"**Aliases:**\n" + '\n'.join([f'\u2022 {x}' for x in cmd_obj.aliases])
         if cmd_obj.clean_params:
-            em.add_field(name='Parameters', value='\n'.join([f'\u2022 {x}' for x in cmd_obj.clean_params]))
+            msg += f"**Parameters:**\n" + '\n'.join([f'\u2022 {x}' for x in cmd_obj.clean_params])
 
         # Handle group commands
         if isinstance(cmd_obj, commands.core.Group):
-            em.add_field(name='Group commands',
-                         value='\n'.join([f'\u2022 {x}' for x in cmd_obj.commands]),
-                         inline=False)
+            msg += '**Group commands:**\n' + '\n'.join([f'\u2022 {x}' for x in cmd_obj.commands])
 
         # Add usage last
-        em.add_field(name='Usage',
-                     value=f'```{self.pre}\u200b{cmd_name} '
-                           f'{" ".join([f"<{x}>" for x in cmd_obj.clean_params])}```',
-                     inline=False)
+        msg += '**Usage:**' + f'```{self.pre}\u200b{cmd_name} '\
+                              f'{" ".join([f"<{x}>" for x in cmd_obj.clean_params])}```'
 
-        await ctx.message.edit(embed=em)
+        await ctx.message.edit(content=msg)
 
 
 def setup(bot):

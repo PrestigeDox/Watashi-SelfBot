@@ -15,39 +15,29 @@ class Info:
         if member is None:
             member = ctx.guild.get_member(ctx.author.id)
 
-        emb = discord.Embed(colour=self.color)
-        emb.set_author(name="Whois for {}".format(member.display_name), icon_url=member.avatar_url)
-        emb.set_thumbnail(url=member.avatar_url)
-        emb.add_field(name="**ID**", value=member.id)
-        emb.add_field(name="**Roles**", value=", ".join([r.name for r in member.roles]))
-        emb.add_field( name="**Status**", value="**Playing** {}".format(member.game.name if member.game else ""))
-        emb.add_field(name="**Color**", value=str(member.color))
-        emb.add_field(name="**Joined on**", value=member.joined_at.date())
-        emb.add_field(name="**Avatar url**", value="[Here]({})".format(member.avatar_url))
+        msg = f"Whois for *{member.display_name}*\n"
+        msg += f"**Roles:**\n{', '.join([f'`{r.name}`' for r in member.roles])}\n"
+        msg += f"**Status:**\n" f"**Playing** {member.game.name if member.game else ''}\n"
+        msg += f"**Color:**\n{str(member.color)}\n"
+        msg += f"**Joined on:**\n{member.joined_at.date()}\n"
+        msg += f"**Avatar url:**\n{member.avatar_url}"
 
         try:
-            await ctx.message.edit(embed=emb, content=None)
+            await ctx.message.edit(content=msg)
         except discord.HTTPException:
             await ctx.error('Too much information to send.')
 
     @commands.command()
     async def avatar(self, ctx, member: discord.Member = None):
         """ Get A Member's Avatar """
-        emb = discord.Embed(colour=self.color)
-        emb.set_author(name="Avatar for {}".format(member.display_name),
-                       icon_url=member.avatar_url)
-        emb.add_field(name="**Avatar url**",
-                      value="[Here]({})".format(member.avatar_url))
-        emb.set_thumbnail(url=member.avatar_url)
-
-        await ctx.message.edit(embed=emb)
+        await ctx.message.edit(content=f"{member.avatar_url if member else ctx.author.avatar_url}")
 
     @commands.command(aliases=['about', 'selfbot', 'bot'])
     async def info(self, ctx):
         """ Get Info/Statistics On The Bot """
 
-        github = '[Click Here](https://github.com/PrestigeDox/Watashi-SelfBot)'
-        discord_link = '[Click Here](https://discord.gg/JAcAEU5)'
+        github = 'https://github.com/PrestigeDox/Watashi-SelfBot'
+        discord_link = '<https://discord.gg/JAcAEU5>'
 
         pingtime = int(self.bot.latency * 1000)
 
@@ -72,33 +62,24 @@ class Info:
         days, hours = divmod(hours, 24)
 
         # Create the embed
-        emb = discord.Embed(colour=self.color)
-        emb.set_author(name="Watashi SelfBot", icon_url=ctx.author.avatar_url)
-        emb.add_field(name="About", value="Watashi Selfbot was made to enhance the experience of "
-                      "Discord users who wanted to speed up daily processes. Watashi has a multitude of commands "
-                      "which you can use and we regularly update the bot to add more commands and improve existing "
-                      "commands! Make sure to join our Discord server to keep up with Watashi related announcements!",
-                      inline=False)
+        msg = "**Watashi SelfBot**\n"
+        msg += "Watashi Selfbot was made to enhance the experience of "\
+               "Discord users who wanted to speed up daily processes. Watashi has a multitude of commands "\
+               "which you can use and we regularly update the bot to add more commands and improve existing "\
+               "commands! Make sure to join our Discord server to keep up with Watashi related announcements!\n"
 
-        emb.add_field(name="Uptime \U0001f550",
-                      value=f'{days}D {hours}H {minutes}M {seconds}S', inline=True)
-        emb.add_field(name="Ping Time \U0001f3d3", value=f'{pingtime}ms', inline=True)
+        msg += "**Uptime \U0001f550:** "\
+               f'{days}D {hours}H {minutes}M {seconds}S\n'
+        msg += "**Ping Time \U0001f3d3:**  " f'{pingtime}ms\n'
 
-        emb.add_field(name="Servers \U00002694", value=len(self.bot.guilds), inline=True)
-        emb.add_field(name="Users \U0001f476",
-                      value=f'Total: {total_members}\nUnique: {unique_members}\nOnline: {online_members}', inline=True)
-        emb.add_field(name="Channels \U00002328",
-                      value=f'Text: {len(text_channels)}\nVoice: {len(voice_channels)}\nDM: {len(dm_channels)}', inline=True)
+        msg += f"**Servers \U00002694:**  {len(self.bot.guilds)}\n"
 
-        emb.add_field(name="Status \U0001f47e",
-                      value=f'Presence: {ctx.author.status}\nPlaying: {ctx.author.game}', inline=True)
+        msg += f"**Cogs \U00002699:**  {len(self.bot.cogs)}\n"
+        msg += f"**Commands \U0001f50e:**  {len(self.bot.commands)}\n"
+        msg += f"**GitHub \U0001f516:**\n{github}\n"
+        msg += f"**Discord \U0001f47e:**\n{discord_link}\n"
 
-        emb.add_field(name="Cogs \U00002699", value=len(self.bot.cogs), inline=True)
-        emb.add_field(name="Commands \U0001f50e", value=len(self.bot.commands), inline=True)
-        emb.add_field(name="GitHub \U0001f516", value=github, inline=True)
-        emb.add_field(name="Discord \U0001f47e", value=discord_link, inline=True)
-
-        await ctx.message.edit(embed=emb)
+        await ctx.message.edit(content=msg)
 
 
 def setup(bot):

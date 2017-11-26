@@ -45,9 +45,9 @@ class Define:
         em.add_field(name='Definition', value=f'_{self.parts_of_speech[pos]}_, {defn}')
         msg = f"**{word.capitalize()}:**\n_{self.parts_of_speech[pos]}_, {defn}"
         if len(syn_list) != 0:
-            msg += f"Synonyms:\n{', '.join(syn_list[:5])}"
+            msg += f"\n**Synonyms:**\n{', '.join(syn_list[:5])}"
 
-        await ctx.message.edit(msg)
+        await ctx.message.edit(content=msg)
 
 
 def setup(bot):

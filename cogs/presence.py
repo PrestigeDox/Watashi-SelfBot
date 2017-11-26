@@ -23,7 +23,7 @@ class Presence:
 
         This is redundant. You can shortcut by calling <prefix>presence <your game here> """
         await self.bot.change_presence(game=discord.Game(name=game_name))
-        await ctx.message.add_reaction('\U00002705')
+        await ctx.message.edit(content="Changed presence!")
 
     @presence.group(aliases=['stream', 'streaming'])
     async def twitch(self, ctx, game_name: str, twitch_channel_name: str):
@@ -32,13 +32,13 @@ class Presence:
         await self.bot.change_presence(game=discord.Game(name=game_name,
                                                          type=1,
                                                          url=f'https://www.twitch.tv/{twitch_channel_name}'))
-        await ctx.message.add_reaction('\U00002705')
+        await ctx.message.edit(content="Changed to streaming!")
 
     @presence.command(aliases=['cls', 'clean', 'remove', 'rmv'])
     async def clear(self, ctx):
         """ Reset your status, game, and streaming URL """
         await self.bot.change_presence(game=discord.Game(name='', type=0, url=''))
-        await ctx.message.add_reaction('\U00002705')
+        await ctx.message.edit(content="Presence cleared!")
 
 
 def setup(bot):

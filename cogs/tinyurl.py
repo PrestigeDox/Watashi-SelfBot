@@ -18,13 +18,8 @@ class TinyURL:
         async with self.aiohttp_session.get(api_tiny + link) as tiny:
             shortenurl = await tiny.read()
 
-        shortenurl = shortenurl.decode("utf-8")
-        emb = discord.Embed(colour=self.bot.user_color)
-        emb.add_field(name="\U0001f30d Original Link",
-                      value=link, inline=False)
-        emb.add_field(name="\U0001f517 Shortened Link",
-                      value=shortenurl, inline=False)
-        await ctx.message.edit(embed=emb)
+        shortenurl = f'<{shortenurl.decode("utf-8")}>'
+        await ctx.message.edit(content=shortenurl)
 
 
 def setup(bot):

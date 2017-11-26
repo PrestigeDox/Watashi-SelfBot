@@ -45,15 +45,15 @@ class Weather:
         daytime = soup.select('div.wtr_dayTime')[0].text
 
         # Create embed response
-        em = discord.Embed(title=f'Weather in {title}', description=caption, color=self.color)
-        em.add_field(name='Temperature', value=temp)
-        em.add_field(name='Precipitation', value=precipitation, inline=True)
-        em.add_field(name="Wind", value=wind, inline=True)
-        em.add_field(name="Humidity", value=humidity)
-        em.add_field(name="Time and Date", value=daytime)
-        em.set_thumbnail(url=icon)
+        msg = f'**Weather in {title} ({caption})**\n'
+        msg += f'**Temperature:** {temp}\n'
+        msg += f'**Precipitation:** {precipitation}\n'
+        msg += f'**Wind:** {wind}\n'
+        msg += f'**Humidity** {humidity}\n'
+        msg += f'**Time and Date:**\n{daytime}\n'
+        msg += icon
 
-        await ctx.message.edit(embed=em)
+        await ctx.message.edit(content=msg)
 
 
 def setup(bot):

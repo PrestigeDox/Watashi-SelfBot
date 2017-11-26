@@ -35,7 +35,7 @@ class Games:
     async def eight_ball(self, ctx, *, query: str):
         """ Let the mystical 8ball evaluate your question """
 
-        await ctx.message.edit(f'{query}\n:8ball: {random.choice(self.eight_responses)}')
+        await ctx.message.edit(content=f'{query}\n:8ball: {random.choice(self.eight_responses)}')
 
     @commands.command(name="flip", aliases=["coinflip"])
     async def coin_flip(self, ctx):
@@ -43,14 +43,14 @@ class Games:
         result = random.randint(0, 1)
 
         msg = "http://researchmaniacs.com/Random/Images/Quarter-Tails.png" if result else "http://researchmaniacs.com/Random/Images/Quarter-Heads.png"
-        await ctx.message.edit(msg)
+        await ctx.message.edit(content=msg)
 
     @commands.command(aliases=["choice"])
     async def choose(self, ctx, *, query: str):
         """ Let the bot choose between multiple options! """
 
-        await ctx.message.edit(f"Choice between {query.replace('|', ' or ')}\n"
-                               f"I chose {random.choice(query.split('|'))}")
+        await ctx.message.edit(content=f"*Choice between {query.replace('|', ' or ')}*\n"
+                                       f"I chose {random.choice(query.split('|'))}")
 
 
 def setup(bot):

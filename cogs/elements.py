@@ -59,10 +59,10 @@ class Elements:
         msg += f'Named by: {u_element["named_by"]}\n'
         msg += f'Atomic Mass: {str(u_element["atomic_mass"])}\n'
         msg += f'Phase: {u_element["phase"]}\n'
-        msg += f'Melting Point: {u_element["melt"]} K'
+        msg += f'Melting Point: {u_element["melt"]} K\n'
         msg += f'Boiling Point: {u_element["boil"]} K'
 
-        await ctx.message.edit(msg)
+        await ctx.message.edit(content=msg)
 
 
 def setup(bot):

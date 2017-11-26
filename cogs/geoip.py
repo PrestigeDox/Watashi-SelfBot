@@ -40,7 +40,7 @@ class Geoip:
             if field['value']:
                 msg += f"**{field['name']}:** {field['value']}"
 
-        return await ctx.message.edit(msg)
+        return await ctx.message.edit(content=msg)
 
 
 def setup(bot):

@@ -49,7 +49,8 @@ class Coding:
         digit = f'{ord(char):x}'
         name = unicodedata.name(char, 'Name not found.')
 
-        await ctx.message.edit(f'`\\U{digit:>08}` - {name} - <http://www.fileformat.info/info/unicode/char/{digit}>1')
+        await ctx.message.edit(content=
+                               f'`\\U{digit:>08}` - {name} - <http://www.fileformat.info/info/unicode/char/{digit}>1')
 
 
 def setup(bot):

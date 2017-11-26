@@ -51,10 +51,7 @@ class Converter:
         from_val = soup.select("div#ires div._Qeb span")[0].text.split()[0]
         to_val = soup.select("div#ires div._Peb")[0].text.split()[0]
 
-        from_unit = ' '.join(from_val.split()[1:]).title()
-        to_unit = ' '.join(to_val.split()[1:]).title()
-
-        await ctx.message.edit(f"{from_val} {from_unit} = {to_val} {to_unit}")
+        await ctx.message.edit(content=f"{from_val}{from_unit} = {to_val}{to_unit}")
 
 
 def setup(bot):

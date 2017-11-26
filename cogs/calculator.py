@@ -40,7 +40,7 @@ class Calculator:
 
         result = soup.select('div#topstuff span.nobr')[0].text
 
-        await ctx.message.edit(f"{query} = {result.split('=')[1].strip()}")
+        await ctx.message.edit(content=f"{query} = {result.split('=')[1].strip()}")
 
 
 def setup(bot):

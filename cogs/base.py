@@ -108,7 +108,7 @@ class Base:
 
         head = f"**{message.author.display_name}#{message.author.discriminator}** - *{at}*"
 
-        await ctx.message.edit(f'{head}\n{message.content}')
+        await ctx.message.edit(conent=f'{head}\n{message.content}')
 
         # Optional reply
         if reply is not None:
@@ -150,7 +150,7 @@ class Base:
 
         head = f"**{message.author.display_name}#{message.author.discriminator}** - *{at}*"
 
-        await ctx.message.edit(f'{head}\n{fake_text}')
+        await ctx.message.edit(content=f'{head}\n{fake_text}')
 
 
 def setup(bot):

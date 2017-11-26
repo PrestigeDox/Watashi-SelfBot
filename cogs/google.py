@@ -73,14 +73,14 @@ class Google:
             msg = f"**{embed_title}**"
             if embed_type is not None:
                 msg += f" ({embed_type})"
-            msg += f"\n{embed_details}"
+            msg += f"\n\n{embed_details}\n"
             if img:
                 msg += f"**Image:**\n{img}"
 
         results = "\n\n".join([f'<{link}>\n{desc}' for link, desc in list(zip(result_links, result_desc))[:results_num]])
 
         if google_embed:
-            await ctx.message.edit(content=f"**Results for {query}:**\n{results}\n{msg}")
+            await ctx.message.edit(content=f"**Results for {query}:**\n{results}\n\n{msg}")
         else:
             await ctx.message.edit(content=f"**Results for {query}:**\n{results}")
 

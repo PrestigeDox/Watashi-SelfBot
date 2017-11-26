@@ -38,20 +38,14 @@ class Wiki:
         if not wiki_info[1]:
             return await ctx.error(f"Sorry, I couldn't find anything matching `{query}`.")
 
-        # Create embed
-        em = discord.Embed(title=wiki_info[1][0], color=self.color)
+        msg = str()
 
         if wiki_info[2][0] == '':
-            em.description = 'Disambiguation / Redirect Page'
-        else:
-            em.description = wiki_info[2][0]
+            msg += '**Disambiguation / Redirect Page**\n'
 
-        em.url = wiki_info[3][0]
+        msg += f"{wiki_info[3][0]}"
 
-        em.set_thumbnail(
-            url='https://lh5.ggpht.com/1Erjb8gyF0RCc9uhnlfUdbU603IgMm-G-Y3aJuFcfQpno0N4HQIVkTZERCTo65Iz2II=w300')
-
-        await ctx.send(embed=em)
+        await ctx.message.edit(content=msg)
 
 
 def setup(bot):
