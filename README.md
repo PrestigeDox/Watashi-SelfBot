@@ -1,13 +1,9 @@
 # Watashi-SelfBot
 Watashi SelfBot, A Multipurpose Discord SelfBot
-
-  //For embed colour:
-  //Gold = 0xFFD700
-  //Red = 0xFF0000
-  //Orange = 0xFFA500
-  //Yellow = 0xFFFF00
-  //Dark Green = 0x006400
-  //Light Green = 0x08ff00 (Best in my opinion)
-  //Light Blue = 0x00e5ff
-  //Dark Blue = 0x0000ff
-  //Blurple = 0x7289da
+-
+# How to setup
+Download the latest version of python3 [here](https://www.python.org/downloads/)
+Run setup.bat
+To find your token, inside discord press Ctrl + Alt + I, go to Application tab, Local Storage > discordapp.com, find the token at the bottom of the list, right click and copy it
+Add your token and prefix of your choice to config.json
+Run the bot with run.bat
