@@ -78,7 +78,7 @@ class Translate:
 
         # Sends a giant spammy list
         if query is None:
-            abv_list = columnize.columnize([f'{x} - `{self.abv_dict[x]}`' for x in self.abv_dict])
+            abv_list = columnize.columnize([f'{x} - `{self.abv_dict[x]}`' for x in self.abv_dict], displaywidth=100)
             return await ctx.message.edit(content=f"**Abbreviations:**\n{abv_list}")
 
         query = query.title()
