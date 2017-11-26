@@ -1,4 +1,5 @@
 import discord
+from datetime import datetime
 from discord.ext import commands
 from bs4 import BeautifulSoup
 
@@ -14,7 +15,7 @@ class Weather:
         self.color = bot.user_color
         self.aiohttp_session = bot.aiohttp_session
 
-    @commands.command()
+    @commands.command(aliases=['wt'])
     async def weather(self, ctx,  *, query: str = None):
         """ Search Bing for weather """
         # Handle no query being provided.
@@ -39,12 +40,9 @@ class Weather:
         temp = soup.select('div.wtr_condiTemp')[0].text.strip('F')
         precipitation = soup.select('div.wtr_currPerci')[0].text.split()[1]
         wind = soup.select('div.wtr_currWind')[0].text.split(':')[1].strip()
-        humidity = soup.select('div.wtr_currHumi')[
-            0].text.split(':')[1].strip()
+        humidity = soup.select('div.wtr_currHumi')[0].text.split(':')[1].strip()
         caption = soup.select('div.wtr_caption')[0].text
-        daytime = soup.select('div.wtr_dayTime')[0].text
 
-        # Create embed response
         msg = f'**Weather in {title} ({caption})**\n'
         msg += f'**Temperature:** {temp}\n'
         msg += f'**Precipitation:** {precipitation}\n'

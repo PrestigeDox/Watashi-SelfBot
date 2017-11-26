@@ -27,10 +27,9 @@ class Help:
         cog_name_list = sorted(self.bot.cogs)
 
         cat = ', '.join([f"`{cog}`" for cog in cog_name_list])
-
         await ctx.message.edit(content=f"**Help**\n{desc}\n**Categories:**\n{cat}")
 
-    @help.command(name='category', aliases=['categories', 'cat'])
+    @help.command(name='category', aliases=['categories', 'ctg'])
     async def help_categories(self, ctx, *, category_name: str=None):
         """ Get brief help for each command in a specific category """
         # Handle no input

@@ -62,10 +62,10 @@ class Eval:
 
             if ret is None:
                 if value:
-                    await ctx.send(f'```py\n{value}\n```')
+                    await ctx.message.edit(content=f'```py\n{value}\n```')
             else:
                 self._last_result = ret
-                await ctx.send(f'```py\n{value}{ret}\n```')
+                await ctx.message.edit(content=f'```py\n{value}{ret}\n```')
 
     @commands.command(name='eval')
     async def shell_access(self, ctx, *, cmd):
