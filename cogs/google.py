@@ -1,4 +1,6 @@
 import discord
+import json
+
 from discord.ext import commands
 from bs4 import BeautifulSoup
 from urllib.parse import quote_plus
@@ -18,8 +20,14 @@ class Google:
             'Accept-Language': 'en-us',
             'Cache-Control': 'no-cache'
             }
+        self.image_headers = {
+            'User-Agent': "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.235"
+                          "7.134 Safari/537.36",
+            'Accept-Language': 'en-us',
+            'Cache-Control': 'no-cache'
+            }
 
-    @commands.command(aliases=['g'])
+    @commands.group(name="google", aliases=['g'], invoke_without_command=True)
     async def google(self, ctx, *, query: str=None):
         """ Search Google for a query """
         # Handle no query being provided
@@ -83,6 +91,42 @@ class Google:
             await ctx.message.edit(content=f"**Results for {query}:**\n{results}\n\n{msg}")
         else:
             await ctx.message.edit(content=f"**Results for {query}:**\n{results}")
+
+    @google.command(name="images", aliases=['img', 'image'])
+    async def images(self, ctx, *, query: str=None):
+        """ Search Google for Images """
+        # Handle empty query
+        if query is None:
+            return await ctx.error('Please provide a query!')
+
+        # Using these specific headers and "lnms" as source, will provide divs with "rg_meta" classes,
+        # The modern image search page being JS rendered, data in these divs are jsons with raw image URLs
+        # Old image search pages, only have thumbnails and a direct link to websites
+        params = {'q': quote_plus(query), 'source': 'lmns', 'tbm': 'isch'}
+        async with self.aiohttp_session.get(self.url, params=params, headers=self.image_headers) as r:
+            html = await r.text()
+
+        # Healthy
+        soup = BeautifulSoup(html, 'lxml')
+
+        # Go over 4 items, json.loads the item text, and grab "ou" probably stands for "original url"
+        images = []
+        for i, item in enumerate(soup.select('div.rg_meta')[:4]):
+            js = json.loads(item.text)
+            images.append((f"{i+1}. {js['st']} - {js['s']}", js["ou"]))
+        newl = '\n'
+        await ctx.message.edit(content=f"```py\n{newl.join([x[0] for x in images])}"
+                                       f"\n# Choose the appropriate number or type 0 to leave\n```")
+
+        def check(m):
+            return m.author == ctx.author and m.content.isdigit() and m.channel == ctx.channel
+        message = await self.bot.wait_for('message', check=check)
+        if message.content == "0":
+            await message.delete()
+            return await ctx.message.delete()
+        choice = int(message.content) - 1
+        await message.delete()
+        await ctx.message.edit(content=images[choice][1])
 
 
 def setup(bot):
