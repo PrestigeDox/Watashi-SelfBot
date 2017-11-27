@@ -30,17 +30,7 @@ class Info:
     @commands.command()
     async def avatar(self, ctx, member: discord.Member = None):
         """ Get A Member's Avatar """
-<<<<<<< HEAD
         await ctx.message.edit(content=f"{member.avatar_url if member else ctx.author.avatar_url}")
-=======
-        if member is None:
-            member = ctx.author
-        emb = discord.Embed(colour=self.color, description=f'[Link]({member.avatar_url})')
-        emb.set_author(name=f"Avatar for {member.display_name}")
-        emb.set_image(url=member.avatar_url)
-
-        await ctx.message.edit(content=None, embed=emb)
->>>>>>> upstream/master
 
     @commands.command(aliases=['about', 'selfbot', 'bot'])
     async def info(self, ctx):
